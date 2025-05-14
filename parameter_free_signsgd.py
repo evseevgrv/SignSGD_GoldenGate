@@ -754,15 +754,15 @@ class AdamLike(Optimizer):
                     # if i == 0:
                     #     # print(step_t)
                     #     print(d_scalar, denom)
-                    
+
                     step_size *= lr_scalar
                     # Индивидуальное обновление параметра
                     param.add_(-exp_avg.sign() * step_size)
                     
                     # print("\n",group['lr'], step_size.mean())
 
-                    # if weight_decay != 0:
-                    #     param.mul_(1 - lr_current * weight_decay)  # Используем lr_current вместо step_size
+                    if weight_decay != 0:
+                        param.mul_(1 - lr_scalar * weight_decay)  # Используем lr_current вместо step_size
 
                     self.state[param]['prev_grad'].copy_(grad)
                     self.state[param]['d'].copy_(d)
@@ -1028,8 +1028,8 @@ class ProdigyWithAdam(Optimizer):
                     state['v'].copy_(v)
 
                     # # Weight decay
-                    # if weight_decay != 0:
-                    #     p.data.mul_(1 - lr_current * weight_decay)
+                    if weight_decay != 0:
+                        p.data.mul_(1 - lr_current * weight_decay)
 
             else:
                 # Обработка AdamW
