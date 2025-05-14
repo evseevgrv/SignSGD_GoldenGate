@@ -864,10 +864,10 @@ class AdamLike(Optimizer):
                     weight_decay=weight_decay,
                     eps=eps,
                     maximize=maximize,
-                    foreach=group['foreach'],
+                    foreach=False,
                     capturable=group['capturable'],
                     differentiable=group['differentiable'],
-                    fused=group['fused'],
+                    fused=False,
                 )
         for group in self.param_groups:
             for p in group['params']:
