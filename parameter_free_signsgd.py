@@ -1075,10 +1075,10 @@ class ProdigyWithAdam(Optimizer):
                     weight_decay=weight_decay,
                     eps=eps,
                     maximize=maximize,
-                    foreach=group['foreach'],
+                    foreach=False,
                     capturable=group['capturable'],
                     differentiable=group['differentiable'],
-                    fused=group['fused'],
+                    fused=False,
                 )
 
         # Перемещение состояний на правильные устройства
