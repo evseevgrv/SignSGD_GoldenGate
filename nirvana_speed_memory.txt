@@ -1,0 +1,158 @@
+Adam
+
+----------------------------------------------
+seqlen 256, total_bs=512
+
+ddp, hf=0, compile=1
+bs=16
+2.09s/it
+72379MiB
+
+ddp, hf=1, compile=1
+bs=8
+?
+?
+
+fsdp, hf=1, compile=1
+bs=64
+?)
+?)
+
+fsdp, hf=1, compile=1, 4 GPU
+bs=128
+OOM
+
+----------------------------------------------
+seqlen 512, total_bs=256
+---
+ddp, hf=0, compile=1, old lib
+bs=8
+72207MiB
+2.14s/it
+
+ddp, hf=0, compile=1, new lib
+bs=8
+81114MiB
+2.00s/it
+---
+ddp, hf=0, compile=0, old lib
+bs=4
+78368MiB
+3.28s/it
+
+ddp, hf=0, compile=0, new lib
+bs=4
+77223MiB
+3.11s/it
+---
+ddp, hf=0, compile=0, checkpointing, old lib
+bs=32
+64131MiB
+2.65s/it
+
+ddp, hf=0, compile=0, checkpointing, new lib
+bs=32
+68297MiB
+2.55s/it
+---
+ddp, hf=1, compile=1, old lib
+bs=4
+?)
+?) ~3s/it
+
+ddp, hf=1, compile=1, new lib
+bs=16
+81757MiB
+2.17s/it
+---
+fsdp, hf=1, compile=1, sdpa, old lib
+bs=16
+?)
+?) ~1.77s/it
+
+fsdp, hf=1, compile=1, sdpa, new lib
+bs=16
+66218MiB
+1.68s/it
+---
+fsdp, hf=1, compile=1, flash_attn, new lib
+bs=16
+67522MiB
+1.61s/it
+eval_bs=128
+---
+fsdp, hf=0, compile=0, old lib
+bs=16
+64995MiB
+2.04s/it
+eval_bs=96
+
+fsdp, hf=0, compile=0, new lib
+bs=16
+58745MiB
+1.97s/it
+----------------------------------------------
+seqlen 1024, total_bs=128
+
+---
+ddp, hf=0, compile=1, old lib
+bs=4
+81267MiB
+2.26s/it
+
+ddp, hf=0, compile=1, new lib
+bs=4
+81215MiB
+2.04s/it
+---
+ddp, hf=0, compile=0, checkpointing, old lib
+bs=16
+68189MiB
+2.77s/it
+
+ddp, hf=0, compile=0, checkpointing, new lib
+bs=16
+68332MiB
+2.58s/it
+---
+ddp, hf=1, compile=1, old lib
+?)
+
+ddp, hf=1, compile=1, new lib
+?
+bs=4
+75894MiB
+2.43s/it
+---
+fsdp, hf=1, compile=1, sdpa, old lib
+?
+1.97s/it
+?)
+
+fsdp, hf=1, compile=1, sdpa, new lib
+bs=8
+65239MiB
+1.87s/it
+---
+fsdp, hf=1, compile=1, flash_attn, old lib
+?)
+
+fsdp, hf=1, compile=1, flash_attn, new lib
+eval_bs=64
+bs=8
+65910MiB
+1.60s/it
+bs=16
+
+1.41s/it
+---
+fsdp, hf=0, compile=0, old lib
+bs=8
+65043MiB
+2.14s/it
+
+fsdp, hf=0, compile=0, new lib
+bs=8
+58673MiB
+2.01s/it
+**********************************************

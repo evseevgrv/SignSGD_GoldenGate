@@ -1,0 +1,339 @@
+Starting script
+non debug mode and not nirvana - setting local_train_data to False
+2025-03-04 20:10:28.573 | INFO     | __main__:main:413 - Global rank 0, local rank 0, device: 0
+2025-03-04 20:10:28.577 | INFO     | __main__:main:417 - Process group initialized
+2025-03-04 20:10:28.578 | INFO     | __main__:main:433 - Using dist with rank 0 (only rank 0 will log)
+2025-03-04 20:10:28.578 | INFO     | __main__:main:434 - ****************************************
+2025-03-04 20:10:28.578 | INFO     | __main__:main:435 - Starting training with the arguments
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - model_config                   configs/llama_130m.json
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - use_hf_model                   False
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - batch_size                     128
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - eval_batch_size                256
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - gradient_accumulation          4
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - total_batch_size               512
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - max_length                     256
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - optimizer                      aid_sign_sgd
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - lr                             0.001
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - scheduler                      cosine
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - scheduler_cycle_length         None
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - scheduler_min_power            -20
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - min_lr_ratio                   0.1
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - activation_checkpointing       False
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - eval_every                     2000
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - num_training_steps             100000
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - max_train_tokens               None
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - save_every                     1000
+2025-03-04 20:10:28.578 | INFO     | __main__:main:437 - general_save_dir               checkpoints
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - save_dir                       130m/opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - save_dir_prefix                130m
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - tags                           None
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - dtype                          torch.float32
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - amp                            True
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - workers                        8
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - seed                           0
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - name                           test
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - grad_clipping                  1.0
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - wandb_tags                     ['aid_sign_sgd', 'fp32', 'amp', 'bs_512', 'sch_cosine', 'wd_0.001', 'lr_0.001', 'clip-1.0', 'l_inf_100.0', 'option2', 'seed_0']
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - wandb_name_prefix              None
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - run_final_eval                 True
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - run_old_eval                   False
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - final_save                     False
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - wandb                          True
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - debug                          False
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - debug_train_data               False
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - debug_print                    False
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - compile                        True
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - attn_implementation            sdpa
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - fsdp                           False
+2025-03-04 20:10:28.579 | INFO     | __main__:main:437 - cpu_offload                    False
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - mp_policy_param                torch.float32
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - mp_policy_reduce               torch.float32
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - mp_policy_buffer               torch.float32
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - use_orig_params                False
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - proj_params_lr_scale           1.0
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - update_gap                     10
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - density                        0.25
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - reset_statistics               True
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - inactive_update_rule           sign_sgd
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - inactive_lr_scale              1.0
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - proj_norms                     True
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - proj_embeds                    True
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - proj_logits                    False
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - rank                           0
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - proj_side                      std
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - proj_type                      svd
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - coord_choice                   columns
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - block_order                    random
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - apollo_proj                    random
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - apollo_scale_type              tensor
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - apollo_scale                   1.0
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - apollo_scale_front             False
+2025-03-04 20:10:28.580 | INFO     | __main__:main:437 - ldadam_rho                     0.908
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - ldadam_proj_method             power_iteration
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - ldadam_error_feedback          False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - fira_alpha                     1.0
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - delay_start_step               10000
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - grad_taylor_approx             False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - taylor_linear_coef             1.0
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - measure_time                   False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - collect_grads                  False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - weight_decay                   0.001
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - warmup_steps                   10000
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - beta1                          0.9
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - beta2                          0.999
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - eps                            1e-08
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - momentum                       0.0
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - nesterov                       False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - dampening                      0
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - sgd_sign_update                False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - sign_norm                      False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - normalized                     False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - l_inf                          100.0
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - d_0                            None
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - lower_bound                    0.0
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - clamp_level                    0.001
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - single_gpu                     False
+2025-03-04 20:10:28.581 | INFO     | __main__:main:437 - local_train_data               False
+2025-03-04 20:10:28.582 | INFO     | __main__:main:437 - streaming                      True
+2025-03-04 20:10:28.582 | INFO     | __main__:main:437 - wandb_name                     opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+2025-03-04 20:10:28.582 | INFO     | __main__:main:438 - ****************************************
+/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:606: UserWarning: `pad_token_id` should be positive but got -1. This will cause errors when batch generating, if there is padding. Please set `pad_token_id` explicitly as `model.generation_config.pad_token_id=PAD_TOKEN_ID` to avoid errors in generation
+  warnings.warn(
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+Model dtype:  torch.float32
+2025-03-04 20:10:33.009 | INFO     | __main__:main:515 - ****************************************
+2025-03-04 20:10:33.010 | INFO     | __main__:main:520 - Loading training state like global_step, update_step, and tokens_seen from checkpoints/130m/opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+2025-03-04 20:10:33.010 | INFO     | __main__:main:528 - global_step       : 4000
+2025-03-04 20:10:33.010 | INFO     | __main__:main:529 - update_step       : 1000
+2025-03-04 20:10:33.010 | INFO     | __main__:main:530 - tokens_seen       : 99979486
+2025-03-04 20:10:33.010 | INFO     | __main__:main:531 - tokens_seen_before: 99878561
+2025-03-04 20:10:33.010 | INFO     | __main__:main:532 - Will train for 99000 update steps
+2025-03-04 20:10:33.010 | INFO     | __main__:main:535 - ****************************************
+2025-03-04 20:10:46.642 | INFO     | __main__:main:555 - Shuffling data with seed 42
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: rinya (mipt_rinya). Use `wandb login --relogin` to force relogin
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.19.1
+wandb: Run data is saved locally in /home/rinya/LoRA-dev/wandb/run-20250304_201048-a8n35a9v
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Resuming run opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+wandb: ⭐️ View project at https://wandb.ai/mipt_rinya/11_sgd_with_adam_130
+wandb: 🚀 View run at https://wandb.ai/mipt_rinya/11_sgd_with_adam_130/runs/a8n35a9v
+wandb: WARNING Saving files without folders. If you want to preserve subdirectories pass base_path to wandb.save, i.e. wandb.save("/mnt/folder/file.h5", base_path="/mnt")
+Update steps:   0%|                                   | 0/99000 [00:00<?, ?it/s]proj_norms: True, proj_embeds: True, proj_logits: False, 
+Number of proj_params: 110, number of NON proj_params: 1
+2025-03-04 20:10:50.187 | INFO     | __main__:main:617 - 
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+
+2025-03-04 20:10:50.188 | INFO     | __main__:main:618 - Total params: 134.11M
+2025-03-04 20:10:50.188 | INFO     | __main__:main:619 - Trainable params: 134.11M
+2025-03-04 20:10:50.188 | INFO     | __main__:main:622 - Total params with GaLore enabled: 109.53M
+2025-03-04 20:10:50.188 | INFO     | __main__:main:623 - Saving model to checkpoints/130m/opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0 every 1000 update steps
+AIDsignSGD (
+Parameter Group 0
+    L_inf: 100.0
+    clamp_level: 0.001
+    d: None
+    dampening: 0
+    differentiable: False
+    f_diff: None
+    foreach: False
+    fused: False
+    is_proj_params: False
+    lambda_denom_sum: None
+    lower_bound: 0.0
+    lr: 0.0010000000474974513
+    maximize: False
+    momentum: 0
+    nesterov: False
+    prev_gamma: None
+    tilde_d: None
+    update_gap: 10
+    warmup_steps: 10000
+    weight_decay: 0.001
+
+Parameter Group 1
+    L_inf: 100.0
+    clamp_level: 0.001
+    d: None
+    dampening: 0
+    differentiable: False
+    f_diff: None
+    foreach: False
+    fused: False
+    is_proj_params: True
+    lambda_denom_sum: None
+    lower_bound: 0.0
+    lr: 0.0010000000474974513
+    maximize: False
+    momentum: 0
+    nesterov: False
+    prev_gamma: None
+    tilde_d: None
+    update_gap: 10
+    warmup_steps: 10000
+    weight_decay: 0.001
+)
+0 False 1
+1 True 110
+2025-03-04 20:10:50.191 | INFO     | __main__:main:649 - Loading model from checkpoints/130m/opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+/home/rinya/LoRA-dev/torchrun_main.py:673: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  optimizer_scheduler_state_dict = torch.load(os.path.join(args.general_save_dir, args.save_dir, "optimizer.pt"), map_location=device)
+2025-03-04 20:10:51.787 | INFO     | __main__:main:674 - Model successfully loaded (strict=True policy)
+[rank0]:W0304 20:10:57.693000 1867232 site-packages/torch/_logging/_internal.py:1081] [0/0] Profiler function <class 'torch.autograd.profiler.record_function'> will be ignored
+Update steps:   0%|                       | 1/99000 [00:36<997:17:33, 36.27s/it]Update steps:   0%|                       | 2/99000 [00:36<421:35:34, 15.33s/it]Update steps:   0%|                       | 3/99000 [00:37<237:15:23,  8.63s/it]Update steps:   0%|                       | 4/99000 [00:38<150:38:58,  5.48s/it]Update steps:   0%|                       | 5/99000 [00:38<102:46:01,  3.74s/it]Update steps:   0%|                        | 6/99000 [00:39<74:02:24,  2.69s/it]wandb: WARNING Tried to log to step 1000 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1001 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1001 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1002 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1002 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1003 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1003 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1004 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1004 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1005 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1005 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1006 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+Update steps:   0%|                        | 7/99000 [00:40<55:49:38,  2.03s/it]Update steps:   0%|                        | 8/99000 [00:40<43:49:43,  1.59s/it]Update steps:   0%|                        | 9/99000 [00:41<35:46:21,  1.30s/it]Update steps:   0%|                       | 10/99000 [00:42<30:18:41,  1.10s/it]Update steps:   0%|                       | 11/99000 [00:42<26:36:44,  1.03it/s]Update steps:   0%|                       | 12/99000 [00:43<24:06:17,  1.14it/s]Update steps:   0%|                       | 13/99000 [00:44<22:19:19,  1.23it/s]Update steps:   0%|                       | 14/99000 [00:44<21:05:06,  1.30it/s]Update steps:   0%|                       | 15/99000 [00:45<20:14:51,  1.36it/s]Update steps:   0%|                       | 16/99000 [00:46<19:40:47,  1.40it/s]Update steps:   0%|                       | 17/99000 [00:46<19:17:38,  1.43it/s]Update steps:   0%|                       | 18/99000 [00:47<19:01:07,  1.45it/s]Update steps:   0%|                       | 19/99000 [00:48<18:50:28,  1.46it/s]Update steps:   0%|                       | 20/99000 [00:48<18:43:06,  1.47it/s]Update steps:   0%|                       | 21/99000 [00:49<18:35:49,  1.48it/s]wandb: WARNING Tried to log to step 1006 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1007 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1007 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1008 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1008 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1009 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1009 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1010 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1010 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1011 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1011 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1012 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1012 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1013 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1013 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1014 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1014 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1015 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1015 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1016 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1016 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1017 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1017 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1018 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1018 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1019 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1019 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1020 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1020 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1021 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+Update steps:   0%|                       | 22/99000 [00:50<18:37:07,  1.48it/s]Update steps:   0%|                       | 23/99000 [00:50<18:30:25,  1.49it/s]Update steps:   0%|                       | 24/99000 [00:51<18:26:30,  1.49it/s]Update steps:   0%|                       | 25/99000 [00:52<18:23:00,  1.50it/s]Update steps:   0%|                       | 26/99000 [00:52<18:23:40,  1.49it/s]Update steps:   0%|                       | 27/99000 [00:53<18:20:18,  1.50it/s]Update steps:   0%|                       | 28/99000 [00:54<18:18:52,  1.50it/s]Update steps:   0%|                       | 29/99000 [00:54<18:18:07,  1.50it/s]Update steps:   0%|                       | 30/99000 [00:55<18:20:13,  1.50it/s]Update steps:   0%|                       | 31/99000 [00:56<18:20:09,  1.50it/s]Update steps:   0%|                       | 32/99000 [00:56<18:19:50,  1.50it/s]Update steps:   0%|                       | 33/99000 [00:57<18:14:30,  1.51it/s]Update steps:   0%|                       | 34/99000 [00:58<18:13:01,  1.51it/s]Update steps:   0%|                       | 35/99000 [00:58<18:13:22,  1.51it/s]Update steps:   0%|                       | 36/99000 [00:59<18:12:31,  1.51it/s]wandb: WARNING Tried to log to step 1021 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1022 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1022 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1023 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1023 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1024 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1024 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1025 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1025 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1026 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1026 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1027 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1027 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1028 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1028 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1029 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1029 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1030 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1030 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1031 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1031 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1032 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1032 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1033 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1033 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1034 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1034 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1035 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1035 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1036 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+Update steps:   0%|                       | 37/99000 [01:00<18:14:10,  1.51it/s]Update steps:   0%|                       | 38/99000 [01:00<18:15:10,  1.51it/s]Update steps:   0%|                       | 39/99000 [01:01<18:15:30,  1.51it/s]Update steps:   0%|                       | 40/99000 [01:02<18:18:01,  1.50it/s]Update steps:   0%|                       | 41/99000 [01:02<18:17:31,  1.50it/s]Update steps:   0%|                       | 42/99000 [01:03<18:21:24,  1.50it/s]Update steps:   0%|                       | 43/99000 [01:04<18:19:33,  1.50it/s]Update steps:   0%|                       | 44/99000 [01:04<18:20:20,  1.50it/s]Update steps:   0%|                       | 45/99000 [01:05<18:23:17,  1.49it/s]Update steps:   0%|                       | 46/99000 [01:06<18:23:45,  1.49it/s]Update steps:   0%|                       | 47/99000 [01:06<18:24:44,  1.49it/s]Update steps:   0%|                       | 48/99000 [01:07<18:22:35,  1.50it/s]Update steps:   0%|                       | 49/99000 [01:08<18:22:27,  1.50it/s]Update steps:   0%|                       | 50/99000 [01:08<18:23:01,  1.50it/s]Update steps:   0%|                       | 51/99000 [01:09<18:21:40,  1.50it/s]wandb: WARNING Tried to log to step 1036 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1037 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1037 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1038 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1038 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1039 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1039 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1040 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1040 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1041 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1041 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1042 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1042 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1043 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1043 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1044 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1044 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1045 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1045 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1046 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1046 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1047 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1047 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1048 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1048 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1049 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1049 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1050 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1050 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+wandb: WARNING Tried to log to step 1051 that is less than the current step 2000. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+Update steps:   0%|                       | 52/99000 [01:10<18:21:55,  1.50it/s]Update steps:   0%|                       | 53/99000 [01:10<18:23:17,  1.49it/s]Update steps:   0%|                       | 54/99000 [01:11<18:21:33,  1.50it/s]Update steps:   0%|                       | 55/99000 [01:12<18:20:21,  1.50it/s]

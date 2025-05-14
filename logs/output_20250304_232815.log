@@ -1,0 +1,237 @@
+Starting script
+non debug mode and not nirvana - setting local_train_data to False
+2025-03-04 23:28:22.417 | INFO     | __main__:main:413 - Global rank 0, local rank 0, device: 0
+2025-03-04 23:28:22.421 | INFO     | __main__:main:417 - Process group initialized
+2025-03-04 23:28:22.421 | INFO     | __main__:main:433 - Using dist with rank 0 (only rank 0 will log)
+2025-03-04 23:28:22.421 | INFO     | __main__:main:434 - ****************************************
+2025-03-04 23:28:22.421 | INFO     | __main__:main:435 - Starting training with the arguments
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - model_config                   configs/llama_130m.json
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - use_hf_model                   False
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - batch_size                     128
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - eval_batch_size                256
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - gradient_accumulation          4
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - total_batch_size               512
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - max_length                     256
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - optimizer                      aid_sign_sgd
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - lr                             0.001
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - scheduler                      cosine
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - scheduler_cycle_length         None
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - scheduler_min_power            -20
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - min_lr_ratio                   0.1
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - activation_checkpointing       False
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - eval_every                     2000
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - num_training_steps             100000
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - max_train_tokens               None
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - save_every                     1000
+2025-03-04 23:28:22.421 | INFO     | __main__:main:437 - general_save_dir               checkpoints
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - save_dir                       130m/opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - save_dir_prefix                130m
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - tags                           None
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - dtype                          torch.float32
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - amp                            True
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - workers                        8
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - seed                           0
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - name                           test
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - grad_clipping                  1.0
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - wandb_tags                     ['aid_sign_sgd', 'fp32', 'amp', 'bs_512', 'sch_cosine', 'wd_0.001', 'lr_0.001', 'clip-1.0', 'l_inf_100.0', 'option2', 'seed_0']
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - wandb_name_prefix              None
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - run_final_eval                 True
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - run_old_eval                   False
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - final_save                     False
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - wandb                          True
+2025-03-04 23:28:22.422 | INFO     | __main__:main:437 - debug                          False
+2025-03-04 23:28:22.423 | INFO     | __main__:main:437 - debug_train_data               False
+2025-03-04 23:28:22.423 | INFO     | __main__:main:437 - debug_print                    False
+2025-03-04 23:28:22.423 | INFO     | __main__:main:437 - compile                        True
+2025-03-04 23:28:22.423 | INFO     | __main__:main:437 - attn_implementation            sdpa
+2025-03-04 23:28:22.423 | INFO     | __main__:main:437 - fsdp                           False
+2025-03-04 23:28:22.424 | INFO     | __main__:main:437 - cpu_offload                    False
+2025-03-04 23:28:22.424 | INFO     | __main__:main:437 - mp_policy_param                torch.float32
+2025-03-04 23:28:22.424 | INFO     | __main__:main:437 - mp_policy_reduce               torch.float32
+2025-03-04 23:28:22.424 | INFO     | __main__:main:437 - mp_policy_buffer               torch.float32
+2025-03-04 23:28:22.424 | INFO     | __main__:main:437 - use_orig_params                False
+2025-03-04 23:28:22.424 | INFO     | __main__:main:437 - proj_params_lr_scale           1.0
+2025-03-04 23:28:22.425 | INFO     | __main__:main:437 - update_gap                     10
+2025-03-04 23:28:22.425 | INFO     | __main__:main:437 - density                        0.25
+2025-03-04 23:28:22.425 | INFO     | __main__:main:437 - reset_statistics               True
+2025-03-04 23:28:22.425 | INFO     | __main__:main:437 - inactive_update_rule           sign_sgd
+2025-03-04 23:28:22.426 | INFO     | __main__:main:437 - inactive_lr_scale              1.0
+2025-03-04 23:28:22.426 | INFO     | __main__:main:437 - proj_norms                     True
+2025-03-04 23:28:22.426 | INFO     | __main__:main:437 - proj_embeds                    True
+2025-03-04 23:28:22.426 | INFO     | __main__:main:437 - proj_logits                    False
+2025-03-04 23:28:22.426 | INFO     | __main__:main:437 - rank                           0
+2025-03-04 23:28:22.427 | INFO     | __main__:main:437 - proj_side                      std
+2025-03-04 23:28:22.428 | INFO     | __main__:main:437 - proj_type                      svd
+2025-03-04 23:28:22.428 | INFO     | __main__:main:437 - coord_choice                   columns
+2025-03-04 23:28:22.428 | INFO     | __main__:main:437 - block_order                    random
+2025-03-04 23:28:22.428 | INFO     | __main__:main:437 - apollo_proj                    random
+2025-03-04 23:28:22.428 | INFO     | __main__:main:437 - apollo_scale_type              tensor
+2025-03-04 23:28:22.428 | INFO     | __main__:main:437 - apollo_scale                   1.0
+2025-03-04 23:28:22.429 | INFO     | __main__:main:437 - apollo_scale_front             False
+2025-03-04 23:28:22.429 | INFO     | __main__:main:437 - ldadam_rho                     0.908
+2025-03-04 23:28:22.429 | INFO     | __main__:main:437 - ldadam_proj_method             power_iteration
+2025-03-04 23:28:22.429 | INFO     | __main__:main:437 - ldadam_error_feedback          False
+2025-03-04 23:28:22.429 | INFO     | __main__:main:437 - fira_alpha                     1.0
+2025-03-04 23:28:22.429 | INFO     | __main__:main:437 - delay_start_step               10000
+2025-03-04 23:28:22.430 | INFO     | __main__:main:437 - grad_taylor_approx             False
+2025-03-04 23:28:22.430 | INFO     | __main__:main:437 - taylor_linear_coef             1.0
+2025-03-04 23:28:22.430 | INFO     | __main__:main:437 - measure_time                   False
+2025-03-04 23:28:22.430 | INFO     | __main__:main:437 - collect_grads                  False
+2025-03-04 23:28:22.430 | INFO     | __main__:main:437 - weight_decay                   0.001
+2025-03-04 23:28:22.431 | INFO     | __main__:main:437 - warmup_steps                   10000
+2025-03-04 23:28:22.431 | INFO     | __main__:main:437 - beta1                          0.9
+2025-03-04 23:28:22.431 | INFO     | __main__:main:437 - beta2                          0.999
+2025-03-04 23:28:22.431 | INFO     | __main__:main:437 - eps                            1e-08
+2025-03-04 23:28:22.431 | INFO     | __main__:main:437 - momentum                       0.0
+2025-03-04 23:28:22.431 | INFO     | __main__:main:437 - nesterov                       False
+2025-03-04 23:28:22.432 | INFO     | __main__:main:437 - dampening                      0
+2025-03-04 23:28:22.432 | INFO     | __main__:main:437 - sgd_sign_update                False
+2025-03-04 23:28:22.432 | INFO     | __main__:main:437 - sign_norm                      False
+2025-03-04 23:28:22.432 | INFO     | __main__:main:437 - normalized                     False
+2025-03-04 23:28:22.432 | INFO     | __main__:main:437 - l_inf                          100.0
+2025-03-04 23:28:22.432 | INFO     | __main__:main:437 - d_0                            None
+2025-03-04 23:28:22.433 | INFO     | __main__:main:437 - lower_bound                    0.0
+2025-03-04 23:28:22.433 | INFO     | __main__:main:437 - clamp_level                    0.001
+2025-03-04 23:28:22.433 | INFO     | __main__:main:437 - single_gpu                     False
+2025-03-04 23:28:22.433 | INFO     | __main__:main:437 - local_train_data               False
+2025-03-04 23:28:22.433 | INFO     | __main__:main:437 - streaming                      True
+2025-03-04 23:28:22.433 | INFO     | __main__:main:437 - wandb_name                     opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+2025-03-04 23:28:22.434 | INFO     | __main__:main:438 - ****************************************
+/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:606: UserWarning: `pad_token_id` should be positive but got -1. This will cause errors when batch generating, if there is padding. Please set `pad_token_id` explicitly as `model.generation_config.pad_token_id=PAD_TOKEN_ID` to avoid errors in generation
+  warnings.warn(
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+Model dtype:  torch.float32
+2025-03-04 23:28:28.484 | INFO     | __main__:main:515 - ****************************************
+2025-03-04 23:28:28.485 | INFO     | __main__:main:520 - Loading training state like global_step, update_step, and tokens_seen from checkpoints/130m/opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+2025-03-04 23:28:28.486 | INFO     | __main__:main:528 - global_step       : 40000
+2025-03-04 23:28:28.486 | INFO     | __main__:main:529 - update_step       : 10000
+2025-03-04 23:28:28.486 | INFO     | __main__:main:530 - tokens_seen       : 999960912
+2025-03-04 23:28:28.486 | INFO     | __main__:main:531 - tokens_seen_before: 999860276
+2025-03-04 23:28:28.486 | INFO     | __main__:main:532 - Will train for 90000 update steps
+2025-03-04 23:28:28.486 | INFO     | __main__:main:535 - ****************************************
+2025-03-04 23:28:41.078 | INFO     | __main__:main:555 - Shuffling data with seed 42
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: rinya (mipt_rinya). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.1
+wandb: Run data is saved locally in /home/rinya/LoRA-dev/wandb/run-20250304_232842-a8n35a9v
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+wandb: ⭐️ View project at https://wandb.ai/mipt_rinya/5_aid_sign_sgd
+wandb: 🚀 View run at https://wandb.ai/mipt_rinya/5_aid_sign_sgd/runs/a8n35a9v
+wandb: WARNING Saving files without folders. If you want to preserve subdirectories pass base_path to wandb.save, i.e. wandb.save("/mnt/folder/file.h5", base_path="/mnt")
+Update steps:   0%|                                   | 0/90000 [00:00<?, ?it/s]proj_norms: True, proj_embeds: True, proj_logits: False, 
+Number of proj_params: 110, number of NON proj_params: 1
+2025-03-04 23:28:43.737 | INFO     | __main__:main:617 - 
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+
+2025-03-04 23:28:43.737 | INFO     | __main__:main:618 - Total params: 134.11M
+2025-03-04 23:28:43.738 | INFO     | __main__:main:619 - Trainable params: 134.11M
+2025-03-04 23:28:43.739 | INFO     | __main__:main:622 - Total params with GaLore enabled: 109.53M
+2025-03-04 23:28:43.739 | INFO     | __main__:main:623 - Saving model to checkpoints/130m/opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0 every 1000 update steps
+AIDsignSGD (
+Parameter Group 0
+    L_inf: 100.0
+    clamp_level: 0.001
+    d: None
+    dampening: 0
+    differentiable: False
+    f_diff: None
+    foreach: False
+    fused: False
+    is_proj_params: False
+    lambda_denom_sum: None
+    lower_bound: 0.0
+    lr: 0.0010000000474974513
+    maximize: False
+    momentum: 0
+    nesterov: False
+    prev_gamma: None
+    tilde_d: None
+    update_gap: 10
+    warmup_steps: 10000
+    weight_decay: 0.001
+
+Parameter Group 1
+    L_inf: 100.0
+    clamp_level: 0.001
+    d: None
+    dampening: 0
+    differentiable: False
+    f_diff: None
+    foreach: False
+    fused: False
+    is_proj_params: True
+    lambda_denom_sum: None
+    lower_bound: 0.0
+    lr: 0.0010000000474974513
+    maximize: False
+    momentum: 0
+    nesterov: False
+    prev_gamma: None
+    tilde_d: None
+    update_gap: 10
+    warmup_steps: 10000
+    weight_decay: 0.001
+)
+0 False 1
+1 True 110
+2025-03-04 23:28:43.747 | INFO     | __main__:main:649 - Loading model from checkpoints/130m/opt-aid_sign_sgd-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-seed-0
+/home/rinya/LoRA-dev/torchrun_main.py:673: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  optimizer_scheduler_state_dict = torch.load(os.path.join(args.general_save_dir, args.save_dir, "optimizer.pt"), map_location=device)
+2025-03-04 23:28:44.999 | INFO     | __main__:main:674 - Model successfully loaded (strict=True policy)
+[rank0]:W0304 23:28:51.219000 2349693 site-packages/torch/_logging/_internal.py:1081] [0/0] Profiler function <class 'torch.autograd.profiler.record_function'> will be ignored
+Update steps:   0%|                       | 1/90000 [00:22<568:03:26, 22.72s/it]Update steps:   0%|                       | 2/90000 [00:23<244:24:03,  9.78s/it]Update steps:   0%|                       | 3/90000 [00:24<140:40:09,  5.63s/it]Update steps:   0%|                        | 4/90000 [00:24<91:46:07,  3.67s/it]Update steps:   0%|                        | 5/90000 [00:25<64:42:28,  2.59s/it]Update steps:   0%|                        | 6/90000 [00:26<48:23:03,  1.94s/it]Update steps:   0%|                        | 7/90000 [00:26<38:00:59,  1.52s/it]Update steps:   0%|                        | 8/90000 [00:27<31:17:52,  1.25s/it]Update steps:   0%|                        | 9/90000 [00:28<26:42:57,  1.07s/it]Update steps:   0%|                       | 10/90000 [00:28<23:45:18,  1.05it/s]Update steps:   0%|                       | 11/90000 [00:29<21:36:40,  1.16it/s]Update steps:   0%|                       | 12/90000 [00:30<20:16:27,  1.23it/s]Update steps:   0%|                       | 13/90000 [00:30<19:14:02,  1.30it/s]Update steps:   0%|                       | 14/90000 [00:31<18:29:39,  1.35it/s]Update steps:   0%|                       | 15/90000 [00:32<18:00:32,  1.39it/s]Update steps:   0%|                       | 16/90000 [00:32<17:43:13,  1.41it/s]Update steps:   0%|                       | 17/90000 [00:33<17:26:48,  1.43it/s]Update steps:   0%|                       | 18/90000 [00:34<17:16:14,  1.45it/s]Update steps:   0%|                       | 19/90000 [00:34<17:08:10,  1.46it/s]Update steps:   0%|                       | 20/90000 [00:35<17:04:33,  1.46it/s]Update steps:   0%|                       | 21/90000 [00:36<17:00:14,  1.47it/s]Update steps:   0%|                       | 22/90000 [00:36<17:11:18,  1.45it/s]Update steps:   0%|                       | 23/90000 [00:37<17:06:05,  1.46it/s]Update steps:   0%|                       | 24/90000 [00:38<17:04:11,  1.46it/s]Update steps:   0%|                       | 25/90000 [00:39<17:02:28,  1.47it/s]Update steps:   0%|                       | 26/90000 [00:39<17:00:03,  1.47it/s]Update steps:   0%|                       | 27/90000 [00:40<16:57:45,  1.47it/s]Update steps:   0%|                       | 28/90000 [00:41<16:53:47,  1.48it/s]Update steps:   0%|                       | 29/90000 [00:41<16:56:11,  1.48it/s]Update steps:   0%|                       | 30/90000 [00:42<16:52:14,  1.48it/s]Update steps:   0%|                       | 31/90000 [00:43<16:53:07,  1.48it/s]

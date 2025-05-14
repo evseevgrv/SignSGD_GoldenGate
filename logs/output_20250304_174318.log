@@ -1,0 +1,189 @@
+[2025-03-04 17:43:20,083] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+Starting script
+non debug mode and not nirvana - setting local_train_data to False
+2025-03-04 17:43:26.523 | INFO     | __main__:main:413 - Global rank 0, local rank 0, device: 0
+2025-03-04 17:43:26.526 | INFO     | __main__:main:417 - Process group initialized
+2025-03-04 17:43:26.526 | INFO     | __main__:main:433 - Using dist with rank 0 (only rank 0 will log)
+2025-03-04 17:43:26.526 | INFO     | __main__:main:434 - ****************************************
+2025-03-04 17:43:26.526 | INFO     | __main__:main:435 - Starting training with the arguments
+2025-03-04 17:43:26.526 | INFO     | __main__:main:437 - model_config                   configs/llama_130m.json
+2025-03-04 17:43:26.526 | INFO     | __main__:main:437 - use_hf_model                   False
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - batch_size                     128
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - eval_batch_size                256
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - gradient_accumulation          4
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - total_batch_size               512
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - max_length                     256
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - optimizer                      aid_with_adam
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - lr                             0.001
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - scheduler                      cosine
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - scheduler_cycle_length         None
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - scheduler_min_power            -20
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - min_lr_ratio                   0.1
+2025-03-04 17:43:26.527 | INFO     | __main__:main:437 - activation_checkpointing       False
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - eval_every                     2000
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - num_training_steps             100000
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - max_train_tokens               None
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - save_every                     1000
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - general_save_dir               checkpoints
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - save_dir                       130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - save_dir_prefix                130m
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - tags                           None
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - dtype                          torch.float32
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - amp                            True
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - workers                        8
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - seed                           0
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - name                           test
+2025-03-04 17:43:26.528 | INFO     | __main__:main:437 - grad_clipping                  1.0
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - wandb_tags                     ['aid_with_adam', 'fp32', 'amp', 'bs_512', 'sch_cosine', 'wd_0.001', 'lr_0.001', 'clip-1.0', 'l_inf_100.0', 'option2', 'seed_0']
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - wandb_name_prefix              None
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - run_final_eval                 True
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - run_old_eval                   False
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - final_save                     False
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - wandb                          True
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - debug                          False
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - debug_train_data               False
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - debug_print                    False
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - compile                        True
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - attn_implementation            sdpa
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - fsdp                           False
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - cpu_offload                    False
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - mp_policy_param                torch.float32
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - mp_policy_reduce               torch.float32
+2025-03-04 17:43:26.529 | INFO     | __main__:main:437 - mp_policy_buffer               torch.float32
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - use_orig_params                False
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - proj_params_lr_scale           1.0
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - update_gap                     10
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - density                        0.25
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - reset_statistics               True
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - inactive_update_rule           sign_sgd
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - inactive_lr_scale              1.0
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - proj_norms                     True
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - proj_embeds                    True
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - proj_logits                    False
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - rank                           0
+2025-03-04 17:43:26.530 | INFO     | __main__:main:437 - proj_side                      std
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - proj_type                      svd
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - coord_choice                   columns
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - block_order                    random
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - apollo_proj                    random
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - apollo_scale_type              tensor
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - apollo_scale                   1.0
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - apollo_scale_front             False
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - ldadam_rho                     0.908
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - ldadam_proj_method             power_iteration
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - ldadam_error_feedback          False
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - fira_alpha                     1.0
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - delay_start_step               10000
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - grad_taylor_approx             False
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - taylor_linear_coef             1.0
+2025-03-04 17:43:26.531 | INFO     | __main__:main:437 - measure_time                   False
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - collect_grads                  False
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - weight_decay                   0.001
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - warmup_steps                   10000
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - beta1                          0.9
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - beta2                          0.999
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - eps                            1e-08
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - momentum                       0.0
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - nesterov                       False
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - dampening                      0
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - sgd_sign_update                False
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - sign_norm                      False
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - normalized                     False
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - l_inf                          100.0
+2025-03-04 17:43:26.532 | INFO     | __main__:main:437 - d_0                            None
+2025-03-04 17:43:26.533 | INFO     | __main__:main:437 - lower_bound                    0.0
+2025-03-04 17:43:26.533 | INFO     | __main__:main:437 - clamp_level                    0.001
+2025-03-04 17:43:26.533 | INFO     | __main__:main:437 - single_gpu                     False
+2025-03-04 17:43:26.533 | INFO     | __main__:main:437 - local_train_data               False
+2025-03-04 17:43:26.533 | INFO     | __main__:main:437 - streaming                      True
+2025-03-04 17:43:26.533 | INFO     | __main__:main:437 - wandb_name                     opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-03-04 17:43:26.533 | INFO     | __main__:main:438 - ****************************************
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+Model dtype:  torch.float32
+2025-03-04 17:43:30.593 | INFO     | __main__:main:515 - ****************************************
+2025-03-04 17:43:30.594 | INFO     | __main__:main:520 - Loading training state like global_step, update_step, and tokens_seen from checkpoints/130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-03-04 17:43:30.594 | INFO     | __main__:main:528 - global_step       : 4000
+2025-03-04 17:43:30.594 | INFO     | __main__:main:529 - update_step       : 1000
+2025-03-04 17:43:30.594 | INFO     | __main__:main:530 - tokens_seen       : 99979486
+2025-03-04 17:43:30.594 | INFO     | __main__:main:531 - tokens_seen_before: 99878561
+2025-03-04 17:43:30.594 | INFO     | __main__:main:532 - Will train for 99000 update steps
+2025-03-04 17:43:30.594 | INFO     | __main__:main:535 - ****************************************
+Traceback (most recent call last):
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 908, in <module>
+    main(args)
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 553, in main
+    data = datasets.load_dataset("allenai/c4", "en", split="train", streaming=True)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/datasets/load.py", line 2556, in load_dataset
+    builder_instance = load_dataset_builder(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/datasets/load.py", line 2228, in load_dataset_builder
+    dataset_module = dataset_module_factory(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/datasets/load.py", line 1879, in dataset_module_factory
+    raise e1 from None
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/datasets/load.py", line 1824, in dataset_module_factory
+    raise e
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/datasets/load.py", line 1797, in dataset_module_factory
+    dataset_info = hf_api.dataset_info(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 118, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/huggingface_hub/hf_api.py", line 2150, in dataset_info
+    return DatasetInfo(**data)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/huggingface_hub/hf_api.py", line 770, in __init__
+    self.tags = kwargs.pop("tags")
+KeyError: 'tags'
+[2025-03-04 17:43:35,386] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 1371888) of binary: /home/rinya/anaconda3/envs/sign-sgd-env/bin/python
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+torchrun_main.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-03-04_17:43:35
+  host      : opt-mipt
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 1371888)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

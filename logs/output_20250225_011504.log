@@ -1,0 +1,500 @@
+[2025-02-25 01:15:06,522] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2025-02-25 01:15:06,522] torch.distributed.run: [WARNING] 
+[2025-02-25 01:15:06,522] torch.distributed.run: [WARNING] *****************************************
+[2025-02-25 01:15:06,522] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2025-02-25 01:15:06,522] torch.distributed.run: [WARNING] *****************************************
+Starting script
+non debug mode and not nirvana - setting local_train_data to False
+Starting script
+non debug mode and not nirvana - setting local_train_data to False
+2025-02-25 01:15:12.386 | INFO     | __main__:main:413 - Global rank 0, local rank 0, device: 0
+2025-02-25 01:15:12.935 | INFO     | __main__:main:413 - Global rank 1, local rank 1, device: 1
+2025-02-25 01:15:12.938 | INFO     | __main__:main:417 - Process group initialized
+2025-02-25 01:15:12.947 | INFO     | __main__:main:417 - Process group initialized
+2025-02-25 01:15:12.947 | INFO     | __main__:main:433 - Using dist with rank 0 (only rank 0 will log)
+2025-02-25 01:15:12.947 | INFO     | __main__:main:434 - ****************************************
+2025-02-25 01:15:12.947 | INFO     | __main__:main:435 - Starting training with the arguments
+2025-02-25 01:15:12.947 | INFO     | __main__:main:437 - model_config                   configs/llama_130m.json
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - use_hf_model                   False
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - batch_size                     128
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - eval_batch_size                256
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - gradient_accumulation          2
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - total_batch_size               512
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - max_length                     256
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - optimizer                      aid_with_adam
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - lr                             0.001
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - scheduler                      cosine
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - scheduler_cycle_length         100000
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - scheduler_min_power            -20
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - min_lr_ratio                   0.1
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - activation_checkpointing       False
+2025-02-25 01:15:12.948 | INFO     | __main__:main:437 - eval_every                     2000
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - num_training_steps             100000
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - max_train_tokens               None
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - save_every                     1000
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - general_save_dir               checkpoints
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - save_dir                       130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - save_dir_prefix                130m
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - tags                           None
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - dtype                          torch.float32
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - amp                            True
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - workers                        8
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - seed                           0
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - name                           test
+2025-02-25 01:15:12.949 | INFO     | __main__:main:437 - grad_clipping                  1.0
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - wandb_tags                     ['aid_with_adam', 'fp32', 'amp', 'bs_512', 'sch_cosine', 'wd_0.001', 'lr_0.001', 'clip-1.0', 'l_inf_100.0', 'option2', 'seed_0']
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - wandb_name_prefix              None
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - run_final_eval                 True
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - run_old_eval                   False
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - final_save                     False
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - wandb                          True
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - debug                          False
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - debug_train_data               False
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - debug_print                    False
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - compile                        True
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - attn_implementation            sdpa
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - fsdp                           False
+2025-02-25 01:15:12.950 | INFO     | __main__:main:437 - cpu_offload                    False
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - mp_policy_param                torch.float32
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - mp_policy_reduce               torch.float32
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - mp_policy_buffer               torch.float32
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - use_orig_params                False
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - proj_params_lr_scale           1.0
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - update_gap                     10
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - density                        0.25
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - reset_statistics               True
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - inactive_update_rule           sign_sgd
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - inactive_lr_scale              1.0
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - proj_norms                     True
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - proj_embeds                    True
+2025-02-25 01:15:12.951 | INFO     | __main__:main:437 - proj_logits                    False
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - rank                           0
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - proj_side                      std
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - proj_type                      svd
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - coord_choice                   columns
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - block_order                    random
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - apollo_proj                    random
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - apollo_scale_type              tensor
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - apollo_scale                   1.0
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - apollo_scale_front             False
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - ldadam_rho                     0.908
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - ldadam_proj_method             power_iteration
+2025-02-25 01:15:12.952 | INFO     | __main__:main:437 - ldadam_error_feedback          False
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - fira_alpha                     1.0
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - delay_start_step               10000
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - grad_taylor_approx             False
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - taylor_linear_coef             1.0
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - measure_time                   False
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - collect_grads                  False
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - weight_decay                   0.001
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - warmup_steps                   10000
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - beta1                          0.9
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - beta2                          0.999
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - eps                            1e-08
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - momentum                       0.0
+2025-02-25 01:15:12.953 | INFO     | __main__:main:437 - nesterov                       False
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - dampening                      0
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - sgd_sign_update                False
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - sign_norm                      False
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - normalized                     False
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - l_inf                          100.0
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - d_0                            None
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - lower_bound                    0.0
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - clamp_level                    0.001
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - single_gpu                     False
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - local_train_data               False
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - streaming                      True
+2025-02-25 01:15:12.954 | INFO     | __main__:main:437 - wandb_name                     opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-02-25 01:15:12.955 | INFO     | __main__:main:438 - ****************************************
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+Model dtype:  torch.float32
+/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2025-02-25 01:15:29.698 | INFO     | __main__:main:555 - Shuffling data with seed 42
+/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+wandb: Currently logged in as: rinya (mipt_rinya). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.19.7 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.2
+wandb: Run data is saved locally in /home/rinya/LoRA-dev/wandb/run-20250225_011531-jfi95lhj
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+wandb: ⭐️ View project at https://wandb.ai/mipt_rinya/sgd_with_adam_130
+wandb: 🚀 View run at https://wandb.ai/mipt_rinya/sgd_with_adam_130/runs/jfi95lhj
+wandb: WARNING Saving files without folders. If you want to preserve sub directories pass base_path to wandb.save, i.e. wandb.save("/mnt/folder/file.h5", base_path="/mnt")
+Update steps:   0%|                                  | 0/100000 [00:00<?, ?it/s]proj_norms: True, proj_embeds: True, proj_logits: False, 
+Number of proj_params: 110, number of NON proj_params: 1
+2025-02-25 01:15:32.756 | INFO     | __main__:main:617 - 
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+
+2025-02-25 01:15:32.757 | INFO     | __main__:main:618 - Total params: 134.11M
+2025-02-25 01:15:32.757 | INFO     | __main__:main:619 - Trainable params: 134.11M
+2025-02-25 01:15:32.758 | INFO     | __main__:main:622 - Total params with GaLore enabled: 109.53M
+2025-02-25 01:15:32.758 | INFO     | __main__:main:623 - Saving model to checkpoints/130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0 every 1000 update steps
+AIDWithAdam (
+Parameter Group 0
+    L_inf: 100.0
+    clamp_level: 0.001
+    d: None
+    dampening: 0
+    differentiable: False
+    f_diff: None
+    foreach: False
+    fused: False
+    is_proj_params: True
+    lambda_denom_sum: None
+    lower_bound: 0.0
+    lr: 0.0010000000474974513
+    maximize: False
+    momentum: 0.0
+    nesterov: False
+    prev_gamma: None
+    tilde_d: None
+    update_gap: 10
+    warmup_steps: 10000
+    weight_decay: 0.001
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    is_proj_params: False
+    lr: 0.0010000000474974513
+    maximize: False
+    weight_decay: 0.001
+)
+0 True 110
+1 False 1
+[rank1]:[2025-02-25 01:15:34,814] [0/0] torch._dynamo.variables.torch: [WARNING] Profiler function <class 'torch.autograd.profiler.record_function'> will be ignored
+[rank0]:[2025-02-25 01:15:39,196] [0/0] torch._dynamo.variables.torch: [WARNING] Profiler function <class 'torch.autograd.profiler.record_function'> will be ignored
+Traceback (most recent call last):
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 908, in <module>
+    main(args)
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 740, in main
+    loss = model(**batch, labels=labels).loss
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/external_utils.py", line 17, in inner
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/parallel/distributed.py", line 1519, in forward
+    else self._run_ddp_forward(*inputs, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/parallel/distributed.py", line 1355, in _run_ddp_forward
+    return self.module(*inputs, **kwargs)  # type: ignore[index]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/LoRA-dev/utils/modeling_llama.py", line 631, in forward
+    @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 678, in call_wrapped
+    return self._wrapped_call(self, *args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 284, in __call__
+    raise e
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 274, in __call__
+    return super(self.cls, obj).__call__(*args, **kwargs)  # type: ignore[misc]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "<eval_with_key>.329", line 116, in forward
+    submod_12 = self.compiled_submod_12(getitem_43, l__self___model_layers_11_self_attn_rotary_emb_cos_cached, l__self___model_layers_11_self_attn_rotary_emb_sin_cached, getitem_1, getitem_44, l__self___model_layers_11_post_attention_layernorm_weight, l__self___model_norm_weight);  getitem_43 = l__self___model_layers_11_self_attn_rotary_emb_cos_cached = l__self___model_layers_11_self_attn_rotary_emb_sin_cached = getitem_1 = getitem_44 = l__self___model_layers_11_post_attention_layernorm_weight = l__self___model_norm_weight = None
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/backends/distributed.py", line 335, in forward
+    x = self.submod(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/external_utils.py", line 17, in inner
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 3905, in forward
+    return compiled_fn(full_args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1482, in g
+    return f(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 2527, in runtime_wrapper
+    all_outs = call_func_with_args(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1506, in call_func_with_args
+    out = normalize_as_list(f(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1482, in g
+    return f(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/autograd/function.py", line 539, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 3010, in forward
+    fw_outs = call_func_with_args(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1506, in call_func_with_args
+    out = normalize_as_list(f(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/codecache.py", line 374, in __call__
+    return self.get_current_callable()(inputs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/compile_fx.py", line 628, in run
+    return model(new_inputs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/codecache.py", line 401, in _run_from_cache
+    return compiled_graph.compiled_artifact(inputs)
+  File "/tmp/torchinductor_rinya/vq/cvq4nkfitxrqtsw3vqzjz4psc2voqezute4dqnmqf6h6i236mkf2.py", line 449, in call
+    buf6 = empty_strided((32768, 768), (768, 1), device='cuda', dtype=torch.float16)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 48.00 MiB. GPU 1 has a total capacty of 10.57 GiB of which 5.12 MiB is free. Including non-PyTorch memory, this process has 10.56 GiB memory in use. Of the allocated memory 10.29 GiB is allocated by PyTorch, and 16.48 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+Traceback (most recent call last):
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 908, in <module>
+    main(args)
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 740, in main
+    loss = model(**batch, labels=labels).loss
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/external_utils.py", line 17, in inner
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/parallel/distributed.py", line 1519, in forward
+    else self._run_ddp_forward(*inputs, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/parallel/distributed.py", line 1355, in _run_ddp_forward
+    return self.module(*inputs, **kwargs)  # type: ignore[index]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/LoRA-dev/utils/modeling_llama.py", line 631, in forward
+    @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 678, in call_wrapped
+    return self._wrapped_call(self, *args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 284, in __call__
+    raise e
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 274, in __call__
+    return super(self.cls, obj).__call__(*args, **kwargs)  # type: ignore[misc]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "<eval_with_key>.329", line 116, in forward
+    submod_12 = self.compiled_submod_12(getitem_43, l__self___model_layers_11_self_attn_rotary_emb_cos_cached, l__self___model_layers_11_self_attn_rotary_emb_sin_cached, getitem_1, getitem_44, l__self___model_layers_11_post_attention_layernorm_weight, l__self___model_norm_weight);  getitem_43 = l__self___model_layers_11_self_attn_rotary_emb_cos_cached = l__self___model_layers_11_self_attn_rotary_emb_sin_cached = getitem_1 = getitem_44 = l__self___model_layers_11_post_attention_layernorm_weight = l__self___model_norm_weight = None
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/backends/distributed.py", line 335, in forward
+    x = self.submod(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/external_utils.py", line 17, in inner
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 3905, in forward
+    return compiled_fn(full_args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1482, in g
+    return f(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 2527, in runtime_wrapper
+    all_outs = call_func_with_args(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1506, in call_func_with_args
+    out = normalize_as_list(f(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1482, in g
+    return f(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/autograd/function.py", line 539, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 3010, in forward
+    fw_outs = call_func_with_args(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1506, in call_func_with_args
+    out = normalize_as_list(f(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/codecache.py", line 374, in __call__
+    return self.get_current_callable()(inputs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/compile_fx.py", line 628, in run
+    return model(new_inputs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/codecache.py", line 401, in _run_from_cache
+    return compiled_graph.compiled_artifact(inputs)
+  File "/tmp/torchinductor_rinya/ga/cgay34wlzivvo4t42yeqss5tsfecqk6zb6l4jiw2qvsnvmdppgvo.py", line 449, in call
+    buf6 = empty_strided((32768, 768), (768, 1), device='cuda', dtype=torch.float16)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 48.00 MiB. GPU 0 has a total capacty of 10.57 GiB of which 5.12 MiB is free. Including non-PyTorch memory, this process has 10.56 GiB memory in use. Of the allocated memory 10.29 GiB is allocated by PyTorch, and 16.48 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+Traceback (most recent call last):
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 908, in <module>
+    main(args)
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 740, in main
+    loss = model(**batch, labels=labels).loss
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/external_utils.py", line 17, in inner
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/parallel/distributed.py", line 1519, in forward
+    else self._run_ddp_forward(*inputs, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/parallel/distributed.py", line 1355, in _run_ddp_forward
+    return self.module(*inputs, **kwargs)  # type: ignore[index]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/LoRA-dev/utils/modeling_llama.py", line 631, in forward
+    @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 678, in call_wrapped
+    return self._wrapped_call(self, *args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 284, in __call__
+    raise e
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/fx/graph_module.py", line 274, in __call__
+    return super(self.cls, obj).__call__(*args, **kwargs)  # type: ignore[misc]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "<eval_with_key>.329", line 116, in forward
+    submod_12 = self.compiled_submod_12(getitem_43, l__self___model_layers_11_self_attn_rotary_emb_cos_cached, l__self___model_layers_11_self_attn_rotary_emb_sin_cached, getitem_1, getitem_44, l__self___model_layers_11_post_attention_layernorm_weight, l__self___model_norm_weight);  getitem_43 = l__self___model_layers_11_self_attn_rotary_emb_cos_cached = l__self___model_layers_11_self_attn_rotary_emb_sin_cached = getitem_1 = getitem_44 = l__self___model_layers_11_post_attention_layernorm_weight = l__self___model_norm_weight = None
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/backends/distributed.py", line 335, in forward
+    x = self.submod(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 328, in _fn
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_dynamo/external_utils.py", line 17, in inner
+    return fn(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 3905, in forward
+    return compiled_fn(full_args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1482, in g
+    return f(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 2527, in runtime_wrapper
+    all_outs = call_func_with_args(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1506, in call_func_with_args
+    out = normalize_as_list(f(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1482, in g
+    return f(*args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/autograd/function.py", line 539, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 3010, in forward
+    fw_outs = call_func_with_args(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_functorch/aot_autograd.py", line 1506, in call_func_with_args
+    out = normalize_as_list(f(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/codecache.py", line 374, in __call__
+    return self.get_current_callable()(inputs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/compile_fx.py", line 628, in run
+    return model(new_inputs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_inductor/codecache.py", line 401, in _run_from_cache
+    return compiled_graph.compiled_artifact(inputs)
+  File "/tmp/torchinductor_rinya/ga/cgay34wlzivvo4t42yeqss5tsfecqk6zb6l4jiw2qvsnvmdppgvo.py", line 449, in call
+    buf6 = empty_strided((32768, 768), (768, 1), device='cuda', dtype=torch.float16)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 48.00 MiB. GPU 0 has a total capacty of 10.57 GiB of which 5.12 MiB is free. Including non-PyTorch memory, this process has 10.56 GiB memory in use. Of the allocated memory 10.29 GiB is allocated by PyTorch, and 16.48 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+[2025-02-25 01:16:51,910] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 477777 closing signal SIGTERM
+[2025-02-25 01:16:52,327] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 1 (pid: 477778) of binary: /home/rinya/anaconda3/envs/sign-sgd-env/bin/python
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+torchrun_main.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-02-25_01:16:51
+  host      : opt-mipt
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 477778)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+wandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploaded

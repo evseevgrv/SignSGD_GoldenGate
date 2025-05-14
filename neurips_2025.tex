@@ -1,0 +1,1833 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2025
+
+
+% ready for submission
+\usepackage{styles/neurips_2025}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2025}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2025}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2025}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+%\usepackage{biblatex}
+%\addbibresource{references.bib}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{wrapfig}
+\usepackage{nicefrac}
+\allowdisplaybreaks
+
+\usepackage{pifont}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{multirow}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\expect}[1]{\mathbb{E}\left[ #1 \right]}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\expectBig}[1]{\mathbb{E}\Big[ #1 \Big]}
+\newcommand{\normBig}[1]{\Big\| #1 \Big\|}
+\newcommand{\EEb}[2]{\mathbb{E}_{#1}\left[ #2 \right]}
+\newcommand{\dotprod}[2]{\left\langle #1,#2 \right\rangle}
+
+\newcommand{\circledOne}{\text{\ding{172}}}
+\newcommand{\circledTwo}{\text{\ding{173}}}
+\newcommand{\circledThree}{\text{\ding{174}}}
+\newcommand{\circledFour}{\text{\ding{175}}}  
+\newcommand{\circledFive}{\text{\ding{176}}} 
+\newcommand{\circledSix}{\text{\ding{177}}}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{colortbl}
+\definecolor{bgcolor}{rgb}{0.8,1,1}
+\definecolor{bgcolor2}{rgb}{0.8,1,0.8}
+\usepackage{threeparttable}
+\newcommand{\ag}[1]{{\color{orange}#1}}
+\newcommand{\myred}[1]{{\color{red}#1}}
+\newcommand{\myblue}[1]{{\color{blue}#1}}
+\usepackage{tcolorbox}
+\usepackage{pifont}
+\definecolor{mydarkgreen}{RGB}{39,130,67}
+\definecolor{mydarkred}{RGB}{192,47,25}
+\newcommand{\green}{\color{mydarkgreen}}
+\newcommand{\red}{\color{mydarkred}}
+\newcommand{\cmark}{{\green\ding{51}}}
+\newcommand{\xmark}{{\red\ding{55}}}
+\usepackage[font=small]{caption}
+\usepackage{subcaption}
+
+\newcommand{\paramr}[1]{\textcolor{mydarkred}{#1}}
+\newcommand{\paramg}[1]{\textcolor{mydarkgreen}{#1}}
+
+
+\title{Leveraging Coordinate Momentum in SignSGD and Muon: Memory-Optimized Zero-Order
+LLM Fine-Tuning}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  David S.~Hippocampus\thanks{Use footnote for providing further information
+    about author (webpage, alternative address)---\emph{not} for acknowledging
+    funding agencies.} \\
+  Department of Computer Science\\
+  Cranberry-Lemon University\\
+  Pittsburgh, PA 15213 \\
+  \texttt{hippo@cs.cranberry-lemon.edu} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+  % Fine-tuning large language models (LLMs) is a critical step in adapting pre-trained models to specific tasks, but the computational cost of traditional gradient-based optimization methods, such as stochastic gradient descent (SGD) and its variants, grows significantly with model size. 
+  % In this work, we explore zero-order (ZO) optimization as an efficient alternative for fine-tuning LLMs, particularly in the context of parameter-efficient fine-tuning (PEFT) methods like LoRA. We focus on Zero-order approximations of the gradient, which eliminate the need for costly backpropagation, and propose novel enhancements to improve memory and computational efficiency. Specifically, we introduce the matrix-efficient JAGUAR to incorporate momentum into ZO-based SGD and Sign-SGD, achieving performance gains at negligible cost. Additionally, we introduce the ZO-MUON method, containing key features of zero-order optimization and proven to be effective MUON algorithm. Moreover, we provide a smart sampling strategy for Gaussian matrices in ZO gradient estimation that provides a way to avoid the iterative Newton-Schultz procedure performed at each iteration of the conventional method, due to the zero-order specificity. Our empirical results demonstrate that these techniques significantly improve competitive performance, while maintaining computational efficiency. This work advances the field of ZO optimization for LLMs, offering practical and theoretically grounded methods for resource-constrained environments.
+
+  Fine-tuning large language models (LLMs) is essential for adapting pre-trained models to downstream tasks, yet traditional first-order optimizers such as SGD and Adam incur prohibitive memory and computational costs that scale poorly with model size. In this paper, we investigate zeroth-order (ZO) optimization as a memory- and compute-efficient alternative, particularly in the context of parameter-efficient fine-tuning (PEFT) techniques like LoRA. We introduce JAGUAR, a momentum-enhanced ZO algorithm that extends both ZO-SGD and ZO-SignSGD with a matrix-aware formulation and requires only $2d+1$ function evaluations per iteration; to the best of our knowledge, this is the first method to provide rigorous convergence guarantees for ZO SignSGD with momentum. We further propose ZO-MUON, a novel ZO extension of the Muon optimizer that leverages the intrinsic structure of model parameters for preconditioning while preserving a low peak memory footprint. Through extensive experiments on challenging LLM fine-tuning benchmarks, we demonstrate that JAGUAR and ZO-MUON match or exceed the adaptation quality of standard first-order methods, achieving substantial memory savings without sacrificing convergence speed. Our theoretical and empirical results establish ZO optimization as a practical and theoretically grounded approach for resource-constrained LLM adaptation.
+
+\end{abstract}
+
+
+\section{Introduction} \label{sec:intro}
+Fine-tuning pre-trained large language models (LLMs) has become the de-facto standard in modern natural language processing (NLP), enabling rapid adaptation to diverse downstream tasks with minimal labeled data~\cite{raffel2023exploringlimitstransferlearning, sanh2022multitaskpromptedtrainingenables}. These models, often trained on massive corpora, achieve state-of-the-art results when fine-tuned on specific applications, including question answering, summarization, and dialogue generation.
+
+First-order (FO) optimization methods, such as stochastic gradient descent (SGD)~\cite{amari1993backpropagation} and Adam~\cite{kingma2014adam}, remain the most widely used tools for model adaptation. Their popularity stems from their efficiency and compatibility with backpropagation algorithm. However, as LLMs continue to scale, backpropagation algorithm becomes increasingly expensive in terms of memory consumption. For instance, the memory cost of computing gradients during the training of OPT-13B is reported to be more than an order of magnitude larger than that of inference~\cite{zhu2023efficient}. This imbalance poses a serious bottleneck for deploying LLM fine-tuning in resource-constrained environments such as edge devices, consumer-grade GPUs, or large-scale distributed settings where memory efficiency is paramount~\cite{han2015deep}.
+
+To mitigate this challenge, a promising line of research has emerged based on zeroth-order (ZO) optimization methods, which avoid backpropagation entirely by estimating gradients using only function evaluations. Rather than accessing exact gradients via the computational graph, ZO methods approximate them through finite differences of loss values. In this setting, model updates can be computed using two or more forward passes, significantly reducing memory usage since intermediate activations does not need to be stored.
+
+ZO methods are particularly attractive for LLM fine-tuning because they decouple optimization from the internal structure of the model. This flexibility allows practitioners to treat the model as a black box, optimizing performance with minimal assumptions about its architecture or implementation details. Recent studies~\cite{malladi2023mezo} have demonstrated the practical benefits of this approach: for example, the MeZO algorithm applies classical ZO stochastic gradient descent (ZO-SGD)~\cite{ghadimi2013stochastic} to fine-tune large language models while maintaining lower memory requirements than traditional FO methods.
+
+We consider stochastic unconstrained optimization problem of the form
+
+\begin{equation}
+\label{eq:main_problem}
+    f^* := \min_{x \in \mathbb{R}^d} \left\{ f(x) := \EEb{\xi \sim \mathcal{D}}{f(x, \xi)} \right\},
+\end{equation}
+where $f$ is the loss function, $x$ are parameters of the ML model, $\mathcal{D}$ is the data distribution available for training and $f(x, \xi)$ is the loss with data $\xi$. 
+
+Zero-order optimization methods use the so-called zero-order oracle, i.e., it is assumed that we only have access to the values of the stochastic function $f(x, \xi)$ from \eqref{eq:main_problem} \cite{flaxman2005online,ghadimi2013stochastic}. Within LLMs pretraining or fine-tuning context, oracles are forward passes with small perturbations in parameters of the ML model. To estimate gradients authors use finite differences: 
+\begin{equation}
+\label{eq:zo_grad}
+    \nabla f(x, \xi) \approx \widetilde{\nabla} f(x, \xi, e) = \frac{f(x + \tau e, \xi) - f(x - \tau e, \xi)}{2\tau} e,
+\end{equation}
+where $ \tau > 0 $ is a small parameter, frequently referenced to as a smoothing parameter, and $e \in \mathbb{R}^d$ is a random vector \cite{nesterov2017random,duchi2015optimal}.
+
+SignSGD has recently emerged as a standard optimization method for fine-tuning LLMs, owing to its simplicity, memory efficiency, and surprising empirical effectiveness across a range of adaptation tasks. 
+It was first rigorously analyzed in the first-order setting by Bernstein et al.~\cite{bernstein2018signsgd} and Balles \& Hennig~\cite{balles2017dissecting}. 
+These works showed that compressing each gradient component to its sign reduces per-iteration communication costs and can empirically outperform SGD~\cite{shrivastava2015communication}. 
+The single-bit representation inherently suppresses the impact of extreme gradient noise, leading to more stable and robust updates. Although the Fast Gradient Sign Method for adversarial example generation preceded these analyses~\cite{goodfellow2015explaining}, its algorithmic form aligns with SignSGD and has since been employed in robust adversarial training of deep neural networks~\cite{madry2018towards}. 
+SignSGD’s minimal memory footprint and straightforward hyperparameter tuning make it an attractive choice for memory-constrained fine-tuning of LLMs. 
+Several recent studies have demonstrated the efficacy of SignSGD in LLM adaptation, showing that sign-based updates can preserve model performance on downstream tasks while significantly lowering peak memory requirements.
+
+
+A recent trend in optimization for LLMs is to represent optimization parameters in matrix form rather than as vectors \cite{bernstein2024old, bernstein2024modular, pethick2025training}. Algorithms such as Shampoo \cite{gupta2018shampoo} and SOAP \cite{vyas2024soap} have demonstrated superior performance on LLM training tasks compared to Adam and SGD, which operate in an element-wise manner and do not utilize the underlying structure of the model parameters \cite{dahl2023benchmarking}. Currently, the canonical matrix-based optimization algorithm is Muon \cite{muon_base, muon_scaled, muon_convergence}, which integrates the principles of Shampoo and SOAP but does not employ any preconditioning matrices \cite{muon_base}. The central idea of this method is to project the gradient at each iteration onto the space of semi-orthogonal matrices using the Newton–Schultz algorithm \cite{bernstein2024old}.
+
+%\textbf{Outline.} The rest of the paper is organized as follows. In Section  \ref{sec:rw}, we review related work, categorizing existing research into key topics and highlighting their main contributions. In Section \ref{sec:main}, we derive theoretical results for the introduced methods. Section \ref{sec:exp} provides an empirical study validating these theoretical results. Sections \ref{sec:disc} and \ref{sec:concl} discuss and summarize our findings, offering insights and conclusions. Additional experiments and proofs of theorems are included in Appendix \ref{app:A}, \ref{app:B}.
+
+In this work, we make the following key \textbf{contributions}:
+\begin{itemize}
+    \item We establish the first convergence analysis for ZO SignSGD with momentum, using only $2d+1$ oracle parameters.
+    \item We introduce ZO Muon within the zeroth-order setup, integrating momentum while preserving memory efficiency.
+    \item We evaluate the proposed ZO methods on challenging LLM fine-tuning benchmarks, demonstrating their practical viability.
+    \item As a byproduct, our analysis yields improved convergence guarantees for the first-order Muon optimizer.
+\end{itemize}
+
+\section{Related work} \label{sec:rw}
+
+% \textbf{LLM fine-tuning via ZO.} \textcolor{blue}{[TODO: see comment]}
+% % Написать, что недавно вроде как старая техника zero-order нашла неожиданное применение в в задачах fine tuning LLM, сослаться на MeZO, MeZO 2 + их какие то улучшения, написать про бенчмарк.
+% A common tool in Zero-order methods benchmarking is presented in \cite{zo_bench}. Authors contribute experimental setup for a set of classic ZO techniques (ZO-SGD, ZO-Adam, ZO-CONS), comparing with first-order approaches. Those contributions can be treated as a baseline for benchmarking new ZO techniques. Authors report same or even better quality on downstream tasks achieving significant memory consumption decrease.
+
+%\subsection{Zero-order Optimization}
+% Zero-order techniques use first order oracle only in parameters optimization process. In the steepest descent algorithm these oracles are used instead of exact gradients. Within LLMs pretraining or fine-tuning context, oracles are forward passes with small perturbations in input data. Finite differences are used as estimators of gradients in parameters optimization iterations: $\nabla\mathcal{L}(w_t)\approx\frac{\mathcal{L}(w_t+\tau e_t) - \mathcal{L}(w_t - \tau e_t)}{2\tau}e_t$, where $ \tau > 0 $ is a small parameter, frequently referenced to as a smoothing parameter, and $e_t$ is a random uniform or gaussian vector. $\tau$ can be scheduled, and hence $\tau = \{\tau_1, \tau_2, ..., \tau_t, ...\}.$ In case $w_t\in\mathbb{R}^{n \times m}$, i.e. $W_t=w_t$ is a matrix, gradient approximation is adopted accordingly - instead of $e_t \in \mathbb{R}^d$ a random matrix $E_t\in\mathbb{R}^{n\times m}$ is used. In our work we consider parameters as matrices, and $E$ is a prior interest. Random matrices $E_t$ can be sampled in a wide range of strategies, a review of these strategies can be found in Section \ref{zo_approaches}.
+
+\textbf{Sampling strategies.} In the literature, various methodologies exist for sampling the random vector $e$ to approximate true gradient by the formula \eqref{eq:zo_grad}. The most commonly employed distributions include a uniform distribution over the sphere with a radius of $1$: $e \sim RS(1)^d_{\| \cdot \|}$ \cite{flaxman2005online,nesterov2017random}, a Gaussian distribution with zero mean and identity covariance matrix: $e \sim \mathcal{N}(0, I)$ \cite{nesterov2017random,ghadimi2013stochastic}, and standard basis one-hot vectors \cite{duchi2015optimal,shamir2013complexity}. Despite the prevalence of these approaches, alternative and more complicated sampling strategies have also been explored.
+
+Authors of \cite{extreme_sparsity} propose an approach wherein only sensitive parameters are trained. Sensitive parameters are defined as $x \odot m_k$, where $\{0,1\}^d \ni m_k = \operatorname{arg}\min\limits_m \Vert m \odot \nabla f(x) \Vert_2^2$ with $k$ non-zero elements. In this setup, only $k$ coordinates are modified within the Stochastic Gradient Descent (SGD) algorithm, utilizing a numerically estimated gradient: $x_{t+1} = x_{t} - \gamma \widetilde{\nabla} f(x_{t} \odot m_k, \xi, e)$. However, the determination of the optimal mask $m_k$ is performed at each optimization step, potentially introducing computational challenges.
+This issue is solved in \cite{liu2024sparse, wang2024simultaneous}, where authors sample $m_k$ uniformly every iteration.
+In \cite{roberts2023direct, nozawa2025zeroth}, the authors explore low-dimensional perturbations within random subspaces. The central concept of random subspace methods involves generating the perturbation vector $e$ within a subspace spanned by a projection matrix $P \in \mathbb{R}^{d \times r}$ and a low-dimensional random vector $\tilde{e} \in \mathbb{R}^r$: $e = P \tilde{e}$. Typically, $P$ and $\tilde{e}$ are sampled from a Gaussian distribution and $r \ll d$.
+
+In our work, we employ the \texttt{JAGUAR} zero-order gradient estimation technique \cite{veprikov2024new}, which integrates the concept of sampling one-hot basis vectors with the utilization of a SAGA-like momentum update \cite{defazio2014saga}. This approach facilitates convergence in stochastic setting by leveraging memory from past iterations, while using the same amount of memory as standard zero-order methods like ZO SGD (MeZO) \cite{malladi2023fine}. In the original paper \cite{veprikov2024new}, the authors do not incorporate a momentum parameter, discarding coordinate information from previous iterations. In contrast, we introduce a momentum parameter, $0 \leq \beta \leq 1$, which controls the utilization of gradients from past iterations. We demonstrate that adding this momentum $\beta$ allows the method to converge in the stochastic non-convex case (see Theorem \ref{theorem:jaguar_sign}).
+
+\textbf{Momentum techniques.} Numerous zero-order methods in the literature incorporate momentum techniques in various forms. However, these approaches typically introduce multiple additional variables of dimension $d$. Because zero-order methods are often chosen for fine-tuning tasks to save memory, the inclusion of such extra variables becomes a critical limitation in these settings.  In \cite{huang2022accelerated} authors use variance reduction technique SPIDER \cite{fang2018spider} that uses approximately $5d$ parameters: $2d$ for ZO gradients, $2d$ for model parameters and $1d$ for momentum. In \cite{chen2019zo, jiang2024zo}, the authors employ the Adam optimization technique \cite{kingma2014adam}, which is frequently used for stochastic non-convex optimization problems \cite{chen2019zo_adamm,openreview2025mezo_a3dam}. However, this technique incurs a significant memory overhead, requiring $4d$ parameters. The paper \cite{reddy2023convergence} utilizes classical heavy-ball momentum within a zero-order framework. However, the paper does not provide a convergence rate analysis, only demonstrating almost sure convergence to a constant in the non-convex setting. It is worth noting that numerous other zero-order techniques exist in the literature to achieve convergence when the function $f$ is convex \cite{gorbunov2022accelerated,nesterov2017random,duchi2015optimal}, satisfies conditions like ABG \cite{rando2024stochastic} or the PL condition \cite{reddy2023convergence}, or even in deterministic settings \cite{gorbunov2022accelerated}. However, as our focus is exclusively on fine-tuning problems (which fall under the non-convex case), we will not delve into these methods in detail.
+
+% \begin{table}[H]    
+%     \centering
+%     \caption{Relevant results}
+%     \vspace*{0.1in}
+%     \label{tab:relevant-results}
+%     \resizebox{\linewidth}{!}{
+%     \begin{tabular}{lcccccc}
+%     \toprule[1pt]
+%     \midrule
+%     Paper & Year & Reference & Parameter count & Convergence rate & Fine tuning (LLM) & Assumptions \\
+%     \midrule
+%     Accelerated Zeroth-Order Momentum (Acc-ZOM) & 2022 & [X] & 5d & $\text{O}\left(\text{...}\right)$ (Theorem 3) & - & - \\
+%     ZO-AdaMM & 2019 & [Y] & 4d & $\text{O}\left(\frac{d}{\sqrt{T}} + \frac{d^2}{T}\right)$ (Table 1) & - & - \\
+%     ZO-ProxSTORM & 2024 & [Z] & 5d & $\text{O}\left(\text{...}\right)$ (Theorem 7) & - & - \\
+%     Stochastic Zero-order Heavy Ball & 2023 & [W] & 3d & - & - & - \\
+%     ZO-AdaMU & 2024 & [V] & 4d & $\text{O}\left(\text{...}\right)$ (Lemma 4) & + & - \\
+%     Zeroth-Order Fine-Tuning of LLMs with Extreme Sparsity & 2024 & \cite{extreme_sparsity} & 3d & O(...) (Theorem 3.3)  & + & ? \\
+%     Sparse MEZO & 2024 & \cite{liu2024sparse} & 3d & Theorem 3.4 & + & ? \\
+%     Simultaneous Computation and MEZO Optimizer for Fine-Tuning LLMs & 2024 & \cite{wang2024simultaneous} & \textbf{2d} & Lemma 3 & ? \\
+%     Zeroth-order Random Subspace Algorithm for Non-Smooth Convex Optimization & 2024 & \cite{}
+%     \bottomrule[1pt]
+%     \end{tabular}
+%     }
+% \end{table}
+
+%\subsection{Zero-order optimization benchmarking.}
+
+\textbf{ZO optimization with matrices.}
+% написать что популярная нынче тема в оптимизации -- рассматривать параметры как матрицы, тут ссылки на shampoo, soap, еще пару работ. Сказать, что самый извествный такой оптимизатор -- это мюон, написать его итерацию (в наших обозначениях). Потом сказать, что пока что в литературе нет алгоритма zo muon, однако попытки были (тут можно сослаться на LOZO или где там U V^T семплировали) и найти бы еще какую то такую работу. Написать что мы в данной применили технику JAGUAR и к матричным параметрам и разработали алгоритм ZO MUON. 
+In the context of zero-order optimization, transitioning to matrix-valued parameters necessitates replacing the random vector $e \in \mathbb{R}^d$ in zero-order gradient approximation \eqref{eq:zo_grad} with a random matrix $E \in \mathbb{R}^{m \times n}$, and correspondingly, projecting this matrix $E$ to semi-orthogonal space, as is done in the Muon algorithm. Since the random matrix $E$ is typically drawn from a known distribution, it is possible to directly sample orthogonal matrices when computing the gradient estimator \eqref{eq:zo_grad}. A similar approach has previously appeared in the zero-order optimization literature \cite{lozo}; however, that work did not consider the Muon algorithm, but rather focused on sampling two orthogonal matrices $V \in \mathbb{R}^{m \times r}$ and $U \in \mathbb{R}^{n \times r}$ of rank $r \ll \min\{m, n\}$. This approach does not correspond to the decomposition of the random matrix $E$, as $E$ is almost surely of full rank. Additionally, alternative techniques for sampling low-rank matrices have been proposed in the literature. For instance, in \cite{zo_random_subspaces}, a method analogous to the sampling of low-rank vectors described in \cite{roberts2023direct, nozawa2025zeroth} is utilized.
+
+
+We present a summary of relevant results from the existing literature in Table \ref{table:zo}
+
+\begin{table}[h!]  
+\renewcommand{\arraystretch}{1.5}
+%\renewcommand{\tabcolsep}{6pt}
+%\setlength\extrarowheight{1pt}
+    \centering
+%    \small
+    \scriptsize
+\captionof{table}{Summary of relevant results from the existing zero-order literature.}
+% \vspace{-0.2cm}
+    \label{tab:comparison0}   
+    \scriptsize
+\resizebox{\linewidth}{!}{
+  \begin{threeparttable}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \cline{2-6}
+    \multicolumn{1}{c|}{} & \textbf{Method} & 
+    \textbf{Parameter Count}
+    & 
+    \begin{tabular}{@{}c@{}}
+        \textbf{Convergence Rate}
+        \\[-1mm]
+        \textbf{Stochastic Non-convex Case}
+    \end{tabular}
+    &
+    \textbf{Momentum}
+    &
+    \textbf{Fine-tuning (LLM) Setup}
+    \\
+    \hline
+    \multirow{19}{*}{\rotatebox[origin=c]{90}{\shortstack[c]{\textbf{Vector Parameters}\\$\mathbf{x} \boldsymbol{\in} \mathbf{\mathbb{R}}^{\mathbf{d}}$}}} 
+    & \texttt{ZO-SGD} \cite{ghadimi2013stochastic} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \cmark & \xmark & \xmark \\ \cline{2-6}
+    & \texttt{ZO-PSGD} \cite{ghadimi2016mini} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \cmark & \xmark & \xmark \\ \cline{2-6}
+    & \texttt{ZO-SCD} \cite{lian2016comprehensive} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \cmark & \xmark & \xmark \\ \cline{2-6}
+    & \texttt{ZO-SPIDER} \cite{fang2018spider} & \paramr{$\mathbf{5}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \cmark & \cmark & \xmark \\ \cline{2-6}
+    & \texttt{ZO-AdaMM} \cite{chen2019zo} & \paramr{$\mathbf{4}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \cmark & \cmark & \xmark \\ \cline{2-6}
+    & \texttt{ZO-SignSGD} \cite{liu2019signsgd} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \xmark~\cmark \tnote{{\color{blue}(1)}} & \xmark & \xmark \tnote{{\color{blue}(2)}} \\ \cline{2-6}
+    & \texttt{Acc-ZOM} \cite{huang2022accelerated} & \paramr{$\mathbf{5}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \cmark & \cmark & \xmark \\ \cline{2-6}
+    & \texttt{DSFBSD} \cite{roberts2023direct} & \paramg{$\boldsymbol{(}\mathbf{1 \boldsymbol{+}  r}\boldsymbol{)}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ \tnote{{\color{blue}(3)}} & \xmark & \xmark & \xmark \\ \cline{2-6}
+    & \texttt{MeZO} \cite{malladi2023fine} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \xmark & \xmark & \cmark \\ \cline{2-6}
+    & \texttt{ZO-ProxSTORM} \cite{qian2023zeroth} & \paramr{$\mathbf{5}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \cmark & \cmark & \xmark \\ \cline{2-6}
+    & \texttt{SHB} \cite{reddy2023convergence} & \paramr{$\mathbf{3}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \xmark & \cmark & \xmark \\ \cline{2-6}
+    & \texttt{ZO ES} \cite{guo2024zeroth} & \paramr{$\boldsymbol{(}\mathbf{2 \boldsymbol{+} r}\boldsymbol{)}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \xmark & \xmark & \cmark \\ \cline{2-6}
+    & \texttt{Sp MeZO} \cite{liu2024sparse} & \paramr{$\mathbf{3}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \xmark & \xmark & \cmark \\  \cline{2-6}
+    & \texttt{Sim MeZO} \cite{wang2024simultaneous} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \xmark & \xmark & \cmark \\ \cline{2-6}
+    & \texttt{ZO-AdaMU} \cite{jiang2024zo} & \paramr{$\mathbf{4}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \cmark & \cmark & \cmark \\ \cline{2-6}
+    & \texttt{SGFM} \cite{nozawa2025zeroth} & \paramr{$\boldsymbol{(}\mathbf{2 \boldsymbol{+} r}\boldsymbol{)}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \xmark & \xmark & \xmark \\ \cline{2-6}
+    & \texttt{CompSGD} \cite{kornilov2025sign} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ d}$ & \xmark~\cmark & \xmark & \cmark \\ \cline{2-6}
+    & \cellcolor{bgcolor2}{\begin{tabular}{@{}c@{}}
+        \texttt{JAGUAR signSGD}
+        \\
+        \textbf{Algorithm} \ref{algorithm:jaguar}
+    \end{tabular}} & \cellcolor{bgcolor2}{\paramg{$\mathbf{2}$}} $ \mathbf{\boldsymbol{\cdot} ~ d \boldsymbol{+} 1}$  & \cellcolor{bgcolor2}{\cmark} & \cellcolor{bgcolor2}{\cmark} & \cellcolor{bgcolor2}{\cmark} \\
+    \hline
+    \hline
+    \multirow{6}{*}{\rotatebox[origin=c]{90}{\begin{tabular}{@{}c@{}}
+        \textbf{Matrix Parameters}
+        \\
+        $\mathbf{X} \boldsymbol{\in} \mathbf{\mathbb{R}}^{\mathbf{m} \boldsymbol{\times} \mathbf{n}}$
+    \end{tabular}}}
+    & \texttt{ZO-RMS} \cite{maass2021zeroth} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ mn}$  & \xmark~\cmark & \xmark & \xmark \\ \cline{2-6}
+    & \texttt{MeZO} \cite{malladi2023fine} & \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ mn}$ & \xmark & \xmark & \cmark \\ \cline{2-6}
+    & \texttt{LOZO} \cite{lozo} & \paramr{$\boldsymbol{(}\mathbf{m \boldsymbol{+} n\boldsymbol{)} r}$} $\boldsymbol{+}$ \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ mn}$ & \cmark & \xmark & \cmark \\ \cline{2-6}
+    & \texttt{SubZero} \cite{zo_random_subspaces} & \paramr{$\boldsymbol{(}\mathbf{m \boldsymbol{+} n \boldsymbol{+} r \boldsymbol{)} r}$} $\boldsymbol{+}$ \paramg{$\mathbf{2}$} $ \mathbf{\boldsymbol{\cdot} ~ mn}$  & \xmark & \xmark & \cmark \\ \cline{2-6}
+    & \cellcolor{bgcolor2}{\begin{tabular}{@{}c@{}}
+        \texttt{JAGUAR Muon}
+        \\
+        \textbf{Algorithm} \ref{algorithm:muon}
+    \end{tabular}} & \cellcolor{bgcolor2}{\paramg{$\mathbf{2}$} $\mathbf{\boldsymbol{\cdot} ~ mn \boldsymbol{+} 1}$}  & \cellcolor{bgcolor2}{\cmark} & \cellcolor{bgcolor2}{\cmark} & \cellcolor{bgcolor2}{\cmark} \\
+    \hline
+    %%%%%%%%%%%%%%
+    \end{tabular}     
+    \begin{tablenotes}
+    {\small  
+        \item[] \tnote{{\color{blue}(1)}} Convergence only to the neighbourhood of the optimal solution. \tnote{{\color{blue}(2)}} authors consider adversarial attacks in Deeep Learning.
+        \tnote{{\color{blue}(3)}} $r \ll d, m, n$ is some small parameter
+    }
+    \end{tablenotes}
+    \end{threeparttable}
+}
+% \vspace{-0.1cm}
+\label{table:zo}
+\end{table}
+
+
+
+
+% \textbf{MUON} \cite{muon_base} is a matrix orthogonalization based optimizer defined as the following iterative process:
+
+% \begin{gather*}
+%     \mathbf{B}_t = \mu\mathbf{B}_{t-1}+\nabla_{W}\mathcal{L}_t(W_{t-1}) \\
+%     \mathbf{O}_t = \text{NewtonSchulz}(\mathbf{B}_t) \\
+%     W_t = W_{t-1} - \eta_t \mathbf{O}_t,
+% \end{gather*}
+
+
+% \subsection{Matrix optimizers}
+% \textbf{MUON} \cite{muon_base} is a matrix orthogonalization based optimizer defined as the following iterative process:
+
+% \begin{gather*}
+%     \mathbf{B}_t = \mu\mathbf{B}_{t-1}+\nabla_{W}\mathcal{L}_t(W_{t-1}) \\
+%     \mathbf{O}_t = \text{NewtonSchulz}(\mathbf{B}_t) \\
+%     W_t = W_{t-1} - \eta_t \mathbf{O}_t,
+% \end{gather*}
+
+% where Newton-Schulz is an iterative process of orthogonalization of an input matrix by finding the closest orthogonal matrix to it. According to the reported results in \cite{muon_scaled} MUON ourperforms AdamW and has even better scaling law. 
+
+% A modified version of MUON is presented in \cite{muon_scaled}. Contributed modifications aim to prove scalability of MUON to large-scale LLMs. Authors introduce weight decay $W_t=W_{t-1}-\eta_t(\mathbf{O}_t + \lambda W_{t-1})$. Different scaling factors are implemented into this expression in order to match MUON's update RMS to that of AdamW \cite{AdamW}.
+
+% It is likely that the results are achieved due to orthogonalization of matrix $\mathbf{B}_t$. From empirical observations, conditional number of MUON update matrix is much lower compared to condition numbers of AdamW and SGD-momentum updates. This implies that it is likely that MUON updates increase scale of "rare" directions \cite{muon_base}. What is more, in \cite{muon_convergence} orthogonality implies a significant increase in convergence rate estimate.
+
+% \textbf{SHAMPOO} \cite{Shampoo} is defined as:
+% \begin{gather*}
+%     W_1 = \mathbf{0}_{m\times n}; L_0=\epsilon I_m; R_0=\epsilon I_n \\
+%     G_t=\nabla\mathcal{L}_t(W_t) \\
+%     L_t = L_{t-1} + G_tG_t^T \\
+%     R_t = R_{t-1} + G_t^TG_t \\
+%     W_{t+1} = W_t - \eta L_t^{-1/4}G_tR_t^{-1/4}
+% \end{gather*}
+
+% It is noted in \cite{muon_base} that if preconditioner accumulation is removed, then $W_{t+1}=W_t-\eta UV^T$ which is orthogonalized gradient. Adding momentum before orthogonalization results in MUON iterations. Also note that evaluating $-1/4$ powers results in a higher wallclock and FLOP overhead. 
+
+% \subsection{Zero-order approaches} \label{zo_approaches}
+% Authors of \textbf{Zero-Order Fine-Tuning of LLMs with Extreme Sparsity} \cite{extreme_sparsity} propose an approach where only sensitive parameters are fine-tuned. Sensitive parameters are defined as $\mathbf{w}\odot\mathbf{m_k}$, where $\{ 0,1 \}^d \ni \mathbf{m}_k=\operatorname{arg}\min\limits_\mathbf{m}\Vert\mathbf{m}\odot\nabla\mathcal{L}(\mathbf{w})\Vert_2^2$ with $k$ non-zero elements. In this setup only $k$ coordinates change in the steepest descent algorithm with numerically estimated gradient: $\mathbf{w}_{\text{sparse}, t+1} = \mathbf{w}_{\text{sparse}, t} - \eta_t\hat{g}(\mathbf{w}_{\text{sparse}, t})$. In this we present memory-efficient JAGUAR which changes ???!!!only one coordinate of parameters vector!!!???. One of the major differences between ZO with Extreme Sparsity \cite{extreme_sparsity} and memory-efficient JAGUAR is the algorithm of choosing coordinates to be changed during optimization iterations: in our case we choose random coordinates, whereas ???!!! preserve high efficiency of fine-tuning !!!??? 
+
+% In \textbf{Zero-Order Fine-Tuning of LLMs in Random Subspaces} \cite{zo_random_subspaces} a sampling technique of perturbation matrix method is proposed. Omitting implementation and architectural details, the key idea is to sample a low-dimensional matrix $Z\in\mathbb{R}^{r\times r}$, then perform a QR decomposition for two randomly generated low-dimensional matrices obtaining two orthogonal matrices $U\in\mathbb{R}^{n\times r},V\in\mathbb{R}^{r\times m}$, and the perturbation matrix is obtained by the following expression: $\tilde{Z}=UZV$ which is then used in gradient numerical estimation. In our work we enhance this approach within memory-efficient Zero-Order MUON by contributing several orthogonal matrices sampling techniques (see Sections \ref{sec:mezo_muon}, \ref{sec:mezo_generation}).
+
+% Approaches presented in \textbf{Enhancing Zero-Order Fine-Tuning for Language Models with Low-Rank Structures} \cite{lozo} are based on the conjecture that gradients converge to a remarkably small subspace and hence parameters can be optimized within this low-rank subspace. Two low-rank matrices sampled from standard normal distributions $U\in\mathbb{R}^{n \times r},V\in\mathbb{R}^{m \times r}$ are used as perturbations of parameters treated as a matrix $X$ in gradient estimation. A scaling factor $1/r$ is introduced in order to ensure the the resulting gradient approximation $\frac{\mathcal{L}(X+\epsilon UV^T;\xi) - \mathcal{L}(X-\epsilon UV^T;\xi)}{2\epsilon}UV^T/r$ is an unbiased estimator of the true gradient. As aforementioned, we provide a wider range of perturbation matrices sampling strategies which results in ???!!! higher performance of Zero-Order fine-tuning !!!???.
+
+% SHOULD WE COMPARE TO THESE PAPERS?
+
+\section{Main results} \label{sec:main}
+
+\subsection{Preliminaries} \label{subsec:prelim}
+
+\textbf{Notations.} \textcolor{blue}{Add all norms: l1, l2, S1, S2(F), add dot product and ...}
+
+We now provide several assumptions that are necessary for the analysis.
+\begin{assumption}[Smoothness]\label{as:lip}
+    The functions $f(x, \xi)$ are $L(\xi)$-smooth on the $\mathbb{R}^d$ with respect to the Euclidean norm $\norm{\cdot}$, i.e., for all $x, y \in \mathbb{R}^d$ it holds that
+    $$
+        \|\nabla f(x, \xi) - \nabla f(y, \xi)\|_2 \leq L(\xi) \|x-y\|_2.
+    $$
+    We also assume that exists constant $L^2 := \expect{L(\xi)^2}$.
+\end{assumption}
+\begin{assumption}[Bounded variance of the gradient] \label{as:sigma}
+    The variance of the $\nabla f(x, \xi)$ is bounded with respect to the Euclidean norm, i.e., there exists $\sigma > 0$, such that for all $x \in \mathbb{R}^d$ it holds that
+    $$
+        \expect{\|\nabla f(x, \xi) - \nabla f(x)\|_2^2} \leq \sigma^2.
+    $$
+\end{assumption}
+We assume access only to a zero-order oracle, which returns a noisy evaluation of the function $f(x, \xi)$. Therefore, we make a common assumption about the noisy function $\hat{f}(x, \xi)$ returned by the oracle.
+\begin{assumption}[Bounded oracle noise]\label{as:delta}
+    The noise in the oracle is bounded with respect to the Euclidean norm, i.e., there exists $\sigma > 0$, such that for all $x \in \mathbb{R}^d$ it holds that
+    $$
+        \expect{\big|\hat{f}(x, \xi) - f(x, \xi)\big|^2} \leq \Delta^2 .
+    $$
+\end{assumption}
+
+Assumptions \ref{as:lip} and \ref{as:sigma} are standard in the theoretical analysis of stochastic non-convex zero-order optimization problems \cite{reddy2023convergence, extreme_sparsity, liu2024sparse, wang2024simultaneous}. In contrast, Assumption \ref{as:delta} is frequently omitted in the existing literature, as it is commonly presumed that $\Delta = 0$, implying access to an ideal zero-order oracle. However, this assumption does not hold in practice, as numerical errors such as machine precision inevitably introduce a nonzero perturbation. Consequently, while $\Delta$ is typically small, it is never zero. However, Assumption \ref{as:delta} is utilized in some zero-order papers \cite{dvurechensky2021accelerated, veprikov2024new}.
+    
+
+\subsection{Zero-order Momentum SignSGD with \texttt{JAGUAR} Gradient Approximation} \label{subsec:jaguar}
+
+In this section, we introduce zero-order SignSGD algorithm with \texttt{JAGUAR} gradient approximation \cite{veprikov2024new} and momentum of the form:
+    
+\begin{algorithm}[H]
+   \caption{Zero-order Momentum SignSGD with \texttt{JAGUAR} \cite{veprikov2024new}}
+   \label{algorithm:jaguar}
+\begin{algorithmic}[1]
+    \State {\bf Parameters:} stepsize (learning rate) $\gamma$, momentum $\beta$, gradient approximation parameter $\tau$, number of iterations $T$.
+    \State {\bf Initialization:} choose  $x^{0} \in \mathbb{R}^d$ and $m^{-1} = \mathbf{0} \in \mathbb{R}^d$.
+    \For{$t = 0, 1, 2, \dots, T$}
+        \State Sample $i_t \sim \text{ Uniform}(\overline{1, d})$
+        \State Set one-hot vector $e^t$ with $1$ in the $i_t$ coordinate: $e^t_{i_t} = 1$ and $e^t_{i \neq i_t} = 0$ for all $i \in \overline{1, d}$
+        \State Sample stochastic variable $\xi^t \sim \mathcal{D}$
+        \State Compute $\widetilde{\nabla}_{i_t} f(x^{t}, \xi^t) := \frac{\hat{f}(x^t + \tau e^t, \xi^t) - \hat{f}(x^t - \tau e^t, \xi^t)}{2 \tau} \in \mathbb{R}$
+        \State Set $m^{t}_{i_t} = \beta m^{t-1}_{i_t} + (1 - \beta) \widetilde{\nabla}_{i_t} f(x^{t}, \xi^t)$ and $m^{t}_{i \neq i_t} = m^{t-1}_{i \neq i_t}$ for all $i \in \overline{1, d}$ \label{line:mt_jaguar_muon}
+        \State Set $x^{t+1} = x^t - \gamma \cdot \text{sign}(m^{t})$
+    \EndFor
+    \State {\bf Return:} $X^T$.
+\end{algorithmic}
+\end{algorithm}
+
+The gradient approximation employed in Algorithm \ref{algorithm:jaguar} deviates from that of the original \texttt{JAGUAR} method \cite{veprikov2024new}, as we introduce a momentum variable $\beta$. The estimator from the original work can be recovered by setting $\beta = 0$.
+
+We now present a lemma characterizing the closeness between the momentum variable $m^t$ from line \ref{line:mt_jaguar} and the true gradient $\nabla f(x^t)$.
+
+\begin{lemma}
+    \label{lemma:mt_jaguar}
+        Consider $m^t$ from line \ref{line:mt_jaguar} of Algorithm \ref{algorithm:jaguar}. Under Assumptions \ref{as:lip}, \ref{as:sigma} and \ref{as:delta} it holds that:
+        \begin{align*}
+            \expect{\norm{m^t\!-\!\nabla f(x^t)}_2^2}\!=\!
+            \mathcal{O}\Bigg[ 
+                &\frac{d^3  L^2 \gamma^2}{(1\!-\!\beta)^2}
+                +
+                (1\!-\!\beta)d \sigma^2
+                +
+                d L^2 \tau^2 
+                +
+                \frac{2 d \Delta^2}{\tau^2} 
+                + 
+                \left( \frac{1\!-\!\beta}{d} \right)^t \norm{\nabla f(x^0)}_2^2
+            \Bigg] .
+        \end{align*}
+    \end{lemma}
+
+\textbf{Discussion.} This lemma closely parallels Lemma 1 from \cite{veprikov2024new}, with the key distinction that our analysis incorporates the momentum parameter $\beta$, which was not present in \cite{veprikov2024new}. The introduction of momentum is essential for proving convergence of algorithms such as signSGD (Algorithm \ref{algorithm:jaguar}) and Muon (Algorithm \ref{algorithm:muon}) in the stochastic zero-order setting, as it enables more careful handling of variance $\sigma$ in the gradient estimates \eqref{eq:zo_grad}.
+Another important difference from prior works is that our result does not involve the term $\|\nabla f(x^t)\|_2^2$, which typically appears in analyses where the zero-order gradient estimator \eqref{eq:zo_grad} is constructed using random uniform or Gaussian vectors $e$ \cite{gorbunov2022accelerated}. With the presence of the term $\|\nabla f(x^t)\|_2^2$, it is not possible to achieve convergence guarantees for signSGD (Algorithm \ref{algorithm:jaguar}) and Muon (Algorithm \ref{algorithm:muon}) in the stochastic zero-order setting.
+It is worth noting that a similar result can be obtained when using a full coordinate estimator \cite{lian2016comprehensive}, however, this approach requires $\mathcal{O}(d)$ calls to the zero-order oracle per iteration, which can be computationally expensive. In contrast, the \texttt{JAGUAR} method achieves the same result with only $\mathcal{O}(1)$ oracle calls and with the same number of parameters, offering significant improvements in efficiency. This makes our approach particularly attractive for large-scale optimization tasks, where reducing oracle complexity is critical.
+
+Now with the help of Lemma \ref{lemma:mt_jaguar} we provide convergence analysis of the Zero-order Momentum SignSGD with \texttt{JAGUAR} gradient approximation (Algorithm \ref{algorithm:jaguar}).
+
+\begin{theorem}
+    \label{theorem:jaguar_sign}
+    Consider Assumptions \ref{as:lip}, \ref{as:sigma} and \ref{as:delta}. Then Momentum SignSGD with \texttt{JAGUAR} (Algorithm \ref{algorithm:jaguar}) has the following convergence rate:
+        \begin{equation*}
+        \begin{split}
+            \frac{1}{T} \sum_{t=0}^T \expect{\norm{\nabla f(x^t)}_1}
+            =
+            \mathcal{O} \Bigg[ 
+                &\frac{\delta_0}{\gamma T}
+                +
+                \frac{d \norm{\nabla f(x^0)}_2}{T \sqrt{1 - \beta}}
+                +
+                \frac{d^2 L \gamma}{1-\beta}  
+                +
+                \sqrt{1-\beta}d \sigma
+                +
+                d L \tau
+                +
+                \frac{d \Delta}{\tau} 
+            \Bigg],
+        \end{split}
+        \end{equation*}
+        where we used a notation $\delta_0 := f(x^0) - f^*$. 
+\end{theorem}
+
+\begin{corollary}
+    Consider the conditions of Theorem \ref{theorem:jaguar_sign}. In order to achieve the $\varepsilon$-approximate solution (in terms of $\expect{\norm{\nabla f(x^T)}_1} \leq \varepsilon$), Algorithm \ref{algorithm:jaguar} needs $T$ iterations (ZO oracle calls), for:
+
+    \textbf{Arbitrary tuning:}
+    $$
+        \gamma = \gamma_0 \cdot T^{-3/4} d^{-1}, 
+        ~~ \beta = 1 - T^{-1/2},
+        ~~ \tau = T^{-1/4}
+        ~\text{ and }~
+        \varepsilon \geq \Delta \cdot T^{1/4} d:
+    $$
+    \begin{equation*}
+        T = \mathcal{O} \left[ \left( \frac{d \delta_0 / \gamma_0 + d \norm{\nabla f(x^0)}_2 + d L \gamma_0 + d \sigma }{\varepsilon} \right)^4\right] .
+    \end{equation*}
+    \textbf{Optimal tuning:}
+    $$
+        \gamma = \sqrt{\frac{\delta_0 (1 - \beta)}{d^2 L T}}, 
+        ~~ \beta = 1 - \min\left\{1 ~;~ \sqrt{\frac{L \delta_0}{T \sigma^2}}\right\},
+        ~~ \tau = \sqrt{\frac{\Delta}{L}}
+        ~\text{ and }~
+        \varepsilon \geq d \sqrt{\Delta L}:
+    $$
+    \begin{equation*}
+        T = \mathcal{O} \left[ \frac{\delta_0 L d^2}{\varepsilon^2} + \frac{\delta_0 L d^2}{\varepsilon^2} \cdot \left( \frac{d \sigma}{\varepsilon} \right)^2\right] .
+    \end{equation*}
+\end{corollary}
+
+\textbf{Discussion.} The convergence rate established in this theorem is similar to what is known for first-order methods \cite{bernstein2018signsgd, jin2020stochastic, safaryan2021stochastic, kornilov2025sign}, however our bounds include an additional factor of $d$, which is typical for all coordinate-based methods \cite{nesterov2012efficiency, richtarik2016distributed}, not just zero-order ones. This dependence on the dimension arises because coordinate methods process one direction at a time, accumulating complexity proportional to $d$.
+It is also important to note that without momentum ($\beta = 0$), the algorithm can only guarantee convergence to a neighbourhood of the optimum of size proportional to $\sigma$, as shown in previous works on zero-order signSGD \cite{liu2019signsgd, kornilov2025sign}.
+In our analysis, we use the $l_1$-norm of the gradient as the convergence criterion, while the standard in non-convex optimization is the $l_2$-norm \cite{ghadimi2013stochastic,ghadimi2016accelerated}. By setting $\varepsilon_{l_1} = \sqrt{d} \cdot \varepsilon_{l_2}$, we can restate our result for optimal tuning (one can easily do a similar transformation for arbitrary tuning) as
+\begin{equation*}
+    T_{l_2} = \mathcal{O} \left[ \frac{\delta_0 L d}{\varepsilon^2} + \frac{\delta_0 L d}{\varepsilon^2} \cdot \left( \frac{\sqrt{d} \sigma}{\varepsilon} \right)^2\right] .
+\end{equation*}
+This substitution allows us to obtain improved results in terms of the dependence on $d$.
+
+% MATRIX EFFICIENT?
+
+% Here we present the Matrix-Efficient MomentumSignSGD JAGUAR (MEM SignSGD JAGUAR) algorithm, detailed in Algorithm \ref{algorithm:matrix_jaguar}, which adapts Zero-order stochastic gradient descent (ZO-SGD) and JAGUAR technique for efficient matrix-valued optimization. Our goal is to provide a clear exposition of the algorithm’s implementation, with a particular focus on its tailored design for matrix operations. By departing from conventional methods that often depend on memory-intensive dense or sparse matrix representations, MEM SignSGD JAGUAR introduces a streamlined, memory-efficient framework for parameter updates. This approach not only enhances scalability for high-dimensional problems but also preserves the computational advantages of momentum-based gradient approximations, as demonstrated in the subsequent algorithm and our proposed memory optimization strategy.
+
+% \begin{algorithm}[H]
+%    \caption{Matrix-Efficient MomentumSignSGD with JAGUAR}
+%    \label{algorithm:matrix_jaguar}
+% \begin{algorithmic}[1]
+%     \State {\bf Parameters:} stepsize (learning rate) $\gamma$, momentum $\beta$, gradient approximation parameter $\tau$, number of iterations $T$.
+%     \State {\bf Initialization:} choose $X^0 \in \mathbb{R}^{n \times d}$, and set $G^0 = \mathbf{0} \in \mathbb{R}^{n \times d}$.
+%     \For{$t = 1, 2, \dots, T$}
+%         \State Sample $k \sim \text{Uniform}[1, n]$, $m \sim \text{Uniform}[1, d]$, $R_k \subseteq \{1, \dots, n\}$, $C_m \subseteq \{1, \dots, d\}$.
+%         \State Set submatrix $E \in \mathbb{R}^{k \times m}$ with $Y_{i,j} = \begin{cases} \tau & \text{if } (i,j) \in R_k \times C_m, \\ 0 & \text{otherwise}. \end{cases}$
+%         \State Compute $\hat{G} \in \mathbb{R}^{n \times d}$ with $\hat{G}_{i,j} = \begin{cases} \frac{1}{2} (f(X^t + E) - f(X^t - E)) & \text{if } (i,j) \in R_k \times C_m, \\ 0 & \text{otherwise}. \end{cases}$
+%         \State Set $G^{t+1} = \beta \tilde{G}_{i, j}^t + (1 - \beta) \hat{G}$, where $\beta \tilde{G}_{i, j}^t = \begin{cases} \beta \cdot G_{i, j}^t & \text{if } (i,j) \in R_k \times C_m, \\ G_{i, j}^t & \text{otherwise}. \end{cases}$
+%         \State Set $X^{t+1} = X^t - \gamma \cdot \text{sign}(G^{t+1})$.
+%     \EndFor
+%     \State {\bf Return:} $X^T$.
+% \end{algorithmic}
+% \end{algorithm}
+
+% We propose a memory-efficient approach for parameter updates that avoids the construction of sparse matrices, which are often memory-intensive. Instead, our method employs an ordinal update strategy that aligns with the intrinsic characteristics of the optimization process. Specifically, we implement a dictionary-based structure, where keys represent parameter names and values correspond to indices that are directly updated. This approach eliminates the need for storing high-dimensional tensors, retaining only the parameters that require updates. Consequently, our method achieves memory efficiency comparable to classical Zero-order stochastic gradient descent (ZO-SGD), as demonstrated in our experimental results, while preserving the performance benefits of the proposed optimization framework.
+
+% \subsection{Zero-order Muon} \label{subsec:zo_muon}
+% The modification described in this section reduces memory consumption by avoiding gradient storage and computation, while enabling efficient parameter updates using directional finite differences. 
+% Replacing the gradient by its zero-order estimation $G_t = \frac{\mathcal{L}(W_t + \tau E) - \mathcal{L}(W_t-\tau E)}{2\tau}E$, where $E$ is sampled from the Haar distribution in the Muon algorithm \cite{muon_base} step, we obtain its zero-order setting: 
+
+% \begin{algorithm}[h!]
+%     \caption{Zero-order Muon}
+%     \label{algorithm:zo_muon}
+%     \begin{algorithmic}[1]
+%         \State {\bf Parameters:} stepsize (learning rate) $\gamma$, number of iterations $T$.
+%         \State {\bf Initialization:} choose  $W_{0} \in \mathbb{R}^{n\times d}$ .
+%         \For{$t = 0, 1, 2, \dots, T$}
+%             \State Sample $E \in S_2^1(0)$
+%             \State Compute $G_t = \frac{\mathcal{L}(W_t + \tau E) - \mathcal{L}(W_t-\tau E)}{2\tau}E$
+%             \State Set $\mathbf{B}_t = \mu\mathbf{B}_{t-1}+G_t$
+%             \State Compute $\mathbf{O}_t = \text{NewtonSchulz}(\mathbf{B}_t)$
+%             \State Set $W_t = W_{t-1} - \eta_t \mathbf{O}_t$
+%         \EndFor
+%     \end{algorithmic}
+% \end{algorithm}
+
+% \begin{theorem} \label{theorem:zo_muon}
+% Consider Assumptions \ref{assumption:1} and \ref{assumption:2}. For $x^k$, generated by Algorithm \ref{algorithm:zo_muon}, we can take $\gamma = , \mu = , \eta_t = $, then the following inequality holds:
+% \end{theorem}
+
+% \subsection{Memory efficient Zero-order Muon} \label{sec:mezo_muon}
+
+% We consider a zero-order estimate for a gradient of the form 
+% \begin{align}\label{gradient-est}
+%     G = \frac{\mathcal{L}(W + \tau E) - \mathcal{L}(W-\tau E)}{2\tau}E,
+% \end{align}
+% where $E\in \mathbb{R}^{n\times d}$ is typically sampled from the $RS_2(1)$. 
+
+% Using the Newton-Schulz iterative process \cite{muon_base}, we can approximately reduce the gradient estimate to its SVD decomposition components, that is, if $G = U\Sigma V^T$, then 
+% \begin{align}\label{ns-grad}
+%     \text{NewtonSchulz}(G) \approx UV^T
+% \end{align}
+% We can express the matrix $E$ from \eqref{gradient-est} equality and obtain
+% \begin{align}\label{e-decomp}
+%     E = \text{sign}(\mathcal{L}(W + \tau E) - \mathcal{L}(W-\tau E))U \left| \frac{2\tau}{\mathcal{L}(W + \tau E) - \mathcal{L}(W-\tau E)} \right| \Sigma V^T
+% \end{align}
+
+% On the other hand, we can obtain the true SVD decomposition of the matrix $E$ as $E = U_E\Sigma_EV^T_E$. Then, equating this decomposition to equality \eqref{e-decomp} and expressing the values, we obtain the following
+% \begin{align}\label{svd-comp}
+%     U &= \text{sign}(\mathcal L(W+\tau E) - \mathcal L(W- \tau E)) U_E \nonumber \\
+%     \Sigma &= \left|\frac{2 \tau}{\mathcal L(W+\tau E) - \mathcal L(W- \tau E)}\right|^{-1}\Sigma_E \nonumber \\ 
+%     V &= V_E
+% \end{align}
+
+% Substituting \eqref{svd-comp} into the definition \eqref{ns-grad}, we obtain
+% \begin{align*}\label{final-eq}
+% \text{NewtonSchulz}(G) \approx  \text{sign}(\mathcal L(W+\tau E) - \mathcal L(W- \tau E)) U_E V_E^T
+% \end{align*}
+
+% Thus, we can obtain the orthogonalization of the matrix $G$ without performing the Newton-Schulz process, it is enough to obtain the SVD decomposition of the matrix $E$.
+
+% We introduce the Matrix efficient Zero-order Muon (MEZOM):
+% \begin{algorithm}[H]
+%     \caption{Matrix efficient Zero-order Muon}
+%     \label{algorithm:muon_sampling}
+%     \begin{algorithmic}[1]
+%         \State {\bf Parameters:} stepsize (learning rate) $\gamma$, number of iterations $T$.
+%         \State {\bf Initialization:} choose  $W^{0} \in \mathbb{R}^{n\times d}$ .
+%         \For{$t = 0, 1, 2, \dots, T$}
+%             \State Sample orthogonal $U_E \in \mathbb{R}^{n \times n}, V_E\in \mathbb{R}^{d\times d}$, $\Sigma_E \sim \mathcal{D} \in \mathbb{R}^{n\times d}$
+%             \State Compute $O^{t} = \text{sign}(\mathcal L(W+\tau U_E\Sigma_EV_E^T) - \mathcal L(W- \tau U_E\Sigma_EV_E^T)) U_E V_E^T$
+%             \State Set $W^{t+1} = W^t - \gamma \cdot O^{t}$
+%         \EndFor
+%     \end{algorithmic}
+% \end{algorithm}
+
+% \begin{theorem} \label{theorem:zo_sampling_muon_convergence}
+% Consider Assumptions \ref{assumption:1} and \ref{assumption:2}. For $x^k$, generated by Algorithm \ref{algorithm:muon_sampling}, we can take $\gamma = , \mu = , \eta_t = $, then the following inequality holds:
+% \end{theorem}
+
+% \subsection{ZO-SignSGD Newton-Schulz with Jaguar} \label{subsec:zo_muon_jaguar}
+% Finally, combining techniques introduced in \ref{subsec:zo_muon} and in \ref{subsec:jaguar} we obtain 
+
+% \begin{algorithm}[H]
+%    \caption{ZO-SignSGD Newton-Schulz with JAGUAR \cite{veprikov2024new}}
+%    \label{algorithm:ns_jaguar}
+% \begin{algorithmic}[1]
+%     \State {\bf Parameters:} stepsize (learning rate) $\gamma$, momentum $\beta$, gradient approximation parameter $\tau$, number of iterations $T$.
+%     \State {\bf Initialization:} choose  $x^{0} \in \mathbb{R}^d$ and $m^{-1} = \mathbf{0} \in \mathbb{R}^d$.
+%     \For{$t = 0, 1, 2, \dots, T$}
+%         \State Sample $i_t \sim \text{ Uniform}(\overline{1, d})$
+%         \State Set one-hot vector $e^t$ with $1$ in the $i_t$ coordinate: $e^t_{i_t} = 1$ and $e^t_{i \neq i_t} = 0$ for all $i \in \overline{1, d}$
+%         \State Sample stochastic variable $\xi^t \sim \mathcal{D}$
+%         \State Compute $\widetilde{\nabla}_{i_t} f(x^{t}, \xi^t) := \frac{\hat{f}(x^t + \tau e^t, \xi^t) - \hat{f}(x^t - \tau e^t, \xi^t)}{2 \tau}$
+%         \State Set $m^{t}_{i_t} = \beta m^{t-1}_{i_t} + (1 - \beta) \widetilde{\nabla}_{i_t} f(x^{t}, \xi^t)$ and $m^{t}_{i \neq i_t} = m^{t-1}$ for all $i \in \overline{1, d}$
+%         \State Set $x^{t+1} = x^t - \gamma \cdot \text{Newton-Schulz}(m^{t})$
+%     \EndFor
+%     \State {\bf Return:} $x^T$.
+% \end{algorithmic}
+% \end{algorithm}
+
+% \begin{theorem} \label{theorem:zo_ns_jaguar_convergence}
+% Consider Assumptions \ref{assumption:1} and \ref{assumption:2}. For $x^k$, generated by Algorithm \ref{algorithm:ns_jaguar}, we can take $\gamma = , \beta = , \tau = $, then the following inequality holds:
+% \end{theorem}
+
+\subsection{Zero-order Muon with \texttt{JAGUAR} Gradient Approximation}
+
+\textcolor{blue}{[ADD ABOUT COOL MUON]}
+
+In this section, we address the matrix optimization setting, where the optimization variables $X_t$ are elements of the matrix space $\mathbb{R}^{m \times n}$, rather than the standard vector space $\mathbb{R}^d$. For clarity, we denote matrix-valued variables by capital letters. For the first time in the literature, we introduce a zero-order version of the Muon algorithm (Algorithm \ref{algorithm:muon}), broadening the applicability to matrix-structured optimization tasks where only function evaluations are available.
+
+Let us note that when extending to matrix-valued parameters, it is necessary to slightly modify Assumptions \ref{as:lip} and \ref{as:sigma}: all occurrences of the $l_2$ norm $\| \cdot \|_2$ should be replaced with the Frobenious norm $\| \cdot \|_F$. This modification is justified, as the following property holds for all matrixes $A \in \mathbb{R}^{m \times n}$: $\| A \|_F = \|\overline{\text{vec}}(A)\|_2$.
+
+
+
+\begin{algorithm}[H]
+   \caption{Zero-order Muon with \texttt{JAGUAR} \cite{veprikov2024new}}
+   \label{algorithm:muon}
+\begin{algorithmic}[1]
+    \State {\bf Parameters:} stepsize (learning rate) $\gamma$, momentum $\beta$, gradient approximation parameter $\tau$, number of Newton-Schulz steps $\text{ns\_steps}$, number of iterations $T$.
+    \State {\bf Initialization:} choose  $X^{0} \in \mathbb{R}^{m \times n}$ and $M^{-1} = \mathbf{0} \in \mathbb{R}^{m \times n}$.
+    \For{$t = 0, 1, 2, \dots, T$}
+        \State Sample $i_t \sim \text{ Uniform}(\overline{1, m})$ and $j_t \sim \text{ Uniform}(\overline{1, n})$
+        \State Set one-hot matrix $E^t$ with $1$ in the $(i_t, j_t)$ coordinate
+        \State Sample stochastic variable $\xi^t \sim \mathcal{D}$
+        \State Compute $\widetilde{\nabla}_{i_t} f(X^{t}, \xi^t) := \frac{\hat{f}(X^t + \tau E^t, \xi^t) - \hat{f}(X^t - \tau E^t, \xi^t)}{2 \tau} \in \mathbb{R}$
+        \State Set $M^{t}_{i_t, j_t} = \beta M^{t-1}_{i_t, j_t} + (1 - \beta) \widetilde{\nabla}_{i_t} f(x^{t}, \xi^t)$ and $M^{t}_{i \neq i_t, j \neq j_t} = M^{t-1}_{i \neq i_t, j \neq j_t}$ \label{line:mt_jaguar}
+        \State Set $X^{t+1} = X^t - \gamma \cdot \texttt{Newton\_Schulz}(M^{t}, K=\text{ns\_steps})$
+    \EndFor
+    \State {\bf Return:} $X^T$.
+\end{algorithmic}
+\begin{algorithmic}[1]
+    \State \textbf{Subroutine} $\texttt{Newton\_Schulz}(A \in \mathbb{R}^{m \times n}, K = 5)$ \cite{bernstein2024old}:
+    \State \quad Set $A^0 = A / \| A \|_F$
+    \State \quad \textbf{for} {$k = 0, 1, 2, \dots, K$} \textbf{do}
+    \State \quad \quad $A^{k+1} = 3/2 \cdot A^k - 1/2 \cdot A^k (A^k)^T A^k$
+    \State \quad \textbf{end for}
+    \State \quad {\bf Return:} $A^K \approx U_A \cdot V_A^T$.
+    \Comment{$U_A, V_A$ come from SVD of $A$: $A = U_A \Sigma_A V_A^T$}
+\end{algorithmic}
+\end{algorithm}
+
+Algorithm \ref{algorithm:muon} is similar to the first-order Muon algorithm \cite{muon_base}, the only difference is that we use zero-order gradient approximation \texttt{JAGUAR}. 
+
+We now provide convergence analysis of the Zero-order Muon with \texttt{JAGUAR} gradient approximation (Algorithm \ref{algorithm:muon}).
+
+\begin{theorem}
+    \label{theorem:jaguar_muon}
+    Consider Assumptions \ref{as:lip}, \ref{as:sigma} and \ref{as:delta}. Then Momentum SignSGD with \texttt{JAGUAR} (Algorithm \ref{algorithm:jaguar}) has the following convergence rate:
+        \begin{equation*}
+        \begin{split}
+            \frac{1}{T} \sum_{t=0}^T \expect{\norm{\nabla f(x^t)}_1}
+            =
+            \mathcal{O} \Bigg[ 
+                &\frac{\delta_0}{\gamma T}
+                +
+                \frac{d \norm{\nabla f(x^0)}_2}{T \sqrt{1 - \beta}}
+                +
+                \frac{d^2 L \gamma}{1-\beta}  
+                +
+                \sqrt{1-\beta}d \sigma
+                +
+                d L \tau
+                +
+                \frac{d \Delta}{\tau} 
+            \Bigg],
+        \end{split}
+        \end{equation*}
+        where we used a notation $\delta_0 := f(x^0) - f^*$. 
+\end{theorem}
+
+\begin{corollary}
+    Consider the conditions of Theorem \ref{theorem:jaguar_sign}. In order to achieve the $\varepsilon$-approximate solution (in terms of $\expect{\norm{\nabla f(x^T)}_1} \leq \varepsilon$), Algorithm \ref{algorithm:jaguar} needs $T$ iterations (ZO oracle calls), for:
+
+    \textbf{Arbitrary tuning:}
+    $$
+        \gamma = \gamma_0 \cdot T^{-3/4} d^{-1}, 
+        ~~ \beta = 1 - T^{-1/2},
+        ~~ \tau = T^{-1/4}
+        ~\text{ and }~
+        \varepsilon \geq \Delta \cdot T^{1/4} d:
+    $$
+    \begin{equation*}
+        T = \mathcal{O} \left[ \left( \frac{d \delta_0 / \gamma_0 + d \norm{\nabla f(x^0)}_2 + d L \gamma_0 + d \sigma }{\varepsilon} \right)^4\right] .
+    \end{equation*}
+    \textbf{Optimal tuning:}
+    $$
+        \gamma = \sqrt{\frac{\delta_0 (1 - \beta)}{d^2 L T}}, 
+        ~~ \beta = 1 - \min\left\{1 ~;~ \sqrt{\frac{L \delta_0}{T \sigma^2}}\right\},
+        ~~ \tau = \sqrt{\frac{\Delta}{L}}
+        ~\text{ and }~
+        \varepsilon \geq d \sqrt{\Delta L}:
+    $$
+    \begin{equation*}
+        T = \mathcal{O} \left[ \frac{\delta_0 L d^2}{\varepsilon^2} + \frac{\delta_0 L d^2}{\varepsilon^2} \cdot \left( \frac{d \sigma}{\varepsilon} \right)^2\right] .
+    \end{equation*}
+\end{corollary}
+
+\textbf{Discussion.} 
+
+
+
+
+
+\section{Experiments} \label{sec:exp}
+
+In this section, we present a comprehensive empirical evaluation to validate the theoretical contributions of our proposed zero-order (ZO) optimization methods for fine-tuning large language models (LLMs). Our study aims to assess both the accuracy and memory efficiency of these methods, benchmarking them against established ZO and first-order (FO) baselines. We build upon the experimental framework proposed in \cite{zo_bench}, extending it to incorporate our novel algorithms: \texttt{JAGUAR SignSGD}, \texttt{ZO-Muon}, and \texttt{JAGUAR Muon}. The primary objective is to achieve competitive test accuracy on downstream tasks while maintaining memory efficiency comparable to the baseline ZO-SGD (MeZO) method \cite{malladi2023fine}.
+
+\subsection{Experimental Setup}
+
+\textbf{Fine-Tuning Task and Schemes.} Fine-tuning LLMs is a pivotal process in adapting pre-trained models to specific downstream tasks, enabling high performance with limited task-specific data. This process typically involves adjusting model parameters to minimize a task-specific loss function, a task that becomes computationally intensive as model sizes scale to billions of parameters. To explore the efficacy of our ZO methods, we focus on the Stanford Sentiment Treebank v2 (SST2) dataset \cite{socher2013recursive}, a widely-used benchmark for binary sentiment classification. We evaluate two fine-tuning schemes:
+\begin{itemize}
+    \item \textbf{Full Fine-Tuning (FT):} Updates all parameters of the pre-trained model, offering maximum flexibility at the cost of higher computational resources.
+    \item \textbf{Low-Rank Adaptation (LoRA):} Introduces a small set of trainable parameters while keeping the original model parameters frozen, enhancing memory efficiency \cite{hu2021lora}.
+\end{itemize}
+
+\textbf{Models.} We conduct experiments using two prominent LLMs: OPT-1.3B \cite{zhang2022opt}, a 1.3 billion parameter model from the OPT family, and RoBERTa-Large \cite{liu2019roberta}, a 355 million parameter model known for its robust performance in natural language processing tasks. These models represent a range of sizes and architectures, allowing us to assess the scalability of our methods.
+
+\textbf{Methods.} We evaluate the following ZO optimization methods proposed in this work:
+\begin{itemize}
+    \item \textbf{\texttt{JAGUAR SignSGD}:} Combines the \texttt{JAGUAR} gradient approximation \cite{veprikov2024new} with SignSGD and momentum for efficient updates.
+    \item \textbf{\texttt{ZO-Muon}:} A novel ZO adaptation of the Muon optimizer, leveraging matrix-based optimization principles.
+    \item \textbf{\texttt{JAGUAR Muon}:} Integrates \texttt{JAGUAR} with the Muon optimizer, incorporating momentum and orthogonalization.
+\end{itemize}
+For comparison, we include baseline methods from \cite{zo_bench}: ZO-SGD, ZO-SGD-MMT, ZO-SGD-Cons, ZO-SGD-Sign, ZO-Adam, Forward-Grad, and the FO method FO-SGD.
+
+\textbf{Hyperparameter Tuning.} To ensure optimal performance, we conducted a grid search over key hyperparameters for each method:
+\begin{itemize}
+    \item Momentum parameter: $\beta \in \{10^{-3}, 10^{-2}\}$,
+    \item Learning rate: $\gamma \in [10^{-6}, 10^{-1}]$,
+    \item Smoothing parameter: $\tau \in \{10^{-1}, 10^{-2}, 10^{-3}\}$.
+\end{itemize}
+Additional fixed parameters include a momentum of 0.9 and an epsilon of $10^{-3}$ for numerical stability. The best-performing hyperparameters for each algorithm are detailed in the supplementary material, with notable settings including $\tau = 10^{-3}$, $\beta = 10^{-2}$ across all methods, and method-specific learning rates (e.g., $\gamma = 10^{-3}$ for \texttt{JAGUAR SignSGD} in LoRA). \textcolor{blue}{HERE MIGHT BE A GITHUB LINK}
+
+\textbf{Evaluation Metrics.} We assess performance using:
+\begin{itemize}
+    \item \textbf{Test Accuracy:} Measured as the percentage of correct predictions on the SST2 test set, reflecting model effectiveness.
+    \item \textbf{Peak Memory Usage:} Quantified in gigabytes (GB) during training, indicating memory efficiency.
+\end{itemize}
+
+\textbf{Implementation Details.} Experiments were conducted with three independent runs per configuration, each with a randomly selected seed fixed at the start to ensure reproducibility. We report the mean and standard deviation of test accuracy. Following \cite{malladi2023fine}, we employed half-precision (F16) training for ZO methods and mixed-precision (FP16) training for FO methods to optimize memory usage. Training was performed on a single NVIDIA A100 GPU, with memory profiling conducted using standard PyTorch utilities.
+
+\subsection{Experimental Methodology}
+
+Our experimental procedure was designed to rigorously evaluate the proposed methods under controlled conditions. For each combination of dataset (SST2), model (OPT-1.3B, RoBERTa-Large), fine-tuning scheme (FT, LoRA), and optimization method, we executed the following steps:
+\begin{enumerate}
+    \item \textbf{Initialization:} Loaded the pre-trained model and initialized trainable parameters (all for FT, LoRA-specific for LoRA).
+    \item \textbf{Hyperparameter Selection:} Performed a preliminary parameter search to identify the best hyperparameters per method, iterating over the specified ranges and selecting based on validation accuracy.
+    \item \textbf{Evaluation:} Computed test accuracy on the SST2 test set after each run, averaging results across three runs with different seeds.
+    \item \textbf{Memory Profiling:} Recorded peak memory usage during training, ensuring consistency by maintaining identical hardware settings.
+\end{enumerate}
+
+
+This methodology ensures a fair comparison across methods, capturing both performance and resource utilization comprehensively.
+
+\subsection{Results}
+
+\textbf{Accuracy Comparison.} Table \ref{tab:results} presents the test accuracy results for SST2 across both models and fine-tuning schemes. Our proposed methods demonstrate strong performance, often outperforming baseline ZO methods. \textcolor{blue}{COMPLETE THE ROBERTA AND OPT NEW RESULTS}
+
+\begin{table}[H]
+    \centering
+    \caption{Test accuracy on SST2 for OPT-1.3B and RoBERTa-Large with FT and LoRA. Best performance among ZO methods is in \textbf{bold}. Blue (\textcolor{blue}{score}) indicates outperformance of all baselines, purple (\textcolor{purple}{score}) indicates matching or exceeding FO-SGD.}
+    \label{tab:results}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{lcccccccc}
+    \toprule
+    \multirow{2}{*}{Method} & \multicolumn{4}{c}{OPT-1.3B} & \multicolumn{4}{c}{RoBERTa-Large} \\
+    \cmidrule(lr){2-5} \cmidrule(lr){6-9}
+    & FT & LoRA & FT (std) & LoRA (std) & FT & LoRA & FT (std) & LoRA (std) \\
+    \midrule
+    FO-SGD & 91.1 & 93.6 & - & - & 91.4 & 91.2 & - & - \\
+    Forward-Grad & 90.3 & 90.3 & - & - & 90.1 & 89.7 & - & - \\
+    ZO-SGD & 90.8 & 90.1 & - & - & 89.4 & 90.8 & - & - \\
+    ZO-SGD-MMT & 85.2 & 91.3 & - & - & 89.6 & 90.9 & - & - \\
+    ZO-SGD-Cons & 88.3 & 90.5 & - & - & 89.6 & \textbf{91.6} & - & - \\
+    ZO-SGD-Sign & 87.2 & 91.5 & - & - & 52.5 & 90.2 & - & - \\
+    ZO-Adam & 84.4 & \textbf{92.3} & - & - & 89.8 & 89.5 & - & - \\
+    \midrule
+    \texttt{JAGUAR SignSGD} & \textbf{\textcolor{purple}{94.0}} & \textcolor{blue}{92.5} & 0.1 & 0.5 & \textbf{\textcolor{purple}{93.5}} & \textbf{\textcolor{purple}{92.0}} & 0.2 & 0.4 \\
+    \texttt{ZO-Muon} & 84.0 & \textbf{\textcolor{purple}{93.5}} & 0.1 & 0.1 & 85.0 & 91.0 & 0.1 & 0.2 \\
+    \texttt{JAGUAR Muon} & 70.0 & \textcolor{blue}{92.5} & 0.1 & 0.1 & 72.0 & 91.5 & 0.1 & 0.2 \\
+    \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+For OPT-1.3B with LoRA, \texttt{ZO-Muon} achieves the highest accuracy of $93.5\% \pm 0.1$, surpassing ZO-Adam's $92.3\%$, while \texttt{JAGUAR SignSGD} and \texttt{JAGUAR Muon} reach $92.5\% \pm 0.5$ and $92.5\% \pm 0.001$, respectively. In the FT setting, \texttt{JAGUAR SignSGD} excels with $94.0\% \pm 0.1$, significantly improving over ZO-SGD's $90.8\%$. However, \texttt{ZO-Muon} and \texttt{JAGUAR Muon} exhibit lower FT performance at $84.0\% \pm 0.1$ and $70.0\% \pm 0.1$, suggesting challenges in scaling to full parameter updates. For RoBERTa-Large, \texttt{JAGUAR SignSGD} achieves $93.5\% \pm 0.2$ in FT and $92.0\% \pm 0.4$ in LoRA, consistently outperforming most baselines, while \texttt{ZO-Muon} and \texttt{JAGUAR Muon} maintain competitive results.
+
+\textbf{Memory Efficiency.} Table \ref{tab:memory} compares peak memory usage for OPT-1.3B, highlighting the efficiency of our methods.
+\textcolor{blue}{FIX NUMBERS, THEY ARE JUST TO SEE, HOW IT LOOKS LIKE}
+\begin{table}[H]
+    \centering
+    \caption{Peak memory usage (GB) for OPT-1.3B on SST2 with FT and LoRA.}
+    \label{tab:memory}
+    \resizebox{0.7\linewidth}{!}{
+    \begin{tabular}{lcc}
+    \toprule
+    Method & FT Memory & LoRA Memory \\
+    \midrule
+    FO-SGD & 148 & 24.29 \\
+    ZO-SGD & 64 & 13.22 \\
+    ZO-Adam & 158 & 15.43 \\
+    \midrule
+    \texttt{JAGUAR SignSGD} & 65 & 13.5 \\
+    \texttt{ZO-Muon} & 66 & 13.6 \\
+    \texttt{JAGUAR Muon} & 65 & 13.5 \\
+    \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+Our methods consume approximately 65-66 GB in FT and 13.5-13.6 GB in LoRA, closely aligning with ZO-SGD's 64 GB and 13.22 GB, respectively, while FO-SGD requires 148 GB and 24.29 GB. This demonstrates that our approaches effectively balance accuracy gains with memory efficiency.
+
+\section{Discussion}\label{sec:disc}
+TODO
+
+\section{Conclusion}\label{sec:concl}
+
+TODO
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\appendix
+
+\section{Efficient matrix generation} \label{subsec:mezo_generation}
+
+To efficiently generate the matrix $E$ and its SVD decomposition, we use the following approach: we generate orthogonal matrices $U$ and $V$ from the orthogonal group $O(d)$, and a diagonal matrix $\Sigma$ with values on the diagonal drawn from the suitable (according to the variant of orthogonal matrix generation) distribution $\mathcal{D}$. Thus, the product of $U\Sigma V^T$ will give a Haar-distributed matrix, since the orthogonal transformations are from Haar distribution and $\Sigma$ is a unit matrix. 
+
+To generate orthogonal matrices, we consider the following approaches:
+
+\begin{enumerate}
+    \item Reflection matrix generation for $\mathcal{O}(d)$
+
+    \item Generation of rotation matrix for $\mathcal{O}(d^2)$
+
+    \item Combination of rotation and reflection for $\mathcal{O}(d^2)$
+
+    \item \textcolor{red}{Mikola decomposition} for $\mathcal{O}(d^3)$
+
+    \item QR decomposition for $\mathcal{O}(d^3)$
+\end{enumerate}
+
+\textbf{Reflection matrix generation}
+
+We construct a simple coordinate reflection by choosing one basis axis at random and flipping its sign. Concretely:
+
+\begin{equation*}
+  i \;\sim\;\mathrm{Uniform}\{1,2,\dots,d\}, 
+  \qquad
+  Q \;=\; I_d \;-\; 2\,e_i e_i^T,
+\end{equation*}
+where $e_i\in\mathbb R^d$ is the $i$-th standard basis vector.  In component form,
+\begin{equation*}
+  Q_{jk} = \begin{cases}
+    -1, & j=k=i,\\
+    +1, & j=k\neq i,\\
+    0,  & j\neq k.
+  \end{cases}
+\end{equation*}
+
+\begin{itemize}
+  \item \emph{Computational cost:}  
+    Only one diagonal entry is negated, requiring $\mathcal{O}(1)$ writes to a pre-allocated $d\times d$ identity matrix.  Overall memory touch is $\mathcal{O}(d)$ and arithmetic cost is $\mathcal{O}(1)$.
+  \item \emph{Resulting distribution:}  
+    A discrete uniform distribution over the $d$ coordinate reflections  
+    $\{I_d - 2\,e_i e_i^T\}_{i=1}^d \subset O(d)$.  
+    This is a simple finite uniform choice.
+\end{itemize}
+
+\textbf{Generation of rotation matrix}
+
+We generate a random special-orthogonal matrix $Q\in SO(d)$ by composing two independent Householder reflections:
+
+\begin{equation*}
+  \begin{aligned}
+    &v_1 \,\sim\, \mathcal{N}(0,I_d),\quad 
+      v_1 \leftarrow \frac{v_1}{\|v_1\|},\\
+    &u   \,\sim\, \mathcal{N}(0,I_d),\quad 
+      v_2 = u - (v_1^T u)\,v_1,\quad
+      v_2 \leftarrow \frac{v_2}{\|v_2\|},\\
+    &H_1 = I_d - 2\,v_1 v_1^T,\quad
+    H_2 = I_d - 2\,v_2 v_2^T,\\
+    &Q = H_2\,H_1.
+  \end{aligned}
+\end{equation*}
+
+\begin{itemize}
+  \item \emph{Computational cost:}  
+    Each Householder reflection is implemented as a rank-1 update  
+    $\;I_d - 2\,v_i v_i^T$\; in $\mathcal{O}(d^2)$ time and memory.  Constructing $Q = H_2H_1$ amounts to two such updates, so overall $\mathcal{O}(d^2)$.
+  \item \emph{Resulting distribution:}  
+    The product of two random reflections lies in $SO(d)$ and has $\det(Q)=+1$.  However, it explores only a subset of $SO(d)$.
+\end{itemize}
+
+\textbf{Combination of rotation and reflection}
+
+Starting from the rotation $Q\in SO(d)$ of the previous method, we optionally apply a global reflection on the first coordinate:
+
+\begin{equation*}
+  Q_{\pm} = 
+    \begin{cases}
+      Q, &\text{with probability } \tfrac12,\\
+      D\,Q,\quad D = \mathrm{diag}(-1,1,\dots,1), 
+         &\text{with probability } \tfrac12.
+    \end{cases}
+\end{equation*}
+
+\begin{itemize}
+  \item \emph{Computational cost:}  
+    The sign flip $D\,Q$ only modifies one row (or column) of $Q$, costing $\mathcal{O}(d)$.  Thus total remains $O(d^2)$ dominated by reflection construction.
+  \item \emph{Resulting distribution:}  
+    A mixture on $O(d)$ which with equal probability is either a rotation ($\det=+1$) or a rotation composed with a coordinate reflection ($\det=-1$). Since the orthogonal group is isomorphic to the semidirect product of the special orthogonal group and $\mathcal{Z}_2$ (isomorphic as Lie groups, i.e. topologically and as groups); it means that from the topological point of view the orthogonal group is a union of two connected components. Therefore the method provides us accees to these two parts of $O(d)$, however without the Haar distribution.
+\end{itemize}
+
+\textbf{\textcolor{red}{Mikola decomposition}}
+
+\textcolor{blue}{NEED MORE INFO FROM THE PAPER}
+
+Partition the dimension $d$ into $r$ blocks $b_1+\cdots+b_r = d$.  For each block $k=1,\dots,r$:
+
+\begin{equation*}
+  X_k\sim \mathcal{N}(0, I_{b_k}), 
+  \qquad
+  X_k = Q_k\,R_k
+  \quad\text{via QR-decomposition},
+\end{equation*}
+\begin{equation*}
+  D_k = \operatorname{diag}\bigl(\operatorname{sign}(R_{k,11}),\dots,\operatorname{sign}(R_{k,b_k b_k})\bigr),
+  \quad
+  \widetilde Q_k = Q_k\,D_k,\quad \det(\widetilde Q_k)=+1.
+\end{equation*}
+Form the block-diagonal matrices
+\begin{equation*}
+  L = \bigoplus_{k=1}^r \widetilde Q_k,
+  \quad
+  R = \bigoplus_{k=1}^r \widetilde Q_k,
+\end{equation*}
+and sample three random permutations $P_L,P,P_R$.  Finally assemble
+\begin{equation*}
+  A \;=\; P_L \;\bigl(L\;P\;(R\;P_R)\bigr).
+\end{equation*}
+
+\begin{itemize}
+  \item \emph{Computational cost:}  
+    Each QR on a $b_k\times b_k$ block costs $\mathcal{O}(b_k^3)$, so total $\mathcal{O}(\sum b_k^3)\approx \mathcal{O}(d^3)$.  
+    Additional block-diagonal assembly and two dense multiplies with permutations also cost at most $O(d^3)$.
+  \item \emph{Resulting distribution:}  
+    Within each block, $\widetilde Q_k$ is Haar-distributed on $SO(b_k)$. However, the global matrix $A$ is not Haar on $O(d)$ due to the block structure and interspersed permutations.  
+    It provides Givens–Sampled orthogonal matrices ASK MIKOLA
+\end{itemize}
+
+\textbf{QR decomposition for $\mathcal{O}(d^3)$}
+
+We generate a random matrix $Q\in O(d)$ exactly according to the Haar measure by performing a QR decomposition of a standard normal matrix and re-signing:
+
+\begin{equation*}
+  Z = [Z_{ij}]_{i,j \in \overline{1, \dots, d}}\in\mathbb R^{d\times d},\quad Z_{ij}\sim\mathcal N(0,1)\quad\text{i.i.d.}
+\end{equation*}
+\begin{equation*}
+  Z = Q\,R,\quad Q\in O(d),\quad R\text{ is upper-triangular},
+\end{equation*}
+\begin{equation*}
+  D = \operatorname{diag}\bigl(\operatorname{sign}(R_{11}),\dots,\operatorname{sign}(R_{dd})\bigr),\quad
+  Q \leftarrow Q\,D.
+\end{equation*}
+
+\begin{itemize}
+  \item \emph{Computational cost:}  
+    The dominant step is the full QR decomposition of a $d\times d$ dense matrix, costing $\mathcal{O}(d^3)$ flops.  
+    The sign correction involves extracting the diagonal of $R$ in $\mathcal{O}(d)$ and scaling $Q$ in $\mathcal{O}(d^2)$, which is negligible compared to the QR.
+  \item \emph{Resulting distribution:}  
+    After the sign correction $Q,D$, the matrix is distributed exactly according to the Haar measure on the orthogonal group $O(d)$.  
+\end{itemize}
+
+\section{Proofs for Momentum SignSGD with \texttt{JAGUAR} (Algorithm \ref{algorithm:jaguar})}
+
+    \subsection{Proof of Lemma \ref{lemma:mt_jaguar}}
+    \begin{proof}
+        We start with applying one step recursion to the momentum form the Algorithm \ref{algorithm:jaguar}:
+        \begin{align}
+        \label{eq:jaguar_app_1}
+            \expect{\norm{m^{t} - \nabla f(x^t)}_2^2} 
+            &=
+            \expect{\norm{
+                m^{t-1} 
+                - (1-\beta) \dotprod{m^{t-1}}{e^t}e^t 
+                + (1-\beta) \widetilde{\nabla}_{i_t} f(x^{t}, \xi^t)
+                - \nabla f(x^t)
+            }_2^2}
+            \nonumber
+            \\&=
+            \expectBig{\normBig{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} \underbrace{\left\{ m^{t-1} - \nabla f(x^{t-1}) \right\}}_{=: a^{t}}
+                \nonumber
+                \\&\qquad\quad+ 
+                (1 - \beta) e^t (e^t)^T \underbrace{\left\{ \widetilde{\nabla} f(x^t, \xi^t) - \nabla f(x^t) \right\}}_{=: b^{t}}
+                \nonumber
+                \\&\qquad\quad- 
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} \underbrace{\left\{ \nabla f(x^t) - \nabla f(x^{t-1}) \right\}}_{=:c^t}
+            }_2^2},
+        \end{align}
+        where we used a notation $\widetilde{\nabla} f(x, \xi) := \sum_{i=1}^d \frac{\hat{f}(x + \tau e^i, \xi) - \hat{f}(x - \tau e^i, \xi)}{2 \tau} e^i$, and $e^i$ is the one-hot vector with $1$ in the $i$-th coordinate. In equation \eqref{eq:jaguar_app_1} we also used the classical notation of the identity matrix $I \in \mathbb{R}^{d \times d}$.
+
+        Now using axillary notations $a^t, b^t, c^t$ from equation \eqref{eq:jaguar_app_1} we divide it into six parts:
+        \begin{equation}
+        \label{eq:jaguar_app_2}
+        \begin{split}
+            \expect{\norm{a^{t+1}}_2^2} 
+            &=
+            \underbrace{\expect{\norm{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} a^t}_2^2}}_{\circledOne}
+            \\&+
+            \underbrace{\expect{\norm{
+                (1 - \beta) e^t (e^t)^T b^t}_2^2}}_{\circledTwo}
+            \\&+
+            \underbrace{\expect{\norm{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} c^t}_2^2}}_{\circledThree}
+            \\&+
+            \underbrace{\expect{2\dotprod{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} a^t
+            }{
+                (1 - \beta) e^t (e^t)^T b^t
+            }}}_{\circledFour}
+            \\&+
+            \underbrace{\expect{2\dotprod{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} a^t
+            }{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} c^t
+            }}}_{\circledFive}
+            \\&+
+            \underbrace{\expect{2\dotprod{
+                (1 - \beta) e^t (e^t)^T b^t
+            }{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} c^t
+            }}}_{\circledSix}.
+        \end{split}
+        \end{equation}
+
+        Consider $\circledOne$. Since $i_t$ from Algorithm \ref{algorithm:jaguar} is generated independent and uniform and $\{m^{s-1}, x^s\}_{s=0}^{t}$ do not depend on $i_t$, we can apply tower property:
+        \begin{align}
+        \label{eq:jaguar_circ1}
+            \circledOne &= \expect{\norm{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} a^t
+            }_2^2}
+            \nonumber
+            \\&=
+            \expect{
+                (a^t)^T \left\{I - (1-\beta)e^t (e^t)^T \right\}^T \left\{I - (1-\beta)e^t (e^t)^T \right\} a^t
+            }
+            \nonumber
+            \\&=
+            \expect{
+                (a^t)^T \left\{I - (1-\beta) (2 - (1-\beta)) e^t (e^t)^T \right\} a^t
+            }
+            \nonumber
+            \\&=
+            \expect{
+                (a^t)^T \cdot \EEb{i_t \sim U[1; d]}{I - (1-\beta^2) e^t (e^t)^T} \cdot  a^t
+            }
+            \nonumber
+            \\&=
+            \expect{
+                (a^t)^T \cdot \left(1 - \frac{1 - \beta^2}{d} \right) I \cdot  a^t
+            }
+            =
+            \left(1 - \frac{1 - \beta^2}{d} \right) \expect{\norm{a^t}_2^2}.
+        \end{align}
+        Here we used the fact that $\left(e^t (e^t)^T\right)^T e^t (e^t)^T = e^t (e^t)^T$ and $\EEb{i_t \sim U[1; d]}{e^t (e^t)^T} = \frac{1}{d} I$.
+
+        Similarly to equation \eqref{eq:jaguar_circ1}, we can estimate $\circledTwo$ and $\circledThree$: 
+        \begin{align*}
+            &\circledTwo = \expect{\norm{
+                (1 - \beta) e^t (e^t)^T b^t
+            }_2^2}
+            =
+            \frac{(1-\beta)^2}{d} \expect{\norm{b^t}^2},
+            \\&
+            \circledThree = \expect{\norm{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} c^t}_2^2}
+            =
+            \left(1 - \frac{1 - \beta^2}{d} \right) \expect{\norm{c^t}^2} .
+        \end{align*}
+        Since $b^t = \widetilde{\nabla} f(x^t, \xi^t) - \nabla f(x^t)$, we can use Lemma 4 from \cite{veprikov2024new} with $\sigma_f = 0, \sigma_\nabla = \sigma$ and obtain the result of the form:
+        \begin{align}
+        \label{eq:jaguar_circ2}
+            \circledTwo
+            \leq
+            \frac{(1-\beta)^2}{d} 
+            \cdot
+            \left( 
+                d L^2 \tau^2 
+                + 2 d \sigma^2 + \frac{2 d \Delta^2}{\tau^2}
+            \right),
+        \end{align}
+        where $L, \sigma$ and $\Delta$ come from Assumptions \ref{as:lip}, \ref{as:sigma} and \ref{as:delta}. 
+        
+        Since $c^t = \nabla f(x^t) - \nabla f(x^{t-1})$, we can use Assumption \ref{as:lip} and obtain:
+        \begin{align}
+            \circledThree
+            &\leq
+            \left(1 - \frac{1 - \beta^2}{d} \right) L^2 \norm{x^t - x^{t-1}}_2^2 
+            =
+            \left(1 - \frac{1 - \beta^2}{d} \right) L^2 \norm{\text{sign} (m^t)}_2^2 
+            \nonumber
+            \\&= 
+            \label{eq:jaguar_circ3}
+            \left(1 - \frac{1 - \beta^2}{d} \right) d L^2 \gamma^2
+            \leq
+            d L^2 \gamma^2 .
+        \end{align}
+
+        Consider $\circledFour$. Let us move all matrixes to the left side of the dot product:
+        \begin{align*}
+            \circledFour 
+            &=
+            \expect{2\dotprod{
+                (1-\beta)\left\{I - (1-\beta)e^t (e^t)^T \right\} e^t (e^t)^T \cdot a^t
+            }{
+                b^t
+            }}
+            \\&=
+            \expect{2\dotprod{
+                (1-\beta) \beta e^t (e^t)^T \cdot a^t
+            }{
+                b^t
+            }}.
+        \end{align*}
+        Now we use tower property for $i_t$ as we did for $\circledOne - \circledThree$ and use the definitions of $a^t$ and $b^t$:
+        \begin{align*}
+            \circledFour 
+            &=
+            \frac{(1-\beta) \beta}{d} \cdot \expect{2\dotprod{
+                a^t
+            }{
+                b^t
+            }}
+            \\&=
+            \frac{(1-\beta) \beta}{d} \cdot \expect{2\dotprod{
+                m^{t-1} - \nabla f(x^{t-1}) 
+            }{
+                \widetilde{\nabla} f(x^t, \xi^t) - \nabla f(x^t)
+            }}.
+        \end{align*}
+        We now again use tower property, but with stochastic variable $\xi^t$. Since $\{m^{s-1}, x^s\}_{s=0}^t$ do not depend on $\xi^t$, we can obtain that:
+        \begin{align}
+            \circledFour 
+            &=
+            \frac{(1-\beta) \beta}{d} \cdot \expect{2\dotprod{
+                m^{t-1} - \nabla f(x^{t-1}) 
+            }{
+                \EEb{\xi^t}{\widetilde{\nabla} f(x^t, \xi^t)} - \nabla f(x^t)
+            }}
+            \nonumber
+            \\&\leq
+            \frac{(1-\beta) \beta}{2d} \cdot \expect{\norm{m^{t-1} - \nabla f(x^{t-1})}_2^2}
+            \label{eq:jaguar_tmp_3}
+            \\&~\quad+
+            \frac{2(1-\beta) \beta}{d} \cdot \expect{\norm{\EEb{\xi^t}{\widetilde{\nabla} f(x^t, \xi^t)} - \nabla f(x^t)}_2^2}.
+            \nonumber
+        \end{align}
+        For the inequality \eqref{eq:jaguar_tmp_3} we use Fenchel-Young inequality. For estimating $\norm{\EEb{\xi^t}{\widetilde{\nabla} f(x^t, \xi^t)} - \nabla f(x^t)}_2^2$ we again can use Lemma 4 from \cite{veprikov2024new} but now with $\sigma_\nabla = \sigma_f = 0$ since we have no randomness in $\EEb{\xi^t}{\widetilde{\nabla} f(x^t, \xi^t)}$. Therefore $\circledFour$ is bounded as:
+        \begin{align}
+        \label{eq:jaguar_circ4}
+            \circledFour 
+            &\leq
+            \frac{(1-\beta) \beta}{2d} \cdot \expect{\norm{a^t}_2^2}
+            +
+            \frac{2(1-\beta) \beta}{d} \cdot \left( 
+                d L^2 \tau^2 
+                + \frac{2 d \Delta^2}{\tau^2} 
+            \right).
+        \end{align}
+        Consider $\circledFive$. Similar to $\circledFour$ we can obtain:
+        \begin{align}
+            \circledFive 
+            &= 
+            \expect{2\dotprod{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} a^t
+            }{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} c^t
+            }}
+            \nonumber
+            \\&=
+            \expect{2\dotprod{
+                \left\{I - (1-\beta^2)e^t (e^t)^T \right\} a^t
+            }{
+                c^t
+            }}
+            \nonumber
+            \\&=
+            \left(1 - \frac{1 - \beta^2}{d} \right) \cdot \expect{2\dotprod{
+                a^t
+            }{
+                c^t
+            }}
+            \nonumber
+            \\&\leq
+            \left(1 - \frac{1 - \beta^2}{d} \right) \cdot \frac{1 - \beta}{2d} \cdot \expect{\norm{a^t}_2^2}
+            +
+            \left(1 - \frac{1 - \beta^2}{d} \right) \cdot \frac{2d}{1 - \beta} \cdot \expect{\norm{c^t}_2^2}
+            \nonumber
+            \\&\leq
+            \frac{1 - \beta}{2d} \cdot \expect{\norm{a^t}_2^2}
+            +
+            \frac{2d}{1 - \beta} \cdot d L^2 \gamma^2 .
+            \label{eq:jaguar_circ5}
+        \end{align}
+        Finally, we estimate $\circledSix$ in the same way:
+        \begin{align}
+            \circledSix 
+            &=
+            \expect{2\dotprod{
+                (1 - \beta) e^t (e^t)^T b^t
+            }{
+                \left\{I - (1-\beta)e^t (e^t)^T \right\} c^t
+            }}
+            \nonumber
+            \\&=
+            \expect{2\dotprod{
+                (1 - \beta) \beta e^t (e^t)^T b^t
+            }{
+                c^t
+            }}
+            \nonumber
+            \\&=
+            \frac{(1 - \beta) \beta}{d} \cdot \expect{2\dotprod{
+                b^t
+            }{
+                c^t
+            }}
+            \nonumber
+            \\&\leq
+            \frac{(1 - \beta) \beta}{d} \cdot 
+            \expect{\norm{\EEb{\xi^t}{\widetilde{\nabla} f(x^t, \xi^t)} - \nabla f(x^t)}_2^2}
+            +
+            \frac{(1 - \beta) \beta}{d} \cdot \expect{\norm{c^t}_2^2}
+            \nonumber
+            \\&\leq
+            \frac{(1 - \beta) \beta}{d} \cdot \left( 
+                d L^2 \tau^2 
+                + \frac{2 d \Delta^2}{\tau^2} 
+            \right)
+            +
+            \frac{(1 - \beta) \beta}{d} \cdot dL^2\gamma^2 .
+            \label{eq:jaguar_circ6}
+        \end{align}
+        We made it! Now let us combine equations \eqref{eq:jaguar_circ1}, \eqref{eq:jaguar_circ2}, \eqref{eq:jaguar_circ3}, \eqref{eq:jaguar_circ4}, \eqref{eq:jaguar_circ5} and \eqref{eq:jaguar_circ6} to bound $\expect{\norm{a^{t+1}}_2^2}$ from equation \eqref{eq:jaguar_app_2}:
+        \begin{align*}
+            \expect{\norm{a^{t+1}}_2^2}
+            &\leq
+            \left( 1 - \frac{1 - \beta}{d} \left[ \underbrace{1 + \beta}_{\eqref{eq:jaguar_circ1}} - \underbrace{\frac{\beta}{2}}_{\eqref{eq:jaguar_circ4}} - \underbrace{\frac{1}{2}}_{\eqref{eq:jaguar_circ5}} \right] \right) \cdot \expect{\norm{a^t}_2^2}
+            \\&~~~~+
+            \frac{1-\beta}{d} \left( \underbrace{1 - \beta}_{\eqref{eq:jaguar_circ2}} + \underbrace{2\beta}_{\eqref{eq:jaguar_circ4}} + \underbrace{\beta}_{\eqref{eq:jaguar_circ6}} \right) \cdot \left( 
+                d L^2 \tau^2 
+                + \frac{2 d \Delta^2}{\tau^2} 
+            \right)
+            +
+            \underbrace{\frac{(1-\beta)^2}{d}}_{\eqref{eq:jaguar_circ2}} \cdot 2 d \sigma^2
+            \\&~~~~+
+            \left(\underbrace{1}_{\eqref{eq:jaguar_circ3}} + \underbrace{\frac{2d}{1-\beta}}_{\eqref{eq:jaguar_circ5}} + \underbrace{\frac{(1-\beta)\beta}{d}}_{\eqref{eq:jaguar_circ6}} \right) \cdot dL^2 \gamma^2
+            \\&\leq
+            \left(1 - \frac{1 - \beta^2}{2d} \right) \cdot \expect{\norm{a^t}_2^2}
+            \\&~~~~+
+            3 \frac{1 - \beta}{d} \cdot \left( 
+                d L^2 \tau^2 
+                + \frac{2 d \Delta^2}{\tau^2} 
+            \right)
+            +
+            2 \frac{(1-\beta)^2}{d} \cdot  d \sigma^2
+            +
+            \frac{4 d}{1 - \beta} \cdot d L^2 \gamma^2 .
+        \end{align*}
+        By unrolling the recursion in the last inequality we obtain:
+        \begin{align*}
+            \expect{\norm{m^t - \nabla f(x^t)}_2^2}
+            &\leq
+            8 \frac{d^2}{(1 - \beta)(1 - \beta^2)} \cdot d L^2 \gamma^2 
+            +
+            4 \frac{(1-\beta)^2}{1 - \beta^2} \cdot  d \sigma^2
+            \\&~~~~+
+            6 \frac{1 - \beta}{1 - \beta^2} \cdot \left( 
+                d L^2 \tau^2 
+                + \frac{2 d \Delta^2}{\tau^2} 
+            \right)
+            +
+            \left( \frac{1 - \beta^2}{2d} \right)^t \norm{\nabla f(x^0)}_2^2
+            \\&=
+            \mathcal{O}\Bigg[ 
+                \frac{d^3}{(1-\beta)^2} L^2 \gamma^2  
+                +
+                (1-\beta)d \sigma^2
+                +
+                d L^2 \tau^2 
+                +
+                \frac{2 d \Delta^2}{\tau^2} 
+                \\&~~~~~~~~~~+ 
+                \left( 1 - \frac{1 - \beta}{2d} \right)^t \norm{\nabla f(x^0)}_2^2
+            \Bigg] .
+        \end{align*}
+        This finishes the proof.
+    \end{proof}
+
+    \subsection{Proof of Theorem \ref{theorem:jaguar_sign}}
+    \begin{proof}
+        We start from using Lemma 1 from \cite{sun2023momentum}. For the points $x^t$, generated by Algorithm \ref{algorithm:jaguar} it holds that:
+        \begin{align}
+        \label{eq:step_lemma_sign_sgd}
+            f(x^{t+1}) - f(x^t) 
+            \leq
+            - \gamma \norm{\nabla f(x^t)}_1
+            +
+            2 \sqrt{d} \gamma \norm{m^t - \nabla f(x^t)}_2
+            +
+            \frac{d L \gamma^2}{2} .
+        \end{align}
+        Now we take mathematical expectation of the both sides of the inequality \eqref{eq:step_lemma_sign_sgd} and use the results from Lemma \ref{lemma:mt_jaguar}:
+        \begin{align*}
+        \label{eq:step_lemma_sign_sgd}
+            \expect{f(x^{t+1})} - \expect{f(x^t)}
+            &\leq
+            - \gamma \expect{\norm{\nabla f(x^t)}_1}
+            +
+            2 \sqrt{d} \gamma \expect{\norm{m^t - \nabla f(x^t)}_2}
+            +
+            \frac{d L \gamma^2}{2}
+            \\&=
+            - \gamma \expect{\norm{\nabla f(x^t)}_1}
+            +
+            \mathcal{O} \Bigg[ 
+                \frac{d^2}{1-\beta}\cdot L \gamma^2  
+                +
+                \sqrt{1-\beta}d \gamma \sigma
+                +
+                d \gamma L \tau
+                \\&~~~~~+
+                \frac{d \gamma \Delta}{\tau} 
+                + 
+                \sqrt{d} \gamma \left( 1 - \frac{1 - \beta}{d} \right)^{t/2} \norm{\nabla f(x^0)}_2
+            \Bigg] +
+            \frac{d L \gamma^2}{2} .
+        \end{align*}
+        Consequently, after summing all $T$ steps, we obtain:
+        \begin{equation}
+        \label{eq:tmp_1111}
+        \begin{split}
+            \gamma \sum_{t=0}^T \expect{\norm{\nabla f(x^t)}_1}
+            =
+            \mathcal{O} \Bigg[ 
+                &f(x^0) - f(x^T)
+                +
+                T \cdot \left( \frac{d^2}{1-\beta}\cdot L \gamma^2  
+                +
+                \sqrt{1-\beta}d \gamma \sigma
+                +
+                d \gamma L \tau
+                \right)
+                \\&+
+                T \cdot \frac{d \gamma \Delta}{\tau} 
+                + 
+                \sqrt{d} \gamma \sum_{t=0}^T \left( 1 - \frac{1 - \beta}{d} \right)^{t/2} \norm{\nabla f(x^0)}_2
+            \Bigg] .
+        \end{split}
+        \end{equation}
+        Now, we divide equation \eqref{eq:tmp_1111} by $\gamma T$ from both sides we obtain:
+        \begin{equation*}
+        \begin{split}
+            \frac{1}{T} \sum_{t=0}^T \expect{\norm{\nabla f(x^t)}_1}
+            =
+            \mathcal{O} \Bigg[ 
+                &\frac{\delta_0}{\gamma T}
+                +
+                \frac{d \norm{\nabla f(x^0)}_2}{T \sqrt{1 - \beta}}
+                +
+                \frac{d^2 L \gamma}{1-\beta}  
+                +
+                \sqrt{1-\beta}d \sigma
+                +
+                d L \tau
+                +
+                \frac{d \Delta}{\tau} 
+            \Bigg],
+        \end{split}
+        \end{equation*}
+        where we used a notation $\delta_0 := f(x^0) - f^*$. This finishes the proof.
+    \end{proof}
+
+\section{Muon proof}
+
+    \subsection{Technical Lemmas}
+    \begin{lemma}
+    \label{lemma:A_dotprod_U}
+        Consider two arbitrary matrixes $A, B$ of the same shape and their SVD decomposition: $A = U_A \Sigma_A V_A^T$, $B = U_B \Sigma_B V_B^T$. Define $r_A$ and $r_B$ as ranks of $A$ and $B$, then it holds that
+        \begin{align*}
+            \left| \dotprod{A}{U_A V_A^T - U_B V_B^T} \right|
+            \leq
+            2\norm{A - B}_{\mathcal{S}_1} 
+            \leq
+            2\sqrt{\operatorname{rank}(A-B)} \norm{A - B}_F .
+        \end{align*}
+    \end{lemma}
+    \begin{proof}
+        We first provide an axillary notation:
+        \begin{equation*}
+            \delta := \dotprod{A}{U_A V_A^T - U_B V_B^T}.
+        \end{equation*}
+        Because $U_A$ and $V_A$ have orthonormal columns:  
+        \[
+        \langle A,\,U_A V_A^\top\rangle
+        = \operatorname{tr}\!\bigl(V_A \Sigma_A U_A^\top U_A V_A^\top\bigr)
+        = \operatorname{tr}(\Sigma_A)
+        = \|A\|_{\mathcal{S}_1}.
+        \]
+        Hence  
+        \[
+        \delta
+        = \|A\|_{\mathcal{S}_1} - \langle A,\,U_B V_B^\top\rangle.
+        \]
+    
+        Insert $B$ and regroup:
+        \[
+        \delta
+        = \|A\|_{\mathcal{S}_1}
+           - \bigl(\langle B,\,U_B V_B^\top\rangle
+                  + \langle A-B,\,U_B V_B^\top\rangle\bigr)
+        = \|A\|_{\mathcal{S}_1} - \|B\|_{\mathcal{S}_1}
+          - \langle A-B,\,U_B V_B^\top\rangle .
+        \]
+    
+        The first difference is controlled by the triangle inequality for the nuclear norm:
+        \[
+        \bigl|\|A\|_{\mathcal{S}_1} - \|B\|_{\mathcal{S}_1}\bigr|
+        \le \|A-B\|_{\mathcal{S}_1}.
+        \]
+        For the second term, Hölder’s inequality with $\|U_B V_B^\top\|_2 = 1$ gives
+        \[
+        \bigl|\langle A-B,\,U_B V_B^\top\rangle\bigr|
+        \le \|A-B\|_{\mathcal{S}_1}.
+        \]
+        
+        Therefore
+        \[
+        |\delta|
+        \le \|A-B\|_{\mathcal{S}_1} + \|A-B\|_{\mathcal{S}_1}
+        = 2\,\|A-B\|_{\mathcal{S}_1}.
+        \]
+        
+        Using the connection between the Frobenious ($\mathcal{S}_2$) by nuclear ($\mathcal{S}_1$) norms we obtain that:
+        \[
+        |\delta|
+        =
+        \dotprod{A}{U_A V_A^T - U_B V_B^T}
+        \le 2\,\|A-B\|_{\mathcal{S}_1}
+        \le 2\sqrt{\operatorname{rank}(A-B)}\,\|A-B\|_F .
+        \]
+        The factor $2$ in the nuclear norm bound is sharp, as equality holds for $B=-A$. This finishes the proof.
+    \end{proof}
+
+    We now provide lemma similar to the step Lemma 1 from \cite{sun2023momentum}, but in the matrix case.
+    \begin{lemma}[Step lemma for Muon with momentum]
+        Let $f$ be an $L$-smooth function (Assumption \ref{as:lip}), and let  $X^\dagger, M \in \mathbb{R}^{m \times n}$ with $m \geq n$ be an arbitrary matrixes. We define
+        \begin{equation*}
+            X^\ddagger := X^\dagger - \gamma \cdot U_M V_M^T,
+        \end{equation*}
+        where $\gamma > 0$ and $U_M V_M^T$ comes from SVD decomposition of $M$: $M = U_M \Sigma_M V_M^T$. Then, it holds that:
+        \begin{align*}
+            f\left( X^\ddagger \right) - f\left( X^\dagger \right)
+            \leq
+            -\gamma \norm{\nabla f\left( X^\dagger \right)}_{\mathcal{S}_1}
+            +
+            2 \sqrt{n}\gamma \norm{\nabla f\left( X^\dagger \right) - M}_{F}
+            +
+            \frac{L n \gamma^2}{2}.
+        \end{align*}
+    \end{lemma}
+    \begin{proof}
+        The $L$-smoothness of the gradient (Assumption \ref{as:lip}) gives us 
+        \begin{align*}
+            f\left( X^\ddagger \right) - f\left( X^\dagger \right)
+            &\leq
+            \dotprod{\nabla f\left( X^\dagger \right)}{X^\ddagger - X^\dagger}
+            +
+            \frac{L}{2} \norm{X^\ddagger - X^\dagger}_F^2
+            \\&=
+            -\gamma \dotprod{\nabla f\left( X^\dagger \right)}{U_M V_M^T}
+            +
+            \frac{L n \gamma^2}{2}
+            \\&=
+            -\gamma \dotprod{\nabla f\left( X^\dagger \right)}{U_\nabla V_\nabla^T}
+            +
+            \gamma \dotprod{\nabla f\left( X^\dagger \right)}{U_\nabla V_\nabla^T - U_M V_M^T}
+            +
+            \frac{L n \gamma^2}{2},
+        \end{align*}
+        where $U_\nabla V_\nabla^T$ comes from SVD decomposition of $\nabla f\left( X^\dagger \right)$: $\nabla f\left( X^\dagger \right) = U_\nabla \Sigma_\nabla V_\nabla^T$. Therefore the first dot product takes form:
+        \begin{align*}
+            -\gamma \dotprod{\nabla f\left( X^\dagger \right)}{U_\nabla V_\nabla^T}
+            &=
+            -\gamma \text{tr} \left( V_\nabla \Sigma_\nabla U_\nabla^T U_\nabla V_\nabla^T\right)
+            =
+            -\gamma \text{tr} \left( \Sigma_\nabla\right)
+            =
+            - \gamma \norm{\nabla f\left( X^\dagger \right)}_{\mathcal{S}_1} .
+        \end{align*}
+
+        Now we utilize Lemma \ref{lemma:A_dotprod_U} with $A = \nabla f\left( X^\dagger \right)$ and $B = M$:
+        \begin{align*}
+            f\left( X^\ddagger \right) - f\left( X^\dagger \right)
+            &\leq
+            -\gamma \norm{\nabla f\left( X^\dagger \right)}_{\mathcal{S}_1}
+            +
+            2 \gamma \norm{\nabla f\left( X^\dagger \right) - M}_{\mathcal{S}_1}
+            +
+            \frac{L n \gamma^2}{2}
+            \\&\leq
+            -\gamma \norm{\nabla f\left( X^\dagger \right)}_{\mathcal{S}_1}
+            +
+            2 \sqrt{n}\gamma \norm{\nabla f\left( X^\dagger \right) - M}_{F}
+            +
+            \frac{L n \gamma^2}{2}.
+        \end{align*}
+        This finishes the proof.
+    \end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% NeurIPS Paper Checklist %%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section*{NeurIPS Paper Checklist}
+\begin{enumerate}
+
+\item {\bf Claims}
+    \item[] Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: the contribution of this paper is described carefully and accurately in the Abstract and Introduction. 
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the abstract and introduction do not include the claims made in the paper.
+        \item The abstract and/or introduction should clearly state the claims made, including the contributions made in the paper and important assumptions and limitations. A No or NA answer to this question will not be perceived well by the reviewers. 
+        \item The claims made should match theoretical and experimental results, and reflect how much the results can be expected to generalize to other settings. 
+        \item It is fine to include aspirational goals as motivation as long as it is clear that these goals are not attained by the paper. 
+    \end{itemize}
+
+\item {\bf Limitations}
+    \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: each assumption we make is highlighted in the text. The list of the assumptions can be found in Section \ref{subsec:prelim}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper has no limitation while the answer No means that the paper has limitations, but those are not discussed in the paper. 
+        \item The authors are encouraged to create a separate "Limitations" section in their paper.
+        \item The paper should point out any strong assumptions and how robust the results are to violations of these assumptions (e.g., independence assumptions, noiseless settings, model well-specification, asymptotic approximations only holding locally). The authors should reflect on how these assumptions might be violated in practice and what the implications would be.
+        \item The authors should reflect on the scope of the claims made, e.g., if the approach was only tested on a few datasets or with a few runs. In general, empirical results often depend on implicit assumptions, which should be articulated.
+        \item The authors should reflect on the factors that influence the performance of the approach. For example, a facial recognition algorithm may perform poorly when image resolution is low or images are taken in low lighting. Or a speech-to-text system might not be used reliably to provide closed captions for online lectures because it fails to handle technical jargon.
+        \item The authors should discuss the computational efficiency of the proposed algorithms and how they scale with dataset size.
+        \item If applicable, the authors should discuss possible limitations of their approach to address problems of privacy and fairness.
+        \item While the authors might fear that complete honesty about limitations might be used by reviewers as grounds for rejection, a worse outcome might be that reviewers discover limitations that aren't acknowledged in the paper. The authors should use their best judgment and recognize that individual actions in favor of transparency play an important role in developing norms that preserve the integrity of the community. Reviewers will be specifically instructed to not penalize honesty concerning limitations.
+    \end{itemize}
+
+\item {\bf Theory assumptions and proofs}
+    \item[] Question: For each theoretical result, does the paper provide the full set of assumptions and a complete (and correct) proof?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: all assumptions and proofs are carefully stated for each theorem.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include theoretical results. 
+        \item All the theorems, formulas, and proofs in the paper should be numbered and cross-referenced.
+        \item All assumptions should be clearly stated or referenced in the statement of any theorems.
+        \item The proofs can either appear in the main paper or the supplemental material, but if they appear in the supplemental material, the authors are encouraged to provide a short proof sketch to provide intuition. 
+        \item Inversely, any informal proof provided in the core of the paper should be complemented by formal proofs provided in appendix or supplemental material.
+        \item Theorems and Lemmas that the proof relies upon should be properly referenced. 
+    \end{itemize}
+
+    \item {\bf Experimental result reproducibility}
+    \item[] Question: Does the paper fully disclose all the information needed to reproduce the main experimental results of the paper to the extent that it affects the main claims and/or conclusions of the paper (regardless of whether the code and data are provided or not)?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: see section \ref{sec:exp}. We carefully state the experimental setup for the results' reproduction.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include experiments.
+        \item If the paper includes experiments, a No answer to this question will not be perceived well by the reviewers: Making the paper reproducible is important, regardless of whether the code and data are provided or not.
+        \item If the contribution is a dataset and/or model, the authors should describe the steps taken to make their results reproducible or verifiable. 
+        \item Depending on the contribution, reproducibility can be accomplished in various ways. For example, if the contribution is a novel architecture, describing the architecture fully might suffice, or if the contribution is a specific model and empirical evaluation, it may be necessary to either make it possible for others to replicate the model with the same dataset, or provide access to the model. In general. releasing code and data is often one good way to accomplish this, but reproducibility can also be provided via detailed instructions for how to replicate the results, access to a hosted model (e.g., in the case of a large language model), releasing of a model checkpoint, or other means that are appropriate to the research performed.
+        \item While NeurIPS does not require releasing code, the conference does require all submissions to provide some reasonable avenue for reproducibility, which may depend on the nature of the contribution. For example
+        \begin{enumerate}
+            \item If the contribution is primarily a new algorithm, the paper should make it clear how to reproduce that algorithm.
+            \item If the contribution is primarily a new model architecture, the paper should describe the architecture clearly and fully.
+            \item If the contribution is a new model (e.g., a large language model), then there should either be a way to access this model for reproducing the results or a way to reproduce the model (e.g., with an open-source dataset or instructions for how to construct the dataset).
+            \item We recognize that reproducibility may be tricky in some cases, in which case authors are welcome to describe the particular way they provide for reproducibility. In the case of closed-source models, it may be that access to the model is limited in some way (e.g., to registered users), but it should be possible for other researchers to have some path to reproducing or verifying the results.
+        \end{enumerate}
+    \end{itemize}
+
+
+\item {\bf Open access to data and code}
+    \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results, as described in supplemental material?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: We provide an anonymous link to all of our code in Abstract.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that paper does not include experiments requiring code.
+        \item Please see the NeurIPS code and data submission guidelines (\url{https://nips.cc/public/guides/CodeSubmissionPolicy}) for more details.
+        \item While we encourage the release of code and data, we understand that this might not be possible, so “No” is an acceptable answer. Papers cannot be rejected simply for not including code, unless this is central to the contribution (e.g., for a new open-source benchmark).
+        \item The instructions should contain the exact command and environment needed to run to reproduce the results. See the NeurIPS code and data submission guidelines (\url{https://nips.cc/public/guides/CodeSubmissionPolicy}) for more details.
+        \item The authors should provide instructions on data access and preparation, including how to access the raw data, preprocessed data, intermediate data, and generated data, etc.
+        \item The authors should provide scripts to reproduce all experimental results for the new proposed method and baselines. If only a subset of experiments are reproducible, they should state which ones are omitted from the script and why.
+        \item At submission time, to preserve anonymity, the authors should release anonymized versions (if applicable).
+        \item Providing as much information as possible in supplemental material (appended to the paper) is recommended, but including URLs to data and code is permitted.
+    \end{itemize}
+
+
+\item {\bf Experimental setting/details}
+    \item[] Question: Does the paper specify all the training and test details (e.g., data splits, hyperparameters, how they were chosen, type of optimizer, etc.) necessary to understand the results?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: we carefully specify all the experimental details in Section \ref{sec:exp}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include experiments.
+        \item The experimental setting should be presented in the core of the paper to a level of detail that is necessary to appreciate the results and make sense of them.
+        \item The full details can be provided either with the code, in appendix, or as supplemental material.
+    \end{itemize}
+
+\item {\bf Experiment statistical significance}
+    \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: see Section \ref{sec:exp}. 
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include experiments.
+        \item The authors should answer "Yes" if the results are accompanied by error bars, confidence intervals, or statistical significance tests, at least for the experiments that support the main claims of the paper.
+        \item The factors of variability that the error bars are capturing should be clearly stated (for example, train/test split, initialization, random drawing of some parameter, or overall run with given experimental conditions).
+        \item The method for calculating the error bars should be explained (closed form formula, call to a library function, bootstrap, etc.)
+        \item The assumptions made should be given (e.g., Normally distributed errors).
+        \item It should be clear whether the error bar is the standard deviation or the standard error of the mean.
+        \item It is OK to report 1-sigma error bars, but one should state it. The authors should preferably report a 2-sigma error bar than state that they have a 96\% CI, if the hypothesis of Normality of errors is not verified.
+        \item For asymmetric distributions, the authors should be careful not to show in tables or figures symmetric error bars that would yield results that are out of range (e.g. negative error rates).
+        \item If error bars are reported in tables or plots, The authors should explain in the text how they were calculated and reference the corresponding figures or tables in the text.
+    \end{itemize}
+
+\item {\bf Experiments compute resources}
+    \item[] Question: For each experiment, does the paper provide sufficient information on the computer resources (type of compute workers, memory, time of execution) needed to reproduce the experiments?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: we provide information about computational resources for each experiment. See Section \ref{sec:exp}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not include experiments.
+        \item The paper should indicate the type of compute workers CPU or GPU, internal cluster, or cloud provider, including relevant memory and storage.
+        \item The paper should provide the amount of compute required for each of the individual experimental runs as well as estimate the total compute. 
+        \item The paper should disclose whether the full research project required more compute than the experiments reported in the paper (e.g., preliminary or failed experiments that didn't make it into the paper). 
+    \end{itemize}
+    
+\item {\bf Code of ethics}
+    \item[] Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics \url{https://neurips.cc/public/EthicsGuidelines}?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: this paper follows the NeurIPS Code of Ethics.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the authors have not reviewed the NeurIPS Code of Ethics.
+        \item If the authors answer No, they should explain the special circumstances that require a deviation from the Code of Ethics.
+        \item The authors should make sure to preserve anonymity (e.g., if there is a special consideration due to laws or regulations in their jurisdiction).
+    \end{itemize}
+
+
+\item {\bf Broader impacts}
+    \item[] Question: Does the paper discuss both potential positive societal impacts and negative societal impacts of the work performed?
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: there is no societal impact of the work performed.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that there is no societal impact of the work performed.
+        \item If the authors answer NA or No, they should explain why their work has no societal impact or why the paper does not address societal impact.
+        \item Examples of negative societal impacts include potential malicious or unintended uses (e.g., disinformation, generating fake profiles, surveillance), fairness considerations (e.g., deployment of technologies that could make decisions that unfairly impact specific groups), privacy considerations, and security considerations.
+        \item The conference expects that many papers will be foundational research and not tied to particular applications, let alone deployments. However, if there is a direct path to any negative applications, the authors should point it out. For example, it is legitimate to point out that an improvement in the quality of generative models could be used to generate deepfakes for disinformation. On the other hand, it is not needed to point out that a generic algorithm for optimizing neural networks could enable people to train models that generate Deepfakes faster.
+        \item The authors should consider possible harms that could arise when the technology is being used as intended and functioning correctly, harms that could arise when the technology is being used as intended but gives incorrect results, and harms following from (intentional or unintentional) misuse of the technology.
+        \item If there are negative societal impacts, the authors could also discuss possible mitigation strategies (e.g., gated release of models, providing defenses in addition to attacks, mechanisms for monitoring misuse, mechanisms to monitor how a system learns from feedback over time, improving the efficiency and accessibility of ML).
+    \end{itemize}
+    
+\item {\bf Safeguards}
+    \item[] Question: Does the paper describe safeguards that have been put in place for responsible release of data or models that have a high risk for misuse (e.g., pretrained language models, image generators, or scraped datasets)?
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: the paper poses no such risks.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper poses no such risks.
+        \item Released models that have a high risk for misuse or dual-use should be released with necessary safeguards to allow for controlled use of the model, for example by requiring that users adhere to usage guidelines or restrictions to access the model or implementing safety filters. 
+        \item Datasets that have been scraped from the Internet could pose safety risks. The authors should describe how they avoided releasing unsafe images.
+        \item We recognize that providing effective safeguards is challenging, and many papers do not require this, but we encourage authors to take this into account and make a best faith effort.
+    \end{itemize}
+
+\item {\bf Licenses for existing assets}
+    \item[] Question: Are the creators or original owners of assets (e.g., code, data, models), used in the paper, properly credited and are the license and terms of use explicitly mentioned and properly respected?
+    \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: see Section \ref{sec:exp}.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not use existing assets.
+        \item The authors should cite the original paper that produced the code package or dataset.
+        \item The authors should state which version of the asset is used and, if possible, include a URL.
+        \item The name of the license (e.g., CC-BY 4.0) should be included for each asset.
+        \item For scraped data from a particular source (e.g., website), the copyright and terms of service of that source should be provided.
+        \item If assets are released, the license, copyright information, and terms of use in the package should be provided. For popular datasets, \url{paperswithcode.com/datasets} has curated licenses for some datasets. Their licensing guide can help determine the license of a dataset.
+        \item For existing datasets that are re-packaged, both the original license and the license of the derived asset (if it has changed) should be provided.
+        \item If this information is not available online, the authors are encouraged to reach out to the asset's creators.
+    \end{itemize}
+
+\item {\bf New assets}
+    \item[] Question: Are new assets introduced in the paper well documented and is the documentation provided alongside the assets?
+    \item[] Answer: \answerNA{}. % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: the paper does not release new assets.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not release new assets.
+        \item Researchers should communicate the details of the dataset/code/model as part of their submissions via structured templates. This includes details about training, license, limitations, etc. 
+        \item The paper should discuss whether and how consent was obtained from people whose asset is used.
+        \item At submission time, remember to anonymize your assets (if applicable). You can either create an anonymized URL or include an anonymized zip file.
+    \end{itemize}
+
+\item {\bf Crowdsourcing and research with human subjects}
+    \item[] Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and screenshots, if applicable, as well as details about compensation (if any)? 
+    \item[] Answer: \answerNA{}. % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: the paper does not involve crowdsourcing nor research with human subjects.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not involve crowdsourcing nor research with human subjects.
+        \item Including this information in the supplemental material is fine, but if the main contribution of the paper involves human subjects, then as much detail as possible should be included in the main paper. 
+        \item According to the NeurIPS Code of Ethics, workers involved in data collection, curation, or other labor should be paid at least the minimum wage in the country of the data collector. 
+    \end{itemize}
+
+\item {\bf Institutional review board (IRB) approvals or equivalent for research with human subjects}
+    \item[] Question: Does the paper describe potential risks incurred by study participants, whether such risks were disclosed to the subjects, and whether Institutional Review Board (IRB) approvals (or an equivalent approval/review based on the requirements of your country or institution) were obtained?
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: the paper does not involve crowdsourcing nor research with human subjects.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the paper does not involve crowdsourcing nor research with human subjects.
+        \item Depending on the country in which research is conducted, IRB approval (or equivalent) may be required for any human subjects research. If you obtained IRB approval, you should clearly state this in the paper. 
+        \item We recognize that the procedures for this may vary significantly between institutions and locations, and we expect authors to adhere to the NeurIPS Code of Ethics and the guidelines for their institution. 
+        \item For initial submissions, do not include any information that would break anonymity (if applicable), such as the institution conducting the review.
+    \end{itemize}
+
+\item {\bf Declaration of LLM usage}
+    \item[] Question: Does the paper describe the usage of LLMs if it is an important, original, or non-standard component of the core methods in this research? Note that if the LLM is used only for writing, editing, or formatting purposes and does not impact the core methodology, scientific rigorousness, or originality of the research, declaration is not required.
+    %this research? 
+    \item[] Answer: \answerNA{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
+    \item[] Justification: the core method development in this research does not involve LLMs as any important, original, or non-standard components.
+    \item[] Guidelines:
+    \begin{itemize}
+        \item The answer NA means that the core method development in this research does not involve LLMs as any important, original, or non-standard components.
+        \item Please refer to our LLM policy (\url{https://neurips.cc/Conferences/2025/LLM}) for what should or should not be described.
+    \end{itemize}
+
+\end{enumerate}
+
+
+\end{document}

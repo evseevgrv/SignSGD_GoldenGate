@@ -1,0 +1,285 @@
+[2025-02-25 01:04:56,989] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2025-02-25 01:04:56,989] torch.distributed.run: [WARNING] 
+[2025-02-25 01:04:56,989] torch.distributed.run: [WARNING] *****************************************
+[2025-02-25 01:04:56,989] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2025-02-25 01:04:56,989] torch.distributed.run: [WARNING] *****************************************
+Starting script
+Starting script
+non debug mode and not nirvana - setting local_train_data to False
+2025-02-25 01:05:05.511 | INFO     | __main__:main:413 - Global rank 0, local rank 0, device: 0
+non debug mode and not nirvana - setting local_train_data to False
+2025-02-25 01:05:05.911 | INFO     | __main__:main:413 - Global rank 1, local rank 1, device: 1
+2025-02-25 01:05:05.915 | INFO     | __main__:main:417 - Process group initialized
+2025-02-25 01:05:05.922 | INFO     | __main__:main:417 - Process group initialized
+2025-02-25 01:05:05.922 | INFO     | __main__:main:433 - Using dist with rank 0 (only rank 0 will log)
+2025-02-25 01:05:05.922 | INFO     | __main__:main:434 - ****************************************
+2025-02-25 01:05:05.923 | INFO     | __main__:main:435 - Starting training with the arguments
+2025-02-25 01:05:05.923 | INFO     | __main__:main:437 - model_config                   configs/llama_130m.json
+2025-02-25 01:05:05.923 | INFO     | __main__:main:437 - use_hf_model                   False
+2025-02-25 01:05:05.923 | INFO     | __main__:main:437 - batch_size                     128
+2025-02-25 01:05:05.923 | INFO     | __main__:main:437 - eval_batch_size                256
+2025-02-25 01:05:05.923 | INFO     | __main__:main:437 - gradient_accumulation          2
+2025-02-25 01:05:05.923 | INFO     | __main__:main:437 - total_batch_size               512
+2025-02-25 01:05:05.923 | INFO     | __main__:main:437 - max_length                     256
+2025-02-25 01:05:05.923 | INFO     | __main__:main:437 - optimizer                      aid_with_adam
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - lr                             0.001
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - scheduler                      cosine
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - scheduler_cycle_length         100000
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - scheduler_min_power            -20
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - min_lr_ratio                   0.1
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - activation_checkpointing       False
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - eval_every                     2000
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - num_training_steps             100000
+2025-02-25 01:05:05.924 | INFO     | __main__:main:437 - max_train_tokens               None
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - save_every                     1000
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - general_save_dir               checkpoints
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - save_dir                       130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - save_dir_prefix                130m
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - tags                           None
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - dtype                          torch.float32
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - amp                            True
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - workers                        8
+2025-02-25 01:05:05.925 | INFO     | __main__:main:437 - seed                           0
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - name                           test
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - grad_clipping                  1.0
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - wandb_tags                     ['aid_with_adam', 'fp32', 'amp', 'bs_512', 'sch_cosine', 'wd_0.001', 'lr_0.001', 'clip-1.0', 'l_inf_100.0', 'option2', 'seed_0']
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - wandb_name_prefix              None
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - run_final_eval                 True
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - run_old_eval                   False
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - final_save                     False
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - wandb                          True
+2025-02-25 01:05:05.926 | INFO     | __main__:main:437 - debug                          False
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - debug_train_data               False
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - debug_print                    False
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - compile                        True
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - attn_implementation            sdpa
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - fsdp                           False
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - cpu_offload                    False
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - mp_policy_param                torch.float32
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - mp_policy_reduce               torch.float32
+2025-02-25 01:05:05.927 | INFO     | __main__:main:437 - mp_policy_buffer               torch.float32
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - use_orig_params                False
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - proj_params_lr_scale           1.0
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - update_gap                     10
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - density                        0.25
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - reset_statistics               True
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - inactive_update_rule           sign_sgd
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - inactive_lr_scale              1.0
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - proj_norms                     True
+2025-02-25 01:05:05.928 | INFO     | __main__:main:437 - proj_embeds                    True
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - proj_logits                    False
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - rank                           0
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - proj_side                      std
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - proj_type                      svd
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - coord_choice                   columns
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - block_order                    random
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - apollo_proj                    random
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - apollo_scale_type              tensor
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - apollo_scale                   1.0
+2025-02-25 01:05:05.929 | INFO     | __main__:main:437 - apollo_scale_front             False
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - ldadam_rho                     0.908
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - ldadam_proj_method             power_iteration
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - ldadam_error_feedback          False
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - fira_alpha                     1.0
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - delay_start_step               10000
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - grad_taylor_approx             False
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - taylor_linear_coef             1.0
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - measure_time                   False
+2025-02-25 01:05:05.930 | INFO     | __main__:main:437 - collect_grads                  False
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - weight_decay                   0.001
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - warmup_steps                   10000
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - beta1                          0.9
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - beta2                          0.999
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - eps                            1e-08
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - momentum                       0.0
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - nesterov                       False
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - dampening                      0
+2025-02-25 01:05:05.931 | INFO     | __main__:main:437 - sgd_sign_update                False
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - sign_norm                      False
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - normalized                     False
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - l_inf                          100.0
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - d_0                            None
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - lower_bound                    0.0
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - clamp_level                    0.001
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - single_gpu                     False
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - local_train_data               False
+2025-02-25 01:05:05.932 | INFO     | __main__:main:437 - streaming                      True
+2025-02-25 01:05:05.933 | INFO     | __main__:main:437 - wandb_name                     opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-02-25 01:05:05.933 | INFO     | __main__:main:438 - ****************************************
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+Model dtype:  torch.float32
+Downloading readme:   0%|          | 0.00/41.1k [00:00<?, ?B/s]Downloading readme: 100%|██████████| 41.1k/41.1k [00:00<00:00, 2.85MB/s]
+/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2025-02-25 01:05:23.179 | INFO     | __main__:main:555 - Shuffling data with seed 42
+/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+wandb: Currently logged in as: rinya (mipt_rinya). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.19.7 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.2
+wandb: Run data is saved locally in /home/rinya/LoRA-dev/wandb/run-20250225_010526-qwrl2bzp
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+wandb: ⭐️ View project at https://wandb.ai/mipt_rinya/sgd_with_adam_130
+wandb: 🚀 View run at https://wandb.ai/mipt_rinya/sgd_with_adam_130/runs/qwrl2bzp
+wandb: WARNING Saving files without folders. If you want to preserve sub directories pass base_path to wandb.save, i.e. wandb.save("/mnt/folder/file.h5", base_path="/mnt")
+Update steps:   0%|                                  | 0/100000 [00:00<?, ?it/s]proj_norms: True, proj_embeds: True, proj_logits: False, 
+Number of proj_params: 110, number of NON proj_params: 1
+2025-02-25 01:05:27.971 | INFO     | __main__:main:617 - 
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+
+2025-02-25 01:05:27.972 | INFO     | __main__:main:618 - Total params: 134.11M
+2025-02-25 01:05:27.972 | INFO     | __main__:main:619 - Trainable params: 134.11M
+2025-02-25 01:05:27.972 | INFO     | __main__:main:622 - Total params with GaLore enabled: 109.53M
+2025-02-25 01:05:27.973 | INFO     | __main__:main:623 - Saving model to checkpoints/130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0 every 1000 update steps
+AIDWithAdam (
+Parameter Group 0
+    L_inf: 100.0
+    clamp_level: 0.001
+    d: None
+    dampening: 0
+    differentiable: False
+    f_diff: None
+    foreach: False
+    fused: False
+    is_proj_params: True
+    lambda_denom_sum: None
+    lower_bound: 0.0
+    lr: 0.0010000000474974513
+    maximize: False
+    momentum: 0.0
+    nesterov: False
+    prev_gamma: None
+    tilde_d: None
+    update_gap: 10
+    warmup_steps: 10000
+    weight_decay: 0.001
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    is_proj_params: False
+    lr: 0.0010000000474974513
+    maximize: False
+    weight_decay: 0.001
+)
+0 True 110
+1 False 1
+Traceback (most recent call last):
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 908, in <module>
+    main(args)
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 739, in main
+    with autocast(device_type='cuda', dtype=torch.bfloat16 if not args.dtype == torch.float16 else torch.float16, enabled=args.amp):
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/amp/autocast_mode.py", line 305, in __init__
+    raise RuntimeError(
+RuntimeError: Current CUDA Device does not support bfloat16. Please switch dtype to float16.
+Traceback (most recent call last):
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 908, in <module>
+    main(args)
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 739, in main
+    with autocast(device_type='cuda', dtype=torch.bfloat16 if not args.dtype == torch.float16 else torch.float16, enabled=args.amp):
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/amp/autocast_mode.py", line 305, in __init__
+    raise RuntimeError(
+RuntimeError: Current CUDA Device does not support bfloat16. Please switch dtype to float16.
+Traceback (most recent call last):
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 908, in <module>
+    main(args)
+  File "/home/rinya/LoRA-dev/torchrun_main.py", line 739, in main
+    with autocast(device_type='cuda', dtype=torch.bfloat16 if not args.dtype == torch.float16 else torch.float16, enabled=args.amp):
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/amp/autocast_mode.py", line 305, in __init__
+    raise RuntimeError(
+RuntimeError: Current CUDA Device does not support bfloat16. Please switch dtype to float16.
+[2025-02-25 01:06:17,128] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 453202 closing signal SIGTERM
+[2025-02-25 01:06:17,494] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 1 (pid: 453203) of binary: /home/rinya/anaconda3/envs/sign-sgd-env/bin/python
+Traceback (most recent call last):
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+torchrun_main.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-02-25_01:06:17
+  host      : opt-mipt
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 453203)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+wandb: - 0.048 MB of 0.048 MB uploadedwandb: \ 0.048 MB of 0.048 MB uploadedwandb: | 0.048 MB of 0.048 MB uploadedwandb: / 0.048 MB of 0.048 MB uploadedwandb: - 0.052 MB of 0.063 MB uploadedwandb: 🚀 View run opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0 at: https://wandb.ai/mipt_rinya/sgd_with_adam_130/runs/qwrl2bzp
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 1 other file(s)
+wandb: Find logs at: ./wandb/run-20250225_010526-qwrl2bzp/logs

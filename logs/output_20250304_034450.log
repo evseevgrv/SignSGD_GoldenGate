@@ -1,0 +1,515 @@
+[2025-03-04 03:44:52,038] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+Starting script
+non debug mode and not nirvana - setting local_train_data to False
+2025-03-04 03:45:02.835 | INFO     | __main__:main:413 - Global rank 0, local rank 0, device: 0
+2025-03-04 03:45:02.841 | INFO     | __main__:main:417 - Process group initialized
+2025-03-04 03:45:02.842 | INFO     | __main__:main:433 - Using dist with rank 0 (only rank 0 will log)
+2025-03-04 03:45:02.842 | INFO     | __main__:main:434 - ****************************************
+2025-03-04 03:45:02.842 | INFO     | __main__:main:435 - Starting training with the arguments
+2025-03-04 03:45:02.842 | INFO     | __main__:main:437 - model_config                   configs/llama_130m.json
+2025-03-04 03:45:02.842 | INFO     | __main__:main:437 - use_hf_model                   False
+2025-03-04 03:45:02.842 | INFO     | __main__:main:437 - batch_size                     128
+2025-03-04 03:45:02.842 | INFO     | __main__:main:437 - eval_batch_size                256
+2025-03-04 03:45:02.842 | INFO     | __main__:main:437 - gradient_accumulation          4
+2025-03-04 03:45:02.842 | INFO     | __main__:main:437 - total_batch_size               512
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - max_length                     256
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - optimizer                      aid_with_adam
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - lr                             0.001
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - scheduler                      cosine
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - scheduler_cycle_length         None
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - scheduler_min_power            -20
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - min_lr_ratio                   0.1
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - activation_checkpointing       False
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - eval_every                     2000
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - num_training_steps             100000
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - max_train_tokens               None
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - save_every                     1000
+2025-03-04 03:45:02.843 | INFO     | __main__:main:437 - general_save_dir               checkpoints
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - save_dir                       130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - save_dir_prefix                130m
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - tags                           None
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - dtype                          torch.float32
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - amp                            True
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - workers                        8
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - seed                           0
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - name                           test
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - grad_clipping                  1.0
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - wandb_tags                     ['aid_with_adam', 'fp32', 'amp', 'bs_512', 'sch_cosine', 'wd_0.001', 'lr_0.001', 'clip-1.0', 'l_inf_100.0', 'option2', 'seed_0']
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - wandb_name_prefix              None
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - run_final_eval                 True
+2025-03-04 03:45:02.844 | INFO     | __main__:main:437 - run_old_eval                   False
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - final_save                     False
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - wandb                          True
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - debug                          False
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - debug_train_data               False
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - debug_print                    False
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - compile                        True
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - attn_implementation            sdpa
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - fsdp                           False
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - cpu_offload                    False
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - mp_policy_param                torch.float32
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - mp_policy_reduce               torch.float32
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - mp_policy_buffer               torch.float32
+2025-03-04 03:45:02.845 | INFO     | __main__:main:437 - use_orig_params                False
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - proj_params_lr_scale           1.0
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - update_gap                     10
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - density                        0.25
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - reset_statistics               True
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - inactive_update_rule           sign_sgd
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - inactive_lr_scale              1.0
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - proj_norms                     True
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - proj_embeds                    True
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - proj_logits                    False
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - rank                           0
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - proj_side                      std
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - proj_type                      svd
+2025-03-04 03:45:02.846 | INFO     | __main__:main:437 - coord_choice                   columns
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - block_order                    random
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - apollo_proj                    random
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - apollo_scale_type              tensor
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - apollo_scale                   1.0
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - apollo_scale_front             False
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - ldadam_rho                     0.908
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - ldadam_proj_method             power_iteration
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - ldadam_error_feedback          False
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - fira_alpha                     1.0
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - delay_start_step               10000
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - grad_taylor_approx             False
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - taylor_linear_coef             1.0
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - measure_time                   False
+2025-03-04 03:45:02.847 | INFO     | __main__:main:437 - collect_grads                  False
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - weight_decay                   0.001
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - warmup_steps                   10000
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - beta1                          0.9
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - beta2                          0.999
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - eps                            1e-08
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - momentum                       0.0
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - nesterov                       False
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - dampening                      0
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - sgd_sign_update                False
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - sign_norm                      False
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - normalized                     False
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - l_inf                          100.0
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - d_0                            None
+2025-03-04 03:45:02.848 | INFO     | __main__:main:437 - lower_bound                    0.0
+2025-03-04 03:45:02.849 | INFO     | __main__:main:437 - clamp_level                    0.001
+2025-03-04 03:45:02.849 | INFO     | __main__:main:437 - single_gpu                     False
+2025-03-04 03:45:02.849 | INFO     | __main__:main:437 - local_train_data               False
+2025-03-04 03:45:02.849 | INFO     | __main__:main:437 - streaming                      True
+2025-03-04 03:45:02.849 | INFO     | __main__:main:437 - wandb_name                     opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-03-04 03:45:02.849 | INFO     | __main__:main:438 - ****************************************
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+Model dtype:  torch.float32
+2025-03-04 03:45:12.772 | INFO     | __main__:main:515 - ****************************************
+2025-03-04 03:45:12.773 | INFO     | __main__:main:520 - Loading training state like global_step, update_step, and tokens_seen from checkpoints/130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+2025-03-04 03:45:12.773 | INFO     | __main__:main:528 - global_step       : 4000
+2025-03-04 03:45:12.773 | INFO     | __main__:main:529 - update_step       : 1000
+2025-03-04 03:45:12.773 | INFO     | __main__:main:530 - tokens_seen       : 99979486
+2025-03-04 03:45:12.773 | INFO     | __main__:main:531 - tokens_seen_before: 99878561
+2025-03-04 03:45:12.773 | INFO     | __main__:main:532 - Will train for 99000 update steps
+2025-03-04 03:45:12.773 | INFO     | __main__:main:535 - ****************************************
+2025-03-04 03:45:28.470 | INFO     | __main__:main:555 - Shuffling data with seed 42
+/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/huggingface_hub/file_download.py:797: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+wandb: Currently logged in as: rinya (mipt_rinya). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.19.7 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.2
+wandb: Run data is saved locally in /home/rinya/LoRA-dev/wandb/run-20250304_034530-vkprrlw1
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Resuming run opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+wandb: ⭐️ View project at https://wandb.ai/mipt_rinya/1_sgd_with_adam_130
+wandb: 🚀 View run at https://wandb.ai/mipt_rinya/1_sgd_with_adam_130/runs/vkprrlw1
+wandb: WARNING Saving files without folders. If you want to preserve sub directories pass base_path to wandb.save, i.e. wandb.save("/mnt/folder/file.h5", base_path="/mnt")
+Update steps:   0%|                                   | 0/99000 [00:00<?, ?it/s]proj_norms: True, proj_embeds: True, proj_logits: False, 
+Number of proj_params: 110, number of NON proj_params: 1
+2025-03-04 03:45:31.947 | INFO     | __main__:main:617 - 
+DistributedDataParallel(
+  (module): LlamaForCausalLM(
+    (model): LlamaModel(
+      (embed_tokens): Embedding(32000, 768, padding_idx=31999)
+      (layers): ModuleList(
+        (0-11): 12 x LlamaDecoderLayer(
+          (self_attn): LlamaAttention(
+            (q_proj): Linear(in_features=768, out_features=768, bias=False)
+            (k_proj): Linear(in_features=768, out_features=768, bias=False)
+            (v_proj): Linear(in_features=768, out_features=768, bias=False)
+            (o_proj): Linear(in_features=768, out_features=768, bias=False)
+            (rotary_emb): LlamaRotaryEmbedding()
+          )
+          (mlp): LlamaMLP(
+            (gate_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (down_proj): Linear(in_features=2048, out_features=768, bias=False)
+            (up_proj): Linear(in_features=768, out_features=2048, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): LlamaRMSNorm()
+          (post_attention_layernorm): LlamaRMSNorm()
+        )
+      )
+      (norm): LlamaRMSNorm()
+    )
+    (lm_head): Linear(in_features=768, out_features=32000, bias=False)
+  )
+)
+
+2025-03-04 03:45:31.948 | INFO     | __main__:main:618 - Total params: 134.11M
+2025-03-04 03:45:31.949 | INFO     | __main__:main:619 - Trainable params: 134.11M
+2025-03-04 03:45:31.949 | INFO     | __main__:main:622 - Total params with GaLore enabled: 109.53M
+2025-03-04 03:45:31.949 | INFO     | __main__:main:623 - Saving model to checkpoints/130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0 every 1000 update steps
+AIDWithAdam (
+Parameter Group 0
+    L_inf: 100.0
+    clamp_level: 0.001
+    d: None
+    dampening: 0
+    differentiable: False
+    f_diff: None
+    foreach: False
+    fused: False
+    is_proj_params: True
+    lambda_denom_sum: None
+    lower_bound: 0.0
+    lr: 0.0010000000474974513
+    maximize: False
+    momentum: 0.0
+    nesterov: False
+    prev_gamma: None
+    tilde_d: None
+    update_gap: 10
+    warmup_steps: 10000
+    weight_decay: 0.001
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    is_proj_params: False
+    lr: 0.0010000000474974513
+    maximize: False
+    weight_decay: 0.001
+)
+0 True 110
+1 False 1
+2025-03-04 03:45:31.953 | INFO     | __main__:main:649 - Loading model from checkpoints/130m/opt-aid_with_adam-dtype-fp32-amp-1-bs-512-sch-cosine-warmup-10000-wd-0.001-lr-0.001-clip-1.0-l_inf-100.0-d_0-None-lb-0.0-clamp-0.001-gap-10-emb-1-logit-0-norm-1-seed-0
+/home/rinya/anaconda3/envs/sign-sgd-env/lib/python3.10/site-packages/torch/_utils.py:831: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+2025-03-04 03:45:37.327 | INFO     | __main__:main:674 - Model successfully loaded (strict=True policy)
+[rank0]:[2025-03-04 03:45:47,993] [0/0] torch._dynamo.variables.torch: [WARNING] Profiler function <class 'torch.autograd.profiler.record_function'> will be ignored
+Update steps:   0%|                      | 1/99000 [01:07<1850:58:21, 67.31s/it]Update steps:   0%|                       | 2/99000 [01:08<787:08:15, 28.62s/it]Update steps:   0%|                       | 3/99000 [01:09<437:13:32, 15.90s/it]Update steps:   0%|                       | 4/99000 [01:10<272:38:43,  9.91s/it]Update steps:   0%|                       | 5/99000 [01:11<181:40:49,  6.61s/it]Update steps:   0%|                       | 6/99000 [01:11<126:53:09,  4.61s/it]Update steps:   0%|                        | 7/99000 [01:12<92:03:38,  3.35s/it]Update steps:   0%|                        | 8/99000 [01:13<69:12:31,  2.52s/it]Update steps:   0%|                        | 9/99000 [01:14<53:59:59,  1.96s/it]Update steps:   0%|                       | 10/99000 [01:14<43:39:34,  1.59s/it]wandb: WARNING Step only supports monotonically increasing values, use define_metric to set a custom x axis. For details see: https://wandb.me/define-metric
+wandb: WARNING (User provided step: 1000 is less than current step: 2000. Dropping entry: {'grad_norm': 2.075590133666992, '_timestamp': 1741049199.1049032}).
+wandb: WARNING (User provided step: 1001 is less than current step: 2000. Dropping entry: {'loss': 9.675787925720215, 'lr': 0.00010010000551119447, 'tokens_seen': 100078511, 'throughput_tokens': 3207.686350864537, 'throughput_examples': 8.213730490835923, 'throughput_batches': 0.06416976945965565, '_timestamp': 1741049199.6673784}).
+wandb: WARNING (User provided step: 1001 is less than current step: 2000. Dropping entry: {'grad_norm': 1.829640507698059, '_timestamp': 1741049200.79041}).
+wandb: WARNING (User provided step: 1002 is less than current step: 2000. Dropping entry: {'loss': 9.304946899414062, 'lr': 0.00010019999899668619, 'tokens_seen': 100179369, 'throughput_tokens': 87645.92670942858, 'throughput_examples': 444.92964836926603, 'throughput_batches': 3.476012877884891, '_timestamp': 1741049200.8201067}).
+wandb: WARNING (User provided step: 1002 is less than current step: 2000. Dropping entry: {'grad_norm': 1.723344087600708, '_timestamp': 1741049201.5519128}).
+wandb: WARNING (User provided step: 1003 is less than current step: 2000. Dropping entry: {'loss': 9.176411628723145, 'lr': 0.00010030000703409314, 'tokens_seen': 100279999, 'throughput_tokens': 134560.15236467798, 'throughput_examples': 684.6347809869336, 'throughput_batches': 5.348709226460419, '_timestamp': 1741049201.5704896}).
+wandb: WARNING (User provided step: 1003 is less than current step: 2000. Dropping entry: {'grad_norm': 23.26714324951172, '_timestamp': 1741049202.2922552}).
+wandb: WARNING (User provided step: 1004 is less than current step: 2000. Dropping entry: {'loss': 9.092048645019531, 'lr': 0.00010040000779554248, 'tokens_seen': 100379927, 'throughput_tokens': 134789.30110872845, 'throughput_examples': 690.6184669729101, 'throughput_batches': 5.3954567732258605, '_timestamp': 1741049202.3124692}).
+wandb: WARNING (User provided step: 1004 is less than current step: 2000. Dropping entry: {'grad_norm': 1.421294093132019, '_timestamp': 1741049203.0344713}).
+wandb: WARNING (User provided step: 1005 is less than current step: 2000. Dropping entry: {'loss': 8.941001892089844, 'lr': 0.00010050000855699182, 'tokens_seen': 100482680, 'throughput_tokens': 139201.00840837718, 'throughput_examples': 693.6139704445526, 'throughput_batches': 5.418859144098067, '_timestamp': 1741049203.0511198}).
+wandb: WARNING (User provided step: 1005 is less than current step: 2000. Dropping entry: {'grad_norm': 43.37974166870117, '_timestamp': 1741049203.780948}).
+wandb: WARNING (User provided step: 1006 is less than current step: 2000. Dropping entry: {'loss': 9.802446365356445, 'lr': 0.00010060000204248354, 'tokens_seen': 100581387, 'throughput_tokens': 132462.709489989, 'throughput_examples': 687.0931875031596, 'throughput_batches': 5.367915527368434, '_timestamp': 1741049203.7968771}).
+wandb: WARNING (User provided step: 1006 is less than current step: 2000. Dropping entry: {'grad_norm': 1.598500370979309, '_timestamp': 1741049204.5218074}).
+wandb: WARNING (User provided step: 1007 is less than current step: 2000. Dropping entry: {'loss': 8.707881927490234, 'lr': 0.00010070000280393288, 'tokens_seen': 100679765, 'throughput_tokens': 133012.9667515323, 'throughput_examples': 692.2547620076089, 'throughput_batches': 5.408240328184444, '_timestamp': 1741049204.53688}).
+wandb: WARNING (User provided step: 1007 is less than current step: 2000. Dropping entry: {'grad_norm': 4.045932292938232, '_timestamp': 1741049205.2588222}).
+wandb: WARNING (User provided step: 1008 is less than current step: 2000. Dropping entry: {'loss': 8.356257438659668, 'lr': 0.00010080000356538221, 'tokens_seen': 100778390, 'throughput_tokens': 133524.82049047376, 'throughput_examples': 693.1782822927511, 'throughput_batches': 5.415455330412118, '_timestamp': 1741049205.2759898}).
+wandb: WARNING (User provided step: 1008 is less than current step: 2000. Dropping entry: {'grad_norm': 8.819916725158691, '_timestamp': 1741049206.007267}).
+wandb: WARNING (User provided step: 1009 is less than current step: 2000. Dropping entry: {'loss': 8.52574634552002, 'lr': 0.00010090000432683155, 'tokens_seen': 100880095, 'throughput_tokens': 136405.5275452826, 'throughput_examples': 686.6882660949284, 'throughput_batches': 5.364752078866628, '_timestamp': 1741049206.0221033}).
+wandb: WARNING (User provided step: 1009 is less than current step: 2000. Dropping entry: {'grad_norm': 2.065220355987549, '_timestamp': 1741049206.75261}).
+wandb: WARNING (User provided step: 1010 is less than current step: 2000. Dropping entry: {'loss': 8.414315223693848, 'lr': 0.00010100000508828089, 'tokens_seen': 100983321, 'throughput_tokens': 138376.5363660857, 'throughput_examples': 686.3463334764098, 'throughput_batches': 5.362080730284451, '_timestamp': 1741049206.7685595}).
+Update steps:   0%|                       | 11/99000 [01:15<36:33:24,  1.33s/it]Update steps:   0%|                       | 12/99000 [01:16<31:44:18,  1.15s/it]Update steps:   0%|                       | 13/99000 [01:17<28:23:50,  1.03s/it]Update steps:   0%|                       | 14/99000 [01:17<26:07:23,  1.05it/s]Update steps:   0%|                       | 15/99000 [01:18<24:27:57,  1.12it/s]Update steps:   0%|                       | 16/99000 [01:19<23:17:58,  1.18it/s]Update steps:   0%|                       | 17/99000 [01:20<22:27:52,  1.22it/s]Update steps:   0%|                       | 18/99000 [01:20<21:52:32,  1.26it/s]Update steps:   0%|                       | 19/99000 [01:21<21:28:25,  1.28it/s]Update steps:   0%|                       | 20/99000 [01:22<21:11:05,  1.30it/s]Update steps:   0%|                       | 21/99000 [01:23<21:03:36,  1.31it/s]Update steps:   0%|                       | 22/99000 [01:23<20:57:01,  1.31it/s]Update steps:   0%|                       | 23/99000 [01:24<20:50:41,  1.32it/s]Update steps:   0%|                       | 24/99000 [01:25<20:49:56,  1.32it/s]Update steps:   0%|                       | 25/99000 [01:26<20:48:14,  1.32it/s]Update steps:   0%|                       | 26/99000 [01:26<20:43:37,  1.33it/s]Update steps:   0%|                       | 27/99000 [01:27<20:43:53,  1.33it/s]Update steps:   0%|                       | 28/99000 [01:28<20:40:46,  1.33it/s]Update steps:   0%|                       | 29/99000 [01:29<20:38:24,  1.33it/s]Update steps:   0%|                       | 30/99000 [01:29<20:37:53,  1.33it/s]wandb: WARNING (User provided step: 1010 is less than current step: 2000. Dropping entry: {'grad_norm': 7.443403720855713, '_timestamp': 1741049207.495934}).
+wandb: WARNING (User provided step: 1011 is less than current step: 2000. Dropping entry: {'loss': 8.343161582946777, 'lr': 0.00010110000584973022, 'tokens_seen': 101081318, 'throughput_tokens': 130746.33326748767, 'throughput_examples': 683.1037953504054, 'throughput_batches': 5.336748401175043, '_timestamp': 1741049207.51865}).
+wandb: WARNING (User provided step: 1011 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8610296249389648, '_timestamp': 1741049208.2483785}).
+wandb: WARNING (User provided step: 1012 is less than current step: 2000. Dropping entry: {'loss': 8.189413070678711, 'lr': 0.00010120000661117956, 'tokens_seen': 101179606, 'throughput_tokens': 130485.62253374903, 'throughput_examples': 679.723249402567, 'throughput_batches': 5.310337885957555, '_timestamp': 1741049208.273035}).
+wandb: WARNING (User provided step: 1012 is less than current step: 2000. Dropping entry: {'grad_norm': 2.450139284133911, '_timestamp': 1741049209.0023162}).
+wandb: WARNING (User provided step: 1013 is less than current step: 2000. Dropping entry: {'loss': 7.8457112312316895, 'lr': 0.0001013000073726289, 'tokens_seen': 101276214, 'throughput_tokens': 129556.23542848008, 'throughput_examples': 686.6180082330842, 'throughput_batches': 5.36420318932097, '_timestamp': 1741049209.0228105}).
+wandb: WARNING (User provided step: 1013 is less than current step: 2000. Dropping entry: {'grad_norm': 1.5417580604553223, '_timestamp': 1741049209.7613866}).
+wandb: WARNING (User provided step: 1014 is less than current step: 2000. Dropping entry: {'loss': 8.114242553710938, 'lr': 0.00010140000813407823, 'tokens_seen': 101376072, 'throughput_tokens': 131861.52945780387, 'throughput_examples': 676.09108015778, 'throughput_batches': 5.281961563732656, '_timestamp': 1741049209.7811728}).
+wandb: WARNING (User provided step: 1014 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8430317640304565, '_timestamp': 1741049210.51203}).
+wandb: WARNING (User provided step: 1015 is less than current step: 2000. Dropping entry: {'loss': 7.727379322052002, 'lr': 0.00010150000161956996, 'tokens_seen': 101476312, 'throughput_tokens': 134412.14825338742, 'throughput_examples': 686.5424970643891, 'throughput_batches': 5.36361325831554, '_timestamp': 1741049210.5279465}).
+wandb: WARNING (User provided step: 1015 is less than current step: 2000. Dropping entry: {'grad_norm': 2.165208101272583, '_timestamp': 1741049211.2593517}).
+wandb: WARNING (User provided step: 1016 is less than current step: 2000. Dropping entry: {'loss': 7.8396315574646, 'lr': 0.0001016000023810193, 'tokens_seen': 101576956, 'throughput_tokens': 134217.55730082933, 'throughput_examples': 682.7966827433787, 'throughput_batches': 5.334349083932646, '_timestamp': 1741049211.278941}).
+wandb: WARNING (User provided step: 1016 is less than current step: 2000. Dropping entry: {'grad_norm': 11.953805923461914, '_timestamp': 1741049212.0072536}).
+wandb: WARNING (User provided step: 1017 is less than current step: 2000. Dropping entry: {'loss': 8.172840118408203, 'lr': 0.00010170000314246863, 'tokens_seen': 101679706, 'throughput_tokens': 138304.06599087888, 'throughput_examples': 689.1647862513868, 'throughput_batches': 5.384099892588959, '_timestamp': 1741049212.0236201}).
+wandb: WARNING (User provided step: 1017 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2659529447555542, '_timestamp': 1741049212.7538729}).
+wandb: WARNING (User provided step: 1018 is less than current step: 2000. Dropping entry: {'loss': 7.702381610870361, 'lr': 0.00010180000390391797, 'tokens_seen': 101780687, 'throughput_tokens': 135629.27930513953, 'throughput_examples': 687.675810342851, 'throughput_batches': 5.372467268303524, '_timestamp': 1741049212.7688556}).
+wandb: WARNING (User provided step: 1018 is less than current step: 2000. Dropping entry: {'grad_norm': 5.5353851318359375, '_timestamp': 1741049213.4999855}).
+wandb: WARNING (User provided step: 1019 is less than current step: 2000. Dropping entry: {'loss': 7.824090957641602, 'lr': 0.0001019000046653673, 'tokens_seen': 101881568, 'throughput_tokens': 135097.82644028054, 'throughput_examples': 685.6602049684642, 'throughput_batches': 5.356720351316127, '_timestamp': 1741049213.5159514}).
+wandb: WARNING (User provided step: 1019 is less than current step: 2000. Dropping entry: {'grad_norm': 1.464892029762268, '_timestamp': 1741049214.2462533}).
+wandb: WARNING (User provided step: 1020 is less than current step: 2000. Dropping entry: {'loss': 8.265497207641602, 'lr': 0.00010200000542681664, 'tokens_seen': 101979556, 'throughput_tokens': 130907.38551242388, 'throughput_examples': 684.008055908489, 'throughput_batches': 5.343812936785071, '_timestamp': 1741049214.264993}).
+wandb: WARNING (User provided step: 1020 is less than current step: 2000. Dropping entry: {'grad_norm': 1.9464871883392334, '_timestamp': 1741049215.0012145}).
+wandb: WARNING (User provided step: 1021 is less than current step: 2000. Dropping entry: {'loss': 7.613995552062988, 'lr': 0.00010210000618826598, 'tokens_seen': 102078817, 'throughput_tokens': 130320.64687345935, 'throughput_examples': 672.2093390073763, 'throughput_batches': 5.251635460995128, '_timestamp': 1741049215.027288}).
+wandb: WARNING (User provided step: 1021 is less than current step: 2000. Dropping entry: {'grad_norm': 2.911722183227539, '_timestamp': 1741049215.7544827}).
+wandb: WARNING (User provided step: 1022 is less than current step: 2000. Dropping entry: {'loss': 7.635855197906494, 'lr': 0.00010220000694971532, 'tokens_seen': 102178268, 'throughput_tokens': 133722.9432941488, 'throughput_examples': 688.4410108154185, 'throughput_batches': 5.378445396995457, '_timestamp': 1741049215.771831}).
+wandb: WARNING (User provided step: 1022 is less than current step: 2000. Dropping entry: {'grad_norm': 0.7744091153144836, '_timestamp': 1741049216.503087}).
+wandb: WARNING (User provided step: 1023 is less than current step: 2000. Dropping entry: {'loss': 7.494051456451416, 'lr': 0.00010230000771116465, 'tokens_seen': 102280095, 'throughput_tokens': 135254.41061226765, 'throughput_examples': 680.0775652182725, 'throughput_batches': 5.313105978267754, '_timestamp': 1741049216.5253193}).
+wandb: WARNING (User provided step: 1023 is less than current step: 2000. Dropping entry: {'grad_norm': 2.093355894088745, '_timestamp': 1741049217.2596965}).
+wandb: WARNING (User provided step: 1024 is less than current step: 2000. Dropping entry: {'loss': 7.4803242683410645, 'lr': 0.00010240000119665638, 'tokens_seen': 102382166, 'throughput_tokens': 135376.02720442243, 'throughput_examples': 679.0618875945595, 'throughput_batches': 5.305170996832496, '_timestamp': 1741049217.2804742}).
+wandb: WARNING (User provided step: 1024 is less than current step: 2000. Dropping entry: {'grad_norm': 0.7448495626449585, '_timestamp': 1741049218.014816}).
+wandb: WARNING (User provided step: 1025 is less than current step: 2000. Dropping entry: {'loss': 7.528485298156738, 'lr': 0.00010250000195810571, 'tokens_seen': 102481867, 'throughput_tokens': 132800.29289617902, 'throughput_examples': 681.976609691414, 'throughput_batches': 5.3279422632141715, '_timestamp': 1741049218.032136}).
+wandb: WARNING (User provided step: 1025 is less than current step: 2000. Dropping entry: {'grad_norm': 1.9590879678726196, '_timestamp': 1741049218.7624037}).
+wandb: WARNING (User provided step: 1026 is less than current step: 2000. Dropping entry: {'loss': 7.473474025726318, 'lr': 0.00010260000271955505, 'tokens_seen': 102583307, 'throughput_tokens': 135965.9846352469, 'throughput_examples': 686.263644846672, 'throughput_batches': 5.361434725364625, '_timestamp': 1741049218.7786863}).
+wandb: WARNING (User provided step: 1026 is less than current step: 2000. Dropping entry: {'grad_norm': 0.8681890368461609, '_timestamp': 1741049219.5165756}).
+wandb: WARNING (User provided step: 1027 is less than current step: 2000. Dropping entry: {'loss': 7.468733310699463, 'lr': 0.000102700010756962, 'tokens_seen': 102684391, 'throughput_tokens': 134190.71037765022, 'throughput_examples': 679.6886125732748, 'throughput_batches': 5.310067285728709, '_timestamp': 1741049219.5325065}).
+wandb: WARNING (User provided step: 1027 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8627969026565552, '_timestamp': 1741049220.2644315}).
+wandb: WARNING (User provided step: 1028 is less than current step: 2000. Dropping entry: {'loss': 7.381227016448975, 'lr': 0.00010280000424245372, 'tokens_seen': 102784581, 'throughput_tokens': 134139.43202251047, 'throughput_examples': 685.4914581847027, 'throughput_batches': 5.3554020170679895, '_timestamp': 1741049220.2798316}).
+wandb: WARNING (User provided step: 1028 is less than current step: 2000. Dropping entry: {'grad_norm': 2.922360897064209, '_timestamp': 1741049221.0119436}).
+wandb: WARNING (User provided step: 1029 is less than current step: 2000. Dropping entry: {'loss': 7.330801010131836, 'lr': 0.00010290000500390306, 'tokens_seen': 102885895, 'throughput_tokens': 134818.71548556146, 'throughput_examples': 681.3192878438072, 'throughput_batches': 5.322806936279743, '_timestamp': 1741049221.0317116}).
+wandb: WARNING (User provided step: 1029 is less than current step: 2000. Dropping entry: {'grad_norm': 1.7258697748184204, '_timestamp': 1741049221.7616587}).
+wandb: WARNING (User provided step: 1030 is less than current step: 2000. Dropping entry: {'loss': 7.315912246704102, 'lr': 0.0001030000057653524, 'tokens_seen': 102985111, 'throughput_tokens': 133096.59151216794, 'throughput_examples': 686.8393691968027, 'throughput_batches': 5.3659325718500215, '_timestamp': 1741049221.77774}).
+Update steps:   0%|                       | 31/99000 [01:30<20:37:23,  1.33it/s]Update steps:   0%|                       | 32/99000 [01:31<20:43:13,  1.33it/s]Update steps:   0%|                       | 33/99000 [01:32<20:41:08,  1.33it/s]Update steps:   0%|                       | 34/99000 [01:32<20:42:57,  1.33it/s]Update steps:   0%|                       | 35/99000 [01:33<20:46:48,  1.32it/s]Update steps:   0%|                       | 36/99000 [01:34<20:46:47,  1.32it/s]Update steps:   0%|                       | 37/99000 [01:35<20:50:23,  1.32it/s]Update steps:   0%|                       | 38/99000 [01:35<20:53:22,  1.32it/s]Update steps:   0%|                       | 39/99000 [01:36<20:51:26,  1.32it/s]Update steps:   0%|                       | 40/99000 [01:37<20:47:37,  1.32it/s]Update steps:   0%|                       | 41/99000 [01:38<20:46:03,  1.32it/s]Update steps:   0%|                       | 42/99000 [01:38<20:48:24,  1.32it/s]Update steps:   0%|                       | 43/99000 [01:39<20:45:17,  1.32it/s]Update steps:   0%|                       | 44/99000 [01:40<20:46:41,  1.32it/s]Update steps:   0%|                       | 45/99000 [01:41<20:48:42,  1.32it/s]Update steps:   0%|                       | 46/99000 [01:41<20:52:50,  1.32it/s]Update steps:   0%|                       | 47/99000 [01:42<21:00:15,  1.31it/s]Update steps:   0%|                       | 48/99000 [01:43<21:02:53,  1.31it/s]Update steps:   0%|                       | 49/99000 [01:44<21:05:33,  1.30it/s]Update steps:   0%|                       | 50/99000 [01:45<21:06:06,  1.30it/s]wandb: WARNING (User provided step: 1030 is less than current step: 2000. Dropping entry: {'grad_norm': 1.686859369277954, '_timestamp': 1741049222.5112898}).
+wandb: WARNING (User provided step: 1031 is less than current step: 2000. Dropping entry: {'loss': 7.269874095916748, 'lr': 0.00010310000652680174, 'tokens_seen': 103087660, 'throughput_tokens': 135466.36090249245, 'throughput_examples': 676.3476658190341, 'throughput_batches': 5.283966139211204, '_timestamp': 1741049222.5351682}).
+wandb: WARNING (User provided step: 1031 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6048089265823364, '_timestamp': 1741049223.2724922}).
+wandb: WARNING (User provided step: 1032 is less than current step: 2000. Dropping entry: {'loss': 7.202809810638428, 'lr': 0.00010320000728825107, 'tokens_seen': 103187829, 'throughput_tokens': 132979.10494714565, 'throughput_examples': 679.7043170335991, 'throughput_batches': 5.310189976824993, '_timestamp': 1741049223.2889621}).
+wandb: WARNING (User provided step: 1032 is less than current step: 2000. Dropping entry: {'grad_norm': 1.864388108253479, '_timestamp': 1741049224.0226417}).
+wandb: WARNING (User provided step: 1033 is less than current step: 2000. Dropping entry: {'loss': 7.249629974365234, 'lr': 0.0001033000007737428, 'tokens_seen': 103285652, 'throughput_tokens': 130377.45016288466, 'throughput_examples': 682.3881345225249, 'throughput_batches': 5.3311573009572255, '_timestamp': 1741049224.0396338}).
+wandb: WARNING (User provided step: 1033 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4663419723510742, '_timestamp': 1741049224.7789986}).
+wandb: WARNING (User provided step: 1034 is less than current step: 2000. Dropping entry: {'loss': 7.218991279602051, 'lr': 0.00010340000153519213, 'tokens_seen': 103385947, 'throughput_tokens': 132760.37790536208, 'throughput_examples': 677.7338201061407, 'throughput_batches': 5.294795469579224, '_timestamp': 1741049224.7956023}).
+wandb: WARNING (User provided step: 1034 is less than current step: 2000. Dropping entry: {'grad_norm': 2.4655911922454834, '_timestamp': 1741049225.5404885}).
+wandb: WARNING (User provided step: 1035 is less than current step: 2000. Dropping entry: {'loss': 7.271594524383545, 'lr': 0.00010350000957259908, 'tokens_seen': 103487867, 'throughput_tokens': 134183.81340979753, 'throughput_examples': 674.0788114777897, 'throughput_batches': 5.266240714670232, '_timestamp': 1741049225.5556436}).
+wandb: WARNING (User provided step: 1035 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3759286403656006, '_timestamp': 1741049226.2953632}).
+wandb: WARNING (User provided step: 1036 is less than current step: 2000. Dropping entry: {'loss': 7.247617721557617, 'lr': 0.00010360001033404842, 'tokens_seen': 103588798, 'throughput_tokens': 133266.16446248602, 'throughput_examples': 676.0289326846345, 'throughput_batches': 5.281476036598707, '_timestamp': 1741049226.3134453}).
+wandb: WARNING (User provided step: 1036 is less than current step: 2000. Dropping entry: {'grad_norm': 1.62209951877594, '_timestamp': 1741049227.0573895}).
+wandb: WARNING (User provided step: 1037 is less than current step: 2000. Dropping entry: {'loss': 7.201135158538818, 'lr': 0.00010370000381954014, 'tokens_seen': 103687717, 'throughput_tokens': 129294.50123514884, 'throughput_examples': 669.2221376317614, 'throughput_batches': 5.228297950248136, '_timestamp': 1741049227.079489}).
+wandb: WARNING (User provided step: 1037 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4766815900802612, '_timestamp': 1741049227.8234646}).
+wandb: WARNING (User provided step: 1038 is less than current step: 2000. Dropping entry: {'loss': 7.253039360046387, 'lr': 0.00010380000458098948, 'tokens_seen': 103789965, 'throughput_tokens': 134664.21346355777, 'throughput_examples': 674.3220140574052, 'throughput_batches': 5.268140734823478, '_timestamp': 1741049227.840169}).
+wandb: WARNING (User provided step: 1038 is less than current step: 2000. Dropping entry: {'grad_norm': 1.372414231300354, '_timestamp': 1741049228.5796475}).
+wandb: WARNING (User provided step: 1039 is less than current step: 2000. Dropping entry: {'loss': 7.11414909362793, 'lr': 0.00010390000534243882, 'tokens_seen': 103889907, 'throughput_tokens': 132366.76013503593, 'throughput_examples': 678.1111163388605, 'throughput_batches': 5.2977430963973475, '_timestamp': 1741049228.5957513}).
+wandb: WARNING (User provided step: 1039 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4969536066055298, '_timestamp': 1741049229.3309894}).
+wandb: WARNING (User provided step: 1040 is less than current step: 2000. Dropping entry: {'loss': 7.138302326202393, 'lr': 0.00010400000610388815, 'tokens_seen': 103990656, 'throughput_tokens': 134355.83249744846, 'throughput_examples': 682.7877819005014, 'throughput_batches': 5.334279546097667, '_timestamp': 1741049229.3462405}).
+wandb: WARNING (User provided step: 1040 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8149689435958862, '_timestamp': 1741049230.0839918}).
+wandb: WARNING (User provided step: 1041 is less than current step: 2000. Dropping entry: {'loss': 7.142304420471191, 'lr': 0.00010409999958937988, 'tokens_seen': 104092217, 'throughput_tokens': 134115.01138588987, 'throughput_examples': 676.1147077084275, 'throughput_batches': 5.28214615397209, '_timestamp': 1741049230.1042812}).
+wandb: WARNING (User provided step: 1041 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6432567834854126, '_timestamp': 1741049230.8440428}).
+wandb: WARNING (User provided step: 1042 is less than current step: 2000. Dropping entry: {'loss': 7.124497890472412, 'lr': 0.00010420000035082921, 'tokens_seen': 104191690, 'throughput_tokens': 131906.33511834644, 'throughput_examples': 678.93844139207, 'throughput_batches': 5.304206573375547, '_timestamp': 1741049230.8589172}).
+wandb: WARNING (User provided step: 1042 is less than current step: 2000. Dropping entry: {'grad_norm': 3.8233132362365723, '_timestamp': 1741049231.5956826}).
+wandb: WARNING (User provided step: 1043 is less than current step: 2000. Dropping entry: {'loss': 7.204307556152344, 'lr': 0.00010430000111227855, 'tokens_seen': 104291954, 'throughput_tokens': 133148.03919678877, 'throughput_examples': 679.9229640624337, 'throughput_batches': 5.311898156737763, '_timestamp': 1741049231.612358}).
+wandb: WARNING (User provided step: 1043 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2351728677749634, '_timestamp': 1741049232.3509765}).
+wandb: WARNING (User provided step: 1044 is less than current step: 2000. Dropping entry: {'loss': 7.183828353881836, 'lr': 0.0001044000091496855, 'tokens_seen': 104391999, 'throughput_tokens': 131931.76699699456, 'throughput_examples': 675.1868129587807, 'throughput_batches': 5.274896976240474, '_timestamp': 1741049232.3713832}).
+wandb: WARNING (User provided step: 1044 is less than current step: 2000. Dropping entry: {'grad_norm': 1.286302089691162, '_timestamp': 1741049233.1124265}).
+wandb: WARNING (User provided step: 1045 is less than current step: 2000. Dropping entry: {'loss': 7.070418834686279, 'lr': 0.00010450000991113484, 'tokens_seen': 104493650, 'throughput_tokens': 134114.8702289692, 'throughput_examples': 675.5153767029566, 'throughput_batches': 5.277463880491848, '_timestamp': 1741049233.1301332}).
+wandb: WARNING (User provided step: 1045 is less than current step: 2000. Dropping entry: {'grad_norm': 2.11203932762146, '_timestamp': 1741049233.8751721}).
+wandb: WARNING (User provided step: 1046 is less than current step: 2000. Dropping entry: {'loss': 7.134400367736816, 'lr': 0.00010460000339662656, 'tokens_seen': 104595132, 'throughput_tokens': 132052.40275319127, 'throughput_examples': 666.2347037862274, 'throughput_batches': 5.204958623329902, '_timestamp': 1741049233.89933}).
+wandb: WARNING (User provided step: 1046 is less than current step: 2000. Dropping entry: {'grad_norm': 3.911648988723755, '_timestamp': 1741049234.6488333}).
+wandb: WARNING (User provided step: 1047 is less than current step: 2000. Dropping entry: {'loss': 7.175620079040527, 'lr': 0.0001047000041580759, 'tokens_seen': 104694229, 'throughput_tokens': 127780.16688038017, 'throughput_examples': 660.1960245290438, 'throughput_batches': 5.157781441633155, '_timestamp': 1741049234.6761203}).
+wandb: WARNING (User provided step: 1047 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2045940160751343, '_timestamp': 1741049235.4206586}).
+wandb: WARNING (User provided step: 1048 is less than current step: 2000. Dropping entry: {'loss': 7.06289529800415, 'lr': 0.00010480000491952524, 'tokens_seen': 104794152, 'throughput_tokens': 130686.42319447952, 'throughput_examples': 669.6301019342245, 'throughput_batches': 5.231485171361129, '_timestamp': 1741049235.442528}).
+wandb: WARNING (User provided step: 1048 is less than current step: 2000. Dropping entry: {'grad_norm': 3.343066692352295, '_timestamp': 1741049236.1905723}).
+wandb: WARNING (User provided step: 1049 is less than current step: 2000. Dropping entry: {'loss': 7.218328475952148, 'lr': 0.00010490000568097457, 'tokens_seen': 104893086, 'throughput_tokens': 127784.75607221933, 'throughput_examples': 661.307488921668, 'throughput_batches': 5.166464757200531, '_timestamp': 1741049236.2175143}).
+wandb: WARNING (User provided step: 1049 is less than current step: 2000. Dropping entry: {'grad_norm': 1.776451587677002, '_timestamp': 1741049236.9624903}).
+wandb: WARNING (User provided step: 1050 is less than current step: 2000. Dropping entry: {'loss': 7.082439422607422, 'lr': 0.0001049999991664663, 'tokens_seen': 104992908, 'throughput_tokens': 131431.7364784413, 'throughput_examples': 674.1304429580849, 'throughput_batches': 5.2666440856100385, '_timestamp': 1741049236.9783013}).
+Update steps:   0%|                       | 51/99000 [01:45<21:01:54,  1.31it/s]Update steps:   0%|                       | 52/99000 [01:46<20:59:33,  1.31it/s]Update steps:   0%|                       | 53/99000 [01:47<20:58:05,  1.31it/s]Update steps:   0%|                       | 54/99000 [01:48<20:58:22,  1.31it/s]Update steps:   0%|                       | 55/99000 [01:48<20:54:53,  1.31it/s]Update steps:   0%|                       | 56/99000 [01:49<20:54:52,  1.31it/s]Update steps:   0%|                       | 57/99000 [01:50<20:52:30,  1.32it/s]Update steps:   0%|                       | 58/99000 [01:51<20:53:13,  1.32it/s]Update steps:   0%|                       | 59/99000 [01:51<20:56:19,  1.31it/s]Update steps:   0%|                       | 60/99000 [01:52<20:58:40,  1.31it/s]Update steps:   0%|                       | 61/99000 [01:53<20:59:52,  1.31it/s]Update steps:   0%|                       | 62/99000 [01:54<21:03:53,  1.30it/s]Update steps:   0%|                       | 63/99000 [01:54<20:59:38,  1.31it/s]Update steps:   0%|                       | 64/99000 [01:55<20:57:39,  1.31it/s]Update steps:   0%|                       | 65/99000 [01:56<20:55:50,  1.31it/s]Update steps:   0%|                       | 66/99000 [01:57<20:56:20,  1.31it/s]Update steps:   0%|                       | 67/99000 [01:57<20:56:22,  1.31it/s]Update steps:   0%|                       | 68/99000 [01:58<21:14:52,  1.29it/s]Update steps:   0%|                       | 69/99000 [01:59<21:22:03,  1.29it/s]wandb: WARNING (User provided step: 1050 is less than current step: 2000. Dropping entry: {'grad_norm': 1.5813713073730469, '_timestamp': 1741049237.72209}).
+wandb: WARNING (User provided step: 1051 is less than current step: 2000. Dropping entry: {'loss': 7.043601989746094, 'lr': 0.00010509999992791563, 'tokens_seen': 105096321, 'throughput_tokens': 135548.91844199807, 'throughput_examples': 671.1056273611925, 'throughput_batches': 5.243012713759317, '_timestamp': 1741049237.7416677}).
+wandb: WARNING (User provided step: 1051 is less than current step: 2000. Dropping entry: {'grad_norm': 1.9807509183883667, '_timestamp': 1741049238.482483}).
+wandb: WARNING (User provided step: 1052 is less than current step: 2000. Dropping entry: {'loss': 7.057385444641113, 'lr': 0.00010520000796532258, 'tokens_seen': 105193502, 'throughput_tokens': 128616.62302439763, 'throughput_examples': 677.6191949917328, 'throughput_batches': 5.2938999608729125, '_timestamp': 1741049238.4976318}).
+wandb: WARNING (User provided step: 1052 is less than current step: 2000. Dropping entry: {'grad_norm': 0.9073147773742676, '_timestamp': 1741049239.240964}).
+wandb: WARNING (User provided step: 1053 is less than current step: 2000. Dropping entry: {'loss': 6.942373275756836, 'lr': 0.00010530000872677192, 'tokens_seen': 105292583, 'throughput_tokens': 129664.72562552984, 'throughput_examples': 670.0410726604624, 'throughput_batches': 5.234695880159863, '_timestamp': 1741049239.262316}).
+wandb: WARNING (User provided step: 1053 is less than current step: 2000. Dropping entry: {'grad_norm': 1.971496343612671, '_timestamp': 1741049240.0063534}).
+wandb: WARNING (User provided step: 1054 is less than current step: 2000. Dropping entry: {'loss': 7.1210174560546875, 'lr': 0.00010540000948822126, 'tokens_seen': 105391410, 'throughput_tokens': 130267.6063949878, 'throughput_examples': 674.8865641396961, 'throughput_batches': 5.272551282341376, '_timestamp': 1741049240.0221045}).
+wandb: WARNING (User provided step: 1054 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4893604516983032, '_timestamp': 1741049240.7631135}).
+wandb: WARNING (User provided step: 1055 is less than current step: 2000. Dropping entry: {'loss': 7.008580684661865, 'lr': 0.00010550000297371298, 'tokens_seen': 105492824, 'throughput_tokens': 134280.54249243537, 'throughput_examples': 677.9304411237789, 'throughput_batches': 5.296331571279523, '_timestamp': 1741049240.7777684}).
+wandb: WARNING (User provided step: 1055 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8860758543014526, '_timestamp': 1741049241.5231187}).
+wandb: WARNING (User provided step: 1056 is less than current step: 2000. Dropping entry: {'loss': 7.0393829345703125, 'lr': 0.00010560000373516232, 'tokens_seen': 105592975, 'throughput_tokens': 131480.04025933947, 'throughput_examples': 672.162840239057, 'throughput_batches': 5.251272189367633, '_timestamp': 1741049241.5402384}).
+wandb: WARNING (User provided step: 1056 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4267642498016357, '_timestamp': 1741049242.2802196}).
+wandb: WARNING (User provided step: 1057 is less than current step: 2000. Dropping entry: {'loss': 6.9650444984436035, 'lr': 0.00010570000449661165, 'tokens_seen': 105693387, 'throughput_tokens': 132959.85562645833, 'throughput_examples': 677.9612604145588, 'throughput_batches': 5.29657234698874, '_timestamp': 1741049242.2963295}).
+wandb: WARNING (User provided step: 1057 is less than current step: 2000. Dropping entry: {'grad_norm': 1.800495982170105, '_timestamp': 1741049243.0397706}).
+wandb: WARNING (User provided step: 1058 is less than current step: 2000. Dropping entry: {'loss': 7.0759100914001465, 'lr': 0.00010580000525806099, 'tokens_seen': 105792957, 'throughput_tokens': 130582.4551362726, 'throughput_examples': 671.4694891008494, 'throughput_batches': 5.245855383600386, '_timestamp': 1741049243.059524}).
+wandb: WARNING (User provided step: 1058 is less than current step: 2000. Dropping entry: {'grad_norm': 1.228532314300537, '_timestamp': 1741049243.8061686}).
+wandb: WARNING (User provided step: 1059 is less than current step: 2000. Dropping entry: {'loss': 6.876888751983643, 'lr': 0.00010589999874355271, 'tokens_seen': 105892966, 'throughput_tokens': 130815.1756926636, 'throughput_examples': 669.7134253381572, 'throughput_batches': 5.232136135454353, '_timestamp': 1741049243.8249018}).
+wandb: WARNING (User provided step: 1059 is less than current step: 2000. Dropping entry: {'grad_norm': 1.67082941532135, '_timestamp': 1741049244.572959}).
+wandb: WARNING (User provided step: 1060 is less than current step: 2000. Dropping entry: {'loss': 6.969130039215088, 'lr': 0.00010600000678095967, 'tokens_seen': 105994564, 'throughput_tokens': 132871.9700114808, 'throughput_examples': 669.604211164375, 'throughput_batches': 5.23128289972168, '_timestamp': 1741049244.5904756}).
+wandb: WARNING (User provided step: 1060 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4411168098449707, '_timestamp': 1741049245.3384995}).
+wandb: WARNING (User provided step: 1061 is less than current step: 2000. Dropping entry: {'loss': 6.886327743530273, 'lr': 0.000106100007542409, 'tokens_seen': 106094275, 'throughput_tokens': 128880.29913716833, 'throughput_examples': 661.7796748425969, 'throughput_batches': 5.1701537097077885, '_timestamp': 1741049245.3649416}).
+wandb: WARNING (User provided step: 1061 is less than current step: 2000. Dropping entry: {'grad_norm': 1.5745469331741333, '_timestamp': 1741049246.1122568}).
+wandb: WARNING (User provided step: 1062 is less than current step: 2000. Dropping entry: {'loss': 6.936484336853027, 'lr': 0.00010620000830385834, 'tokens_seen': 106195769, 'throughput_tokens': 133238.06706462082, 'throughput_examples': 672.1371739914266, 'throughput_batches': 5.25107167180802, '_timestamp': 1741049246.127489}).
+wandb: WARNING (User provided step: 1062 is less than current step: 2000. Dropping entry: {'grad_norm': 1.1935808658599854, '_timestamp': 1741049246.8695178}).
+wandb: WARNING (User provided step: 1063 is less than current step: 2000. Dropping entry: {'loss': 6.992574691772461, 'lr': 0.00010630000178935006, 'tokens_seen': 106296543, 'throughput_tokens': 133175.49830000507, 'throughput_examples': 676.6215008792208, 'throughput_batches': 5.286105475618912, '_timestamp': 1741049246.8845656}).
+wandb: WARNING (User provided step: 1063 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8583077192306519, '_timestamp': 1741049247.6296954}).
+wandb: WARNING (User provided step: 1064 is less than current step: 2000. Dropping entry: {'loss': 6.908168792724609, 'lr': 0.0001064000025507994, 'tokens_seen': 106396710, 'throughput_tokens': 131959.76127998793, 'throughput_examples': 674.5075501447965, 'throughput_batches': 5.2695902355062225, '_timestamp': 1741049247.6442604}).
+wandb: WARNING (User provided step: 1064 is less than current step: 2000. Dropping entry: {'grad_norm': 1.7169748544692993, '_timestamp': 1741049248.3884022}).
+wandb: WARNING (User provided step: 1065 is less than current step: 2000. Dropping entry: {'loss': 6.855625152587891, 'lr': 0.00010650000331224874, 'tokens_seen': 106493849, 'throughput_tokens': 127870.23374774541, 'throughput_examples': 673.978110530741, 'throughput_batches': 5.265453988521414, '_timestamp': 1741049248.4044838}).
+wandb: WARNING (User provided step: 1065 is less than current step: 2000. Dropping entry: {'grad_norm': 1.7385637760162354, '_timestamp': 1741049249.1511257}).
+wandb: WARNING (User provided step: 1066 is less than current step: 2000. Dropping entry: {'loss': 6.977171421051025, 'lr': 0.00010660000407369807, 'tokens_seen': 106591783, 'throughput_tokens': 128464.45548098686, 'throughput_examples': 671.6135479635802, 'throughput_batches': 5.246980843465471, '_timestamp': 1741049249.1672773}).
+wandb: WARNING (User provided step: 1066 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8435585498809814, '_timestamp': 1741049249.912051}).
+wandb: WARNING (User provided step: 1067 is less than current step: 2000. Dropping entry: {'loss': 6.87802267074585, 'lr': 0.00010670000483514741, 'tokens_seen': 106690583, 'throughput_tokens': 129212.08328123554, 'throughput_examples': 669.6010793521517, 'throughput_batches': 5.231258432438685, '_timestamp': 1741049249.932556}).
+wandb: WARNING (User provided step: 1067 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2535107135772705, '_timestamp': 1741049250.7035604}).
+wandb: WARNING (User provided step: 1068 is less than current step: 2000. Dropping entry: {'loss': 6.847855091094971, 'lr': 0.00010680000559659675, 'tokens_seen': 106789016, 'throughput_tokens': 122598.6815459045, 'throughput_examples': 637.69797681167, 'throughput_batches': 4.9820154438411715, '_timestamp': 1741049250.7368476}).
+wandb: WARNING (User provided step: 1068 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2801358699798584, '_timestamp': 1741049251.4954145}).
+wandb: WARNING (User provided step: 1069 is less than current step: 2000. Dropping entry: {'loss': 6.909901142120361, 'lr': 0.00010690000635804608, 'tokens_seen': 106885029, 'throughput_tokens': 121955.47482441412, 'throughput_examples': 650.3411320352456, 'throughput_batches': 5.080790094025356, '_timestamp': 1741049251.526432}).
+Update steps:   0%|                       | 70/99000 [02:00<21:26:02,  1.28it/s]Update steps:   0%|                       | 71/99000 [02:01<21:26:58,  1.28it/s]Update steps:   0%|                       | 72/99000 [02:01<21:27:57,  1.28it/s]Update steps:   0%|                       | 73/99000 [02:02<21:21:11,  1.29it/s]Update steps:   0%|                       | 74/99000 [02:03<21:15:26,  1.29it/s]Update steps:   0%|                       | 75/99000 [02:04<21:08:44,  1.30it/s]Update steps:   0%|                       | 76/99000 [02:04<21:09:21,  1.30it/s]Update steps:   0%|                       | 77/99000 [02:05<21:08:21,  1.30it/s]Update steps:   0%|                       | 78/99000 [02:06<21:07:01,  1.30it/s]Update steps:   0%|                       | 79/99000 [02:07<21:05:07,  1.30it/s]Update steps:   0%|                       | 80/99000 [02:08<21:06:46,  1.30it/s]Update steps:   0%|                       | 81/99000 [02:08<21:08:24,  1.30it/s]Update steps:   0%|                       | 82/99000 [02:09<21:26:35,  1.28it/s]Update steps:   0%|                       | 83/99000 [02:10<21:27:28,  1.28it/s]Update steps:   0%|                       | 84/99000 [02:11<21:21:03,  1.29it/s]Update steps:   0%|                       | 85/99000 [02:11<21:14:52,  1.29it/s]Update steps:   0%|                       | 86/99000 [02:12<21:10:42,  1.30it/s]Update steps:   0%|                       | 87/99000 [02:13<21:07:20,  1.30it/s]Update steps:   0%|                       | 88/99000 [02:14<21:05:30,  1.30it/s]Update steps:   0%|                       | 89/99000 [02:15<21:09:06,  1.30it/s]wandb: WARNING (User provided step: 1069 is less than current step: 2000. Dropping entry: {'grad_norm': 1.386311650276184, '_timestamp': 1741049252.28469}).
+wandb: WARNING (User provided step: 1070 is less than current step: 2000. Dropping entry: {'loss': 6.887326240539551, 'lr': 0.00010700000711949542, 'tokens_seen': 106983704, 'throughput_tokens': 127454.07386968347, 'throughput_examples': 661.3274468839923, 'throughput_batches': 5.1666206787811895, '_timestamp': 1741049252.3029218}).
+wandb: WARNING (User provided step: 1070 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3105340003967285, '_timestamp': 1741049253.0649467}).
+wandb: WARNING (User provided step: 1071 is less than current step: 2000. Dropping entry: {'loss': 6.786178112030029, 'lr': 0.00010710000788094476, 'tokens_seen': 107083900, 'throughput_tokens': 126493.48982534821, 'throughput_examples': 646.3797635691873, 'throughput_batches': 5.049841902884276, '_timestamp': 1741049253.0957587}).
+wandb: WARNING (User provided step: 1071 is less than current step: 2000. Dropping entry: {'grad_norm': 3.7087604999542236, '_timestamp': 1741049253.8503294}).
+wandb: WARNING (User provided step: 1072 is less than current step: 2000. Dropping entry: {'loss': 6.89120626449585, 'lr': 0.00010720000136643648, 'tokens_seen': 107186334, 'throughput_tokens': 133131.34173198676, 'throughput_examples': 665.4357631916866, 'throughput_batches': 5.198716899935052, '_timestamp': 1741049253.8666306}).
+wandb: WARNING (User provided step: 1072 is less than current step: 2000. Dropping entry: {'grad_norm': 2.2318267822265625, '_timestamp': 1741049254.6179428}).
+wandb: WARNING (User provided step: 1073 is less than current step: 2000. Dropping entry: {'loss': 6.87572717666626, 'lr': 0.00010730000212788582, 'tokens_seen': 107284390, 'throughput_tokens': 127972.4789186599, 'throughput_examples': 668.2090765109108, 'throughput_batches': 5.2203834102414906, '_timestamp': 1741049254.6336877}).
+wandb: WARNING (User provided step: 1073 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4272133111953735, '_timestamp': 1741049255.3836281}).
+wandb: WARNING (User provided step: 1074 is less than current step: 2000. Dropping entry: {'loss': 6.863158226013184, 'lr': 0.00010740000288933516, 'tokens_seen': 107386892, 'throughput_tokens': 134136.42589986237, 'throughput_examples': 670.0147320123465, 'throughput_batches': 5.234490093846457, '_timestamp': 1741049255.3985062}).
+wandb: WARNING (User provided step: 1074 is less than current step: 2000. Dropping entry: {'grad_norm': 1.573928713798523, '_timestamp': 1741049256.1436517}).
+wandb: WARNING (User provided step: 1075 is less than current step: 2000. Dropping entry: {'loss': 6.729491233825684, 'lr': 0.00010750000365078449, 'tokens_seen': 107487790, 'throughput_tokens': 132478.75299761994, 'throughput_examples': 672.2543710953776, 'throughput_batches': 5.251987274182637, '_timestamp': 1741049256.1605256}).
+wandb: WARNING (User provided step: 1075 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4106214046478271, '_timestamp': 1741049256.914496}).
+wandb: WARNING (User provided step: 1076 is less than current step: 2000. Dropping entry: {'loss': 6.8066534996032715, 'lr': 0.00010760001168819144, 'tokens_seen': 107588645, 'throughput_tokens': 130688.15900945336, 'throughput_examples': 663.4508691967688, 'throughput_batches': 5.183209915599757, '_timestamp': 1741049256.9327352}).
+wandb: WARNING (User provided step: 1076 is less than current step: 2000. Dropping entry: {'grad_norm': 1.706892728805542, '_timestamp': 1741049257.6819506}).
+wandb: WARNING (User provided step: 1077 is less than current step: 2000. Dropping entry: {'loss': 6.884206771850586, 'lr': 0.00010770000517368317, 'tokens_seen': 107690769, 'throughput_tokens': 133552.5962106702, 'throughput_examples': 669.5676751778539, 'throughput_batches': 5.230997462326983, '_timestamp': 1741049257.697838}).
+wandb: WARNING (User provided step: 1077 is less than current step: 2000. Dropping entry: {'grad_norm': 1.9224354028701782, '_timestamp': 1741049258.4480736}).
+wandb: WARNING (User provided step: 1078 is less than current step: 2000. Dropping entry: {'loss': 6.793239116668701, 'lr': 0.0001078000059351325, 'tokens_seen': 107792611, 'throughput_tokens': 132731.3949526459, 'throughput_examples': 667.2932013879804, 'throughput_batches': 5.213228135843597, '_timestamp': 1741049258.4657469}).
+wandb: WARNING (User provided step: 1078 is less than current step: 2000. Dropping entry: {'grad_norm': 0.8466821312904358, '_timestamp': 1741049259.2130117}).
+wandb: WARNING (User provided step: 1079 is less than current step: 2000. Dropping entry: {'loss': 6.772022247314453, 'lr': 0.00010790000669658184, 'tokens_seen': 107891701, 'throughput_tokens': 129669.05935909512, 'throughput_examples': 670.0026076481653, 'throughput_batches': 5.234395372251291, '_timestamp': 1741049259.2309353}).
+wandb: WARNING (User provided step: 1079 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6479928493499756, '_timestamp': 1741049259.9834738}).
+wandb: WARNING (User provided step: 1080 is less than current step: 2000. Dropping entry: {'loss': 6.792937278747559, 'lr': 0.00010800000745803118, 'tokens_seen': 107991662, 'throughput_tokens': 129706.7097501502, 'throughput_examples': 664.3574533275668, 'throughput_batches': 5.190292604121615, '_timestamp': 1741049260.002573}).
+wandb: WARNING (User provided step: 1080 is less than current step: 2000. Dropping entry: {'grad_norm': 2.0655128955841064, '_timestamp': 1741049260.7536006}).
+wandb: WARNING (User provided step: 1081 is less than current step: 2000. Dropping entry: {'loss': 6.869744777679443, 'lr': 0.0001081000009435229, 'tokens_seen': 108089143, 'throughput_tokens': 124704.09540421896, 'throughput_examples': 654.9840158283163, 'throughput_batches': 5.117062623658721, '_timestamp': 1741049260.7852786}).
+wandb: WARNING (User provided step: 1081 is less than current step: 2000. Dropping entry: {'grad_norm': 1.0975710153579712, '_timestamp': 1741049261.560751}).
+wandb: WARNING (User provided step: 1082 is less than current step: 2000. Dropping entry: {'loss': 6.737918853759766, 'lr': 0.00010820000170497224, 'tokens_seen': 108188076, 'throughput_tokens': 124815.97505575967, 'throughput_examples': 645.9500796351971, 'throughput_batches': 5.046484997149977, '_timestamp': 1741049261.57907}).
+wandb: WARNING (User provided step: 1082 is less than current step: 2000. Dropping entry: {'grad_norm': 1.524448275566101, '_timestamp': 1741049262.341693}).
+wandb: WARNING (User provided step: 1083 is less than current step: 2000. Dropping entry: {'loss': 6.798830986022949, 'lr': 0.00010830000246642157, 'tokens_seen': 108286847, 'throughput_tokens': 126174.86142455331, 'throughput_examples': 654.0536093526571, 'throughput_batches': 5.109793823067633, '_timestamp': 1741049262.3627696}).
+wandb: WARNING (User provided step: 1083 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4719388484954834, '_timestamp': 1741049263.1125}).
+wandb: WARNING (User provided step: 1084 is less than current step: 2000. Dropping entry: {'loss': 6.755619525909424, 'lr': 0.00010840001050382853, 'tokens_seen': 108385505, 'throughput_tokens': 128946.52356256203, 'throughput_examples': 669.186685965981, 'throughput_batches': 5.228020984109227, '_timestamp': 1741049263.128793}).
+wandb: WARNING (User provided step: 1084 is less than current step: 2000. Dropping entry: {'grad_norm': 1.5262587070465088, '_timestamp': 1741049263.8770795}).
+wandb: WARNING (User provided step: 1085 is less than current step: 2000. Dropping entry: {'loss': 6.776118755340576, 'lr': 0.00010850000398932025, 'tokens_seen': 108485999, 'throughput_tokens': 131850.02720693487, 'throughput_examples': 671.753676139378, 'throughput_batches': 5.24807559483889, '_timestamp': 1741049263.8913395}).
+wandb: WARNING (User provided step: 1085 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2589044570922852, '_timestamp': 1741049264.6418622}).
+wandb: WARNING (User provided step: 1086 is less than current step: 2000. Dropping entry: {'loss': 6.726268291473389, 'lr': 0.00010860000475076959, 'tokens_seen': 108585669, 'throughput_tokens': 130280.86432095656, 'throughput_examples': 669.2465389016731, 'throughput_batches': 5.2284885851693215, '_timestamp': 1741049264.6567602}).
+wandb: WARNING (User provided step: 1086 is less than current step: 2000. Dropping entry: {'grad_norm': 2.005340814590454, '_timestamp': 1741049265.406058}).
+wandb: WARNING (User provided step: 1087 is less than current step: 2000. Dropping entry: {'loss': 6.748384475708008, 'lr': 0.00010870000551221892, 'tokens_seen': 108683296, 'throughput_tokens': 127937.67312628882, 'throughput_examples': 670.9628344685372, 'throughput_batches': 5.2418971442854465, '_timestamp': 1741049265.4203463}).
+wandb: WARNING (User provided step: 1087 is less than current step: 2000. Dropping entry: {'grad_norm': 1.9558031558990479, '_timestamp': 1741049266.1705606}).
+wandb: WARNING (User provided step: 1088 is less than current step: 2000. Dropping entry: {'loss': 6.782116889953613, 'lr': 0.00010880000627366826, 'tokens_seen': 108782923, 'throughput_tokens': 129788.26996297984, 'throughput_examples': 667.0038666329979, 'throughput_batches': 5.210967708070296, '_timestamp': 1741049266.1883721}).
+wandb: WARNING (User provided step: 1088 is less than current step: 2000. Dropping entry: {'grad_norm': 1.1059471368789673, '_timestamp': 1741049266.9454775}).
+wandb: WARNING (User provided step: 1089 is less than current step: 2000. Dropping entry: {'loss': 6.741769790649414, 'lr': 0.0001089000070351176, 'tokens_seen': 108885793, 'throughput_tokens': 132755.47937045552, 'throughput_examples': 660.7446820032393, 'throughput_batches': 5.162067828150307, '_timestamp': 1741049266.9643137}).
+Update steps:   0%|                       | 90/99000 [02:15<21:13:16,  1.29it/s]Update steps:   0%|                       | 91/99000 [02:16<21:19:29,  1.29it/s]Update steps:   0%|                       | 92/99000 [02:17<21:26:37,  1.28it/s]Update steps:   0%|                       | 93/99000 [02:18<21:23:10,  1.28it/s]Update steps:   0%|                       | 94/99000 [02:18<21:19:21,  1.29it/s]Update steps:   0%|                       | 95/99000 [02:19<21:15:12,  1.29it/s]Update steps:   0%|                       | 96/99000 [02:20<21:12:45,  1.30it/s]Update steps:   0%|                       | 97/99000 [02:21<21:14:39,  1.29it/s]Update steps:   0%|                       | 98/99000 [02:21<21:15:19,  1.29it/s]Update steps:   0%|                       | 99/99000 [02:22<21:14:07,  1.29it/s]Update steps:   0%|                      | 100/99000 [02:23<21:11:50,  1.30it/s]Update steps:   0%|                      | 101/99000 [02:26<39:30:09,  1.44s/it]Update steps:   0%|                      | 102/99000 [02:27<33:58:46,  1.24s/it]Update steps:   0%|                      | 103/99000 [02:28<30:05:15,  1.10s/it]Update steps:   0%|                      | 104/99000 [02:28<27:23:32,  1.00it/s]Update steps:   0%|                      | 105/99000 [02:29<25:30:09,  1.08it/s]wandb: WARNING (User provided step: 1089 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3047455549240112, '_timestamp': 1741049267.718081}).
+wandb: WARNING (User provided step: 1090 is less than current step: 2000. Dropping entry: {'loss': 6.6772074699401855, 'lr': 0.00010900000052060932, 'tokens_seen': 108985918, 'throughput_tokens': 128146.15608543267, 'throughput_examples': 655.2892076478554, 'throughput_batches': 5.11944693474887, '_timestamp': 1741049267.7469747}).
+wandb: WARNING (User provided step: 1090 is less than current step: 2000. Dropping entry: {'grad_norm': 1.5095882415771484, '_timestamp': 1741049268.5069556}).
+wandb: WARNING (User provided step: 1091 is less than current step: 2000. Dropping entry: {'loss': 6.730405330657959, 'lr': 0.00010910000128205866, 'tokens_seen': 109086369, 'throughput_tokens': 127221.16788662357, 'throughput_examples': 648.4478796423258, 'throughput_batches': 5.06599905970567, '_timestamp': 1741049268.5377753}).
+wandb: WARNING (User provided step: 1091 is less than current step: 2000. Dropping entry: {'grad_norm': 1.5855134725570679, '_timestamp': 1741049269.29737}).
+wandb: WARNING (User provided step: 1092 is less than current step: 2000. Dropping entry: {'loss': 6.674123287200928, 'lr': 0.00010920000931946561, 'tokens_seen': 109185934, 'throughput_tokens': 127768.66540837515, 'throughput_examples': 657.0336633263504, 'throughput_batches': 5.133075494737112, '_timestamp': 1741049269.3185031}).
+wandb: WARNING (User provided step: 1092 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6696932315826416, '_timestamp': 1741049270.073249}).
+wandb: WARNING (User provided step: 1093 is less than current step: 2000. Dropping entry: {'loss': 6.722468376159668, 'lr': 0.00010930001008091494, 'tokens_seen': 109285089, 'throughput_tokens': 128409.40372093943, 'throughput_examples': 663.0589955637233, 'throughput_batches': 5.1801484028415885, '_timestamp': 1741049270.0914567}).
+wandb: WARNING (User provided step: 1093 is less than current step: 2000. Dropping entry: {'grad_norm': 1.1342626810073853, '_timestamp': 1741049270.844006}).
+wandb: WARNING (User provided step: 1094 is less than current step: 2000. Dropping entry: {'loss': 6.7305426597595215, 'lr': 0.00010940000356640667, 'tokens_seen': 109386335, 'throughput_tokens': 131920.88744414455, 'throughput_examples': 667.1225961657943, 'throughput_batches': 5.211895282545268, '_timestamp': 1741049270.8593845}).
+wandb: WARNING (User provided step: 1094 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2621116638183594, '_timestamp': 1741049271.6115444}).
+wandb: WARNING (User provided step: 1095 is less than current step: 2000. Dropping entry: {'loss': 6.623612403869629, 'lr': 0.000109500004327856, 'tokens_seen': 109486462, 'throughput_tokens': 130335.48093613931, 'throughput_examples': 666.4712439132634, 'throughput_batches': 5.20680659307237, '_timestamp': 1741049271.62814}).
+wandb: WARNING (User provided step: 1095 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3278805017471313, '_timestamp': 1741049272.3804233}).
+wandb: WARNING (User provided step: 1096 is less than current step: 2000. Dropping entry: {'loss': 6.712534427642822, 'lr': 0.00010960000508930534, 'tokens_seen': 109586239, 'throughput_tokens': 129417.70937790014, 'throughput_examples': 664.0996141544131, 'throughput_batches': 5.188278235581352, '_timestamp': 1741049272.3997345}).
+wandb: WARNING (User provided step: 1096 is less than current step: 2000. Dropping entry: {'grad_norm': 1.680007815361023, '_timestamp': 1741049273.1560345}).
+wandb: WARNING (User provided step: 1097 is less than current step: 2000. Dropping entry: {'loss': 6.585989952087402, 'lr': 0.00010970000585075468, 'tokens_seen': 109686157, 'throughput_tokens': 129256.5172623628, 'throughput_examples': 662.3364843004239, 'throughput_batches': 5.1745037835970615, '_timestamp': 1741049273.1733196}).
+wandb: WARNING (User provided step: 1097 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6844044923782349, '_timestamp': 1741049273.9312968}).
+wandb: WARNING (User provided step: 1098 is less than current step: 2000. Dropping entry: {'loss': 6.683354377746582, 'lr': 0.00010980000661220402, 'tokens_seen': 109785721, 'throughput_tokens': 128813.07480011845, 'throughput_examples': 662.4110551771789, 'throughput_batches': 5.17508636857171, '_timestamp': 1741049273.9468515}).
+wandb: WARNING (User provided step: 1098 is less than current step: 2000. Dropping entry: {'grad_norm': 1.204759955406189, '_timestamp': 1741049274.702282}).
+wandb: WARNING (User provided step: 1099 is less than current step: 2000. Dropping entry: {'loss': 6.592036247253418, 'lr': 0.00010990000009769574, 'tokens_seen': 109888339, 'throughput_tokens': 132957.04982332056, 'throughput_examples': 663.3729902116601, 'throughput_batches': 5.182601486028594, '_timestamp': 1741049274.7191582}).
+wandb: WARNING (User provided step: 1099 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4699193239212036, '_timestamp': 1741049275.4703999}).
+wandb: WARNING (User provided step: 1100 is less than current step: 2000. Dropping entry: {'loss': 6.633859634399414, 'lr': 0.00011000000813510269, 'tokens_seen': 109988172, 'throughput_tokens': 130141.31808838036, 'throughput_examples': 667.4381703570036, 'throughput_batches': 5.214360705914091, '_timestamp': 1741049275.486726}).
+wandb: WARNING (User provided step: 1100 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2455711364746094, '_timestamp': 1741049278.463484}).
+wandb: WARNING (User provided step: 1101 is less than current step: 2000. Dropping entry: {'loss': 6.5693159103393555, 'lr': 0.00011010000889655203, 'tokens_seen': 110086763, 'throughput_tokens': 32905.64434265998, 'throughput_examples': 170.8846639494671, 'throughput_batches': 1.3350364371052117, '_timestamp': 1741049278.484432}).
+wandb: WARNING (User provided step: 1101 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3877978324890137, '_timestamp': 1741049279.2316465}).
+wandb: WARNING (User provided step: 1102 is less than current step: 2000. Dropping entry: {'loss': 6.5714521408081055, 'lr': 0.00011020000965800136, 'tokens_seen': 110188150, 'throughput_tokens': 133260.72496323366, 'throughput_examples': 672.9609435250636, 'throughput_batches': 5.2575073712895595, '_timestamp': 1741049279.245981}).
+wandb: WARNING (User provided step: 1102 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4171583652496338, '_timestamp': 1741049279.9959793}).
+wandb: WARNING (User provided step: 1103 is less than current step: 2000. Dropping entry: {'loss': 6.624163627624512, 'lr': 0.00011030000314349309, 'tokens_seen': 110287948, 'throughput_tokens': 130277.61534188046, 'throughput_examples': 668.3715009824124, 'throughput_batches': 5.221652351425097, '_timestamp': 1741049280.0126653}).
+wandb: WARNING (User provided step: 1103 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2183690071105957, '_timestamp': 1741049280.7646997}).
+wandb: WARNING (User provided step: 1104 is less than current step: 2000. Dropping entry: {'loss': 6.5740580558776855, 'lr': 0.00011040000390494242, 'tokens_seen': 110386995, 'throughput_tokens': 129397.24776812273, 'throughput_examples': 668.8884151693524, 'throughput_batches': 5.225690743510565, '_timestamp': 1741049280.7788694}).
+wandb: WARNING (User provided step: 1104 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4223207235336304, '_timestamp': 1741049281.532601}).
+wandb: WARNING (User provided step: 1105 is less than current step: 2000. Dropping entry: {'loss': 6.580244541168213, 'lr': 0.00011050000466639176, 'tokens_seen': 110491962, 'throughput_tokens': 136582.1805410567, 'throughput_examples': 666.2101082913775, 'throughput_batches': 5.204766471026387, '_timestamp': 1741049281.5477457}).
+Update steps:   0%|                      | 106/99000 [02:30<24:10:24,  1.14it/s]Update steps:   0%|                      | 107/99000 [02:32<31:51:32,  1.16s/it]Update steps:   0%|                      | 108/99000 [02:32<28:43:02,  1.05s/it]Update steps:   0%|                      | 109/99000 [02:33<26:27:16,  1.04it/s]Update steps:   0%|                      | 110/99000 [02:34<24:55:30,  1.10it/s]Update steps:   0%|                      | 111/99000 [02:35<23:53:57,  1.15it/s]Update steps:   0%|                      | 112/99000 [02:36<23:06:26,  1.19it/s]Update steps:   0%|                      | 113/99000 [02:36<22:33:51,  1.22it/s]Update steps:   0%|                      | 114/99000 [02:37<22:08:27,  1.24it/s]Update steps:   0%|                      | 115/99000 [02:38<21:53:29,  1.25it/s]Update steps:   0%|                      | 116/99000 [02:39<21:40:43,  1.27it/s]Update steps:   0%|                      | 117/99000 [02:39<21:31:32,  1.28it/s]Update steps:   0%|                      | 118/99000 [02:40<21:30:20,  1.28it/s]Update steps:   0%|                      | 119/99000 [02:41<21:30:49,  1.28it/s]Update steps:   0%|                      | 120/99000 [02:42<21:31:48,  1.28it/s]Update steps:   0%|                      | 121/99000 [02:43<21:33:44,  1.27it/s]Update steps:   0%|                      | 122/99000 [02:43<21:32:27,  1.28it/s]Update steps:   0%|                      | 123/99000 [02:44<21:26:06,  1.28it/s]wandb: WARNING (User provided step: 1105 is less than current step: 2000. Dropping entry: {'grad_norm': 1.1489195823669434, '_timestamp': 1741049282.300035}).
+wandb: WARNING (User provided step: 1106 is less than current step: 2000. Dropping entry: {'loss': 6.612677097320557, 'lr': 0.0001106000054278411, 'tokens_seen': 110593535, 'throughput_tokens': 132491.13913173013, 'throughput_examples': 667.8493618918988, 'throughput_batches': 5.217573139780459, '_timestamp': 1741049282.3147326}).
+wandb: WARNING (User provided step: 1106 is less than current step: 2000. Dropping entry: {'grad_norm': 1.149637222290039, '_timestamp': 1741049284.1103911}).
+wandb: WARNING (User provided step: 1107 is less than current step: 2000. Dropping entry: {'loss': 6.516712665557861, 'lr': 0.00011069999891333282, 'tokens_seen': 110693265, 'throughput_tokens': 54803.32452257134, 'throughput_examples': 281.3526737747571, 'throughput_batches': 2.1980677638652897, '_timestamp': 1741049284.1350496}).
+wandb: WARNING (User provided step: 1107 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6248208284378052, '_timestamp': 1741049284.8908682}).
+wandb: WARNING (User provided step: 1108 is less than current step: 2000. Dropping entry: {'loss': 6.537087917327881, 'lr': 0.00011079999967478216, 'tokens_seen': 110793529, 'throughput_tokens': 129988.84336867498, 'throughput_examples': 663.7904712036383, 'throughput_batches': 5.185863056278424, '_timestamp': 1741049284.9071229}).
+wandb: WARNING (User provided step: 1108 is less than current step: 2000. Dropping entry: {'grad_norm': 1.7742518186569214, '_timestamp': 1741049285.660387}).
+wandb: WARNING (User provided step: 1109 is less than current step: 2000. Dropping entry: {'loss': 6.533792495727539, 'lr': 0.00011090000771218911, 'tokens_seen': 110891414, 'throughput_tokens': 126090.71782372828, 'throughput_examples': 659.5336111329507, 'throughput_batches': 5.152606336976177, '_timestamp': 1741049285.6845696}).
+wandb: WARNING (User provided step: 1109 is less than current step: 2000. Dropping entry: {'grad_norm': 1.7539758682250977, '_timestamp': 1741049286.4372926}).
+wandb: WARNING (User provided step: 1110 is less than current step: 2000. Dropping entry: {'loss': 6.6833977699279785, 'lr': 0.00011100000847363845, 'tokens_seen': 110989340, 'throughput_tokens': 126147.32878168875, 'throughput_examples': 659.5534621676024, 'throughput_batches': 5.152761423184394, '_timestamp': 1741049286.4620447}).
+wandb: WARNING (User provided step: 1110 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8204654455184937, '_timestamp': 1741049287.2213912}).
+wandb: WARNING (User provided step: 1111 is less than current step: 2000. Dropping entry: {'loss': 6.59644889831543, 'lr': 0.00011110000923508778, 'tokens_seen': 111088669, 'throughput_tokens': 126963.58486028144, 'throughput_examples': 654.4448796269377, 'throughput_batches': 5.112850622085451, '_timestamp': 1741049287.2462912}).
+wandb: WARNING (User provided step: 1111 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4080029726028442, '_timestamp': 1741049287.9957366}).
+wandb: WARNING (User provided step: 1112 is less than current step: 2000. Dropping entry: {'loss': 6.530333518981934, 'lr': 0.0001112000027205795, 'tokens_seen': 111189464, 'throughput_tokens': 132031.0079037805, 'throughput_examples': 670.6669581500631, 'throughput_batches': 5.239585610547368, '_timestamp': 1741049288.0113134}).
+wandb: WARNING (User provided step: 1112 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3485773801803589, '_timestamp': 1741049288.7709017}).
+wandb: WARNING (User provided step: 1113 is less than current step: 2000. Dropping entry: {'loss': 6.534562110900879, 'lr': 0.00011130000348202884, 'tokens_seen': 111291085, 'throughput_tokens': 131089.09223951914, 'throughput_examples': 660.4699346260497, 'throughput_batches': 5.1599213642660136, '_timestamp': 1741049288.7870326}).
+wandb: WARNING (User provided step: 1113 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2242282629013062, '_timestamp': 1741049289.5414102}).
+wandb: WARNING (User provided step: 1114 is less than current step: 2000. Dropping entry: {'loss': 6.526798725128174, 'lr': 0.00011140000424347818, 'tokens_seen': 111389236, 'throughput_tokens': 127650.1349923582, 'throughput_examples': 665.8808276643886, 'throughput_batches': 5.202193966128036, '_timestamp': 1741049289.556317}).
+wandb: WARNING (User provided step: 1114 is less than current step: 2000. Dropping entry: {'grad_norm': 1.7975709438323975, '_timestamp': 1741049290.3169808}).
+wandb: WARNING (User provided step: 1115 is less than current step: 2000. Dropping entry: {'loss': 6.56617546081543, 'lr': 0.00011150000500492752, 'tokens_seen': 111489122, 'throughput_tokens': 128483.87369485067, 'throughput_examples': 658.5882238928733, 'throughput_batches': 5.145220499163073, '_timestamp': 1741049290.334091}).
+wandb: WARNING (User provided step: 1115 is less than current step: 2000. Dropping entry: {'grad_norm': 1.5137919187545776, '_timestamp': 1741049291.0877903}).
+wandb: WARNING (User provided step: 1116 is less than current step: 2000. Dropping entry: {'loss': 6.511630058288574, 'lr': 0.00011159999849041924, 'tokens_seen': 111587623, 'throughput_tokens': 128087.85155885953, 'throughput_examples': 665.7899919608541, 'throughput_batches': 5.2014843121941725, '_timestamp': 1741049291.1035385}).
+wandb: WARNING (User provided step: 1116 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6469093561172485, '_timestamp': 1741049291.8572788}).
+wandb: WARNING (User provided step: 1117 is less than current step: 2000. Dropping entry: {'loss': 6.535192012786865, 'lr': 0.00011170000652782619, 'tokens_seen': 111686836, 'throughput_tokens': 127917.6303107339, 'throughput_examples': 660.13351797744, 'throughput_batches': 5.15729310919875, '_timestamp': 1741049291.8796175}).
+wandb: WARNING (User provided step: 1117 is less than current step: 2000. Dropping entry: {'grad_norm': 1.290067434310913, '_timestamp': 1741049292.6390808}).
+wandb: WARNING (User provided step: 1118 is less than current step: 2000. Dropping entry: {'loss': 6.566561698913574, 'lr': 0.00011180000728927553, 'tokens_seen': 111784571, 'throughput_tokens': 125162.10529144066, 'throughput_examples': 655.6811573051375, 'throughput_batches': 5.122509041446387, '_timestamp': 1741049292.6617835}).
+wandb: WARNING (User provided step: 1118 is less than current step: 2000. Dropping entry: {'grad_norm': 1.65434992313385, '_timestamp': 1741049293.4179347}).
+wandb: WARNING (User provided step: 1119 is less than current step: 2000. Dropping entry: {'loss': 6.486087799072266, 'lr': 0.00011190000805072486, 'tokens_seen': 111883277, 'throughput_tokens': 126778.63036700006, 'throughput_examples': 657.616140334975, 'throughput_batches': 5.137626096366992, '_timestamp': 1741049293.4423468}).
+wandb: WARNING (User provided step: 1119 is less than current step: 2000. Dropping entry: {'grad_norm': 1.821682095527649, '_timestamp': 1741049294.2055347}).
+wandb: WARNING (User provided step: 1120 is less than current step: 2000. Dropping entry: {'loss': 6.52779483795166, 'lr': 0.0001120000088121742, 'tokens_seen': 111982360, 'throughput_tokens': 125380.80986286029, 'throughput_examples': 647.8909061068445, 'throughput_batches': 5.061647703959722, '_timestamp': 1741049294.233346}).
+wandb: WARNING (User provided step: 1120 is less than current step: 2000. Dropping entry: {'grad_norm': 2.6884682178497314, '_timestamp': 1741049294.9948475}).
+wandb: WARNING (User provided step: 1121 is less than current step: 2000. Dropping entry: {'loss': 6.526364326477051, 'lr': 0.00011210000229766592, 'tokens_seen': 112079914, 'throughput_tokens': 124392.73923685204, 'throughput_examples': 652.8597749889112, 'throughput_batches': 5.100466992100869, '_timestamp': 1741049295.0194917}).
+wandb: WARNING (User provided step: 1121 is less than current step: 2000. Dropping entry: {'grad_norm': 1.337257742881775, '_timestamp': 1741049295.7796493}).
+wandb: WARNING (User provided step: 1122 is less than current step: 2000. Dropping entry: {'loss': 6.524357795715332, 'lr': 0.00011220000305911526, 'tokens_seen': 112180965, 'throughput_tokens': 129791.95476620438, 'throughput_examples': 657.6231886898362, 'throughput_batches': 5.137681161639345, '_timestamp': 1741049295.798459}).
+wandb: WARNING (User provided step: 1122 is less than current step: 2000. Dropping entry: {'grad_norm': 1.8003277778625488, '_timestamp': 1741049296.5513806}).
+wandb: WARNING (User provided step: 1123 is less than current step: 2000. Dropping entry: {'loss': 6.565236568450928, 'lr': 0.0001123000038205646, 'tokens_seen': 112282751, 'throughput_tokens': 132631.7861470272, 'throughput_examples': 667.1592803261541, 'throughput_batches': 5.212181877548079, '_timestamp': 1741049296.566348}).
+Update steps:   0%|                      | 124/99000 [02:45<21:20:54,  1.29it/s]Update steps:   0%|                      | 125/99000 [02:46<21:21:50,  1.29it/s]Update steps:   0%|                      | 126/99000 [02:46<21:16:44,  1.29it/s]Update steps:   0%|                      | 127/99000 [02:47<21:13:54,  1.29it/s]Update steps:   0%|                      | 128/99000 [02:48<21:13:48,  1.29it/s]Update steps:   0%|                      | 129/99000 [02:49<21:18:29,  1.29it/s]Update steps:   0%|                      | 130/99000 [02:50<21:21:46,  1.29it/s]Update steps:   0%|                      | 131/99000 [02:50<21:26:28,  1.28it/s]Update steps:   0%|                      | 132/99000 [02:51<21:29:01,  1.28it/s]Update steps:   0%|                      | 133/99000 [02:52<21:28:38,  1.28it/s]Update steps:   0%|                      | 134/99000 [02:53<21:24:02,  1.28it/s]Update steps:   0%|                      | 135/99000 [02:53<21:19:46,  1.29it/s]Update steps:   0%|                      | 136/99000 [02:54<21:19:05,  1.29it/s]Update steps:   0%|                      | 137/99000 [02:55<21:21:02,  1.29it/s]Update steps:   0%|                      | 138/99000 [02:56<21:18:40,  1.29it/s]Update steps:   0%|                      | 139/99000 [02:57<21:18:38,  1.29it/s]Update steps:   0%|                      | 140/99000 [02:57<21:20:59,  1.29it/s]Update steps:   0%|                      | 141/99000 [02:58<21:23:56,  1.28it/s]Update steps:   0%|                      | 142/99000 [02:59<21:25:56,  1.28it/s]wandb: WARNING (User provided step: 1123 is less than current step: 2000. Dropping entry: {'grad_norm': 2.52150297164917, '_timestamp': 1741049297.3207304}).
+wandb: WARNING (User provided step: 1124 is less than current step: 2000. Dropping entry: {'loss': 6.587128162384033, 'lr': 0.00011240000458201393, 'tokens_seen': 112380970, 'throughput_tokens': 127373.12309880406, 'throughput_examples': 663.9757992505287, 'throughput_batches': 5.187310931644755, '_timestamp': 1741049297.33817}).
+wandb: WARNING (User provided step: 1124 is less than current step: 2000. Dropping entry: {'grad_norm': 1.4043810367584229, '_timestamp': 1741049298.094013}).
+wandb: WARNING (User provided step: 1125 is less than current step: 2000. Dropping entry: {'loss': 6.503154277801514, 'lr': 0.00011250000534346327, 'tokens_seen': 112484875, 'throughput_tokens': 133795.13598893804, 'throughput_examples': 659.2859787915526, 'throughput_batches': 5.150671709309004, '_timestamp': 1741049298.1153483}).
+wandb: WARNING (User provided step: 1125 is less than current step: 2000. Dropping entry: {'grad_norm': 1.246949553489685, '_timestamp': 1741049298.8677719}).
+wandb: WARNING (User provided step: 1126 is less than current step: 2000. Dropping entry: {'loss': 6.525771141052246, 'lr': 0.00011260000610491261, 'tokens_seen': 112583048, 'throughput_tokens': 127888.60157497434, 'throughput_examples': 666.975278400241, 'throughput_batches': 5.210744362501883, '_timestamp': 1741049298.8834825}).
+wandb: WARNING (User provided step: 1126 is less than current step: 2000. Dropping entry: {'grad_norm': 1.0101855993270874, '_timestamp': 1741049299.6369915}).
+wandb: WARNING (User provided step: 1127 is less than current step: 2000. Dropping entry: {'loss': 6.499844074249268, 'lr': 0.00011270000686636195, 'tokens_seen': 112681090, 'throughput_tokens': 127388.21653688319, 'throughput_examples': 665.2533288476795, 'throughput_batches': 5.197291631622496, '_timestamp': 1741049299.6534996}).
+wandb: WARNING (User provided step: 1127 is less than current step: 2000. Dropping entry: {'grad_norm': 1.0621135234832764, '_timestamp': 1741049300.4086998}).
+wandb: WARNING (User provided step: 1128 is less than current step: 2000. Dropping entry: {'loss': 6.449074745178223, 'lr': 0.00011280000762781128, 'tokens_seen': 112783461, 'throughput_tokens': 132169.58297493003, 'throughput_examples': 661.03512208696, 'throughput_batches': 5.164336891304375, '_timestamp': 1741049300.4285593}).
+wandb: WARNING (User provided step: 1128 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3085330724716187, '_timestamp': 1741049301.1911898}).
+wandb: WARNING (User provided step: 1129 is less than current step: 2000. Dropping entry: {'loss': 6.462768077850342, 'lr': 0.000112900001113303, 'tokens_seen': 112882988, 'throughput_tokens': 127276.4812332309, 'throughput_examples': 654.7525635396848, 'throughput_batches': 5.115254402653788, '_timestamp': 1741049301.2117555}).
+wandb: WARNING (User provided step: 1129 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2700133323669434, '_timestamp': 1741049301.9728625}).
+wandb: WARNING (User provided step: 1130 is less than current step: 2000. Dropping entry: {'loss': 6.45877742767334, 'lr': 0.00011300000187475234, 'tokens_seen': 112982258, 'throughput_tokens': 126916.48242878699, 'throughput_examples': 654.5909036319022, 'throughput_batches': 5.113991434624236, '_timestamp': 1741049301.9952047}).
+wandb: WARNING (User provided step: 1130 is less than current step: 2000. Dropping entry: {'grad_norm': 1.984941840171814, '_timestamp': 1741049302.7615495}).
+wandb: WARNING (User provided step: 1131 is less than current step: 2000. Dropping entry: {'loss': 6.523963928222656, 'lr': 0.00011310000263620168, 'tokens_seen': 113085453, 'throughput_tokens': 130591.2361373728, 'throughput_examples': 647.9258966261434, 'throughput_batches': 5.061921067391745, '_timestamp': 1741049302.7872527}).
+wandb: WARNING (User provided step: 1131 is less than current step: 2000. Dropping entry: {'grad_norm': 1.68208909034729, '_timestamp': 1741049303.5468512}).
+wandb: WARNING (User provided step: 1132 is less than current step: 2000. Dropping entry: {'loss': 6.420655250549316, 'lr': 0.00011320000339765102, 'tokens_seen': 113185125, 'throughput_tokens': 127951.07285432226, 'throughput_examples': 657.2653232744702, 'throughput_batches': 5.134885338081799, '_timestamp': 1741049303.5675855}).
+wandb: WARNING (User provided step: 1132 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6388758420944214, '_timestamp': 1741049304.329351}).
+wandb: WARNING (User provided step: 1133 is less than current step: 2000. Dropping entry: {'loss': 6.5239996910095215, 'lr': 0.00011330001143505797, 'tokens_seen': 113283088, 'throughput_tokens': 125787.95382706026, 'throughput_examples': 657.4260931112242, 'throughput_batches': 5.136141352431439, '_timestamp': 1741049304.3474855}).
+wandb: WARNING (User provided step: 1133 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2076867818832397, '_timestamp': 1741049305.1027284}).
+wandb: WARNING (User provided step: 1134 is less than current step: 2000. Dropping entry: {'loss': 6.500152587890625, 'lr': 0.00011340000492054969, 'tokens_seen': 113383062, 'throughput_tokens': 129857.55667035295, 'throughput_examples': 665.0436014885942, 'throughput_batches': 5.195653136629642, '_timestamp': 1741049305.1179504}).
+wandb: WARNING (User provided step: 1134 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2899969816207886, '_timestamp': 1741049305.8733375}).
+wandb: WARNING (User provided step: 1135 is less than current step: 2000. Dropping entry: {'loss': 6.379356861114502, 'lr': 0.00011350000568199903, 'tokens_seen': 113482838, 'throughput_tokens': 129615.18345795452, 'throughput_examples': 665.119607224911, 'throughput_batches': 5.196246931444617, '_timestamp': 1741049305.8882482}).
+wandb: WARNING (User provided step: 1135 is less than current step: 2000. Dropping entry: {'grad_norm': 1.7029898166656494, '_timestamp': 1741049306.6456733}).
+wandb: WARNING (User provided step: 1136 is less than current step: 2000. Dropping entry: {'loss': 6.440268039703369, 'lr': 0.00011360000644344836, 'tokens_seen': 113583837, 'throughput_tokens': 129278.32547386026, 'throughput_examples': 655.3580000061035, 'throughput_batches': 5.119984375047683, '_timestamp': 1741049306.6698806}).
+wandb: WARNING (User provided step: 1136 is less than current step: 2000. Dropping entry: {'grad_norm': 1.6583949327468872, '_timestamp': 1741049307.428724}).
+wandb: WARNING (User provided step: 1137 is less than current step: 2000. Dropping entry: {'loss': 6.464737892150879, 'lr': 0.0001137000072048977, 'tokens_seen': 113682937, 'throughput_tokens': 128116.93158403314, 'throughput_examples': 661.9159331082237, 'throughput_batches': 5.171218227407998, '_timestamp': 1741049307.444583}).
+wandb: WARNING (User provided step: 1137 is less than current step: 2000. Dropping entry: {'grad_norm': 1.343982219696045, '_timestamp': 1741049308.201584}).
+wandb: WARNING (User provided step: 1138 is less than current step: 2000. Dropping entry: {'loss': 6.389536380767822, 'lr': 0.00011380000069038942, 'tokens_seen': 113783616, 'throughput_tokens': 130570.2630883075, 'throughput_examples': 664.0111115646107, 'throughput_batches': 5.187586809098521, '_timestamp': 1741049308.2161222}).
+wandb: WARNING (User provided step: 1138 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3162899017333984, '_timestamp': 1741049308.9763076}).
+wandb: WARNING (User provided step: 1139 is less than current step: 2000. Dropping entry: {'loss': 6.460261821746826, 'lr': 0.00011390000145183876, 'tokens_seen': 113886393, 'throughput_tokens': 131928.58849949963, 'throughput_examples': 657.2232825607267, 'throughput_batches': 5.1345568950056775, '_timestamp': 1741049308.9955776}).
+wandb: WARNING (User provided step: 1139 is less than current step: 2000. Dropping entry: {'grad_norm': 1.2999894618988037, '_timestamp': 1741049309.757013}).
+wandb: WARNING (User provided step: 1140 is less than current step: 2000. Dropping entry: {'loss': 6.469755172729492, 'lr': 0.0001140000022132881, 'tokens_seen': 113983864, 'throughput_tokens': 124953.27664009521, 'throughput_examples': 656.3601239315155, 'throughput_batches': 5.127813468214965, '_timestamp': 1741049309.777184}).
+wandb: WARNING (User provided step: 1140 is less than current step: 2000. Dropping entry: {'grad_norm': 1.1153554916381836, '_timestamp': 1741049310.5406384}).
+wandb: WARNING (User provided step: 1141 is less than current step: 2000. Dropping entry: {'loss': 6.358936309814453, 'lr': 0.00011410001025069505, 'tokens_seen': 114081937, 'throughput_tokens': 124834.8630700332, 'throughput_examples': 651.7130085941799, 'throughput_batches': 5.09150787964203, '_timestamp': 1741049310.5643814}).
+wandb: WARNING (User provided step: 1141 is less than current step: 2000. Dropping entry: {'grad_norm': 1.3730591535568237, '_timestamp': 1741049311.3230698}).
+wandb: WARNING (User provided step: 1142 is less than current step: 2000. Dropping entry: {'loss': 6.445163249969482, 'lr': 0.00011420001101214439, 'tokens_seen': 114177923, 'throughput_tokens': 122798.6345384907, 'throughput_examples': 655.0215748516163, 'throughput_batches': 5.117356053528252, '_timestamp': 1741049311.3467252}).
+Update steps:   0%|                      | 143/99000 [03:00<21:27:46,  1.28it/s]Update steps:   0%|                      | 144/99000 [03:00<21:26:35,  1.28it/s]Update steps:   0%|                      | 145/99000 [03:01<21:24:53,  1.28it/s]Update steps:   0%|                      | 146/99000 [03:02<21:20:09,  1.29it/s]Update steps:   0%|                      | 147/99000 [03:03<21:15:55,  1.29it/s]Update steps:   0%|                      | 148/99000 [03:04<21:12:12,  1.30it/s]Update steps:   0%|                      | 149/99000 [03:04<21:09:58,  1.30it/s]Update steps:   0%|                      | 150/99000 [03:05<21:15:16,  1.29it/s]Update steps:   0%|                      | 151/99000 [03:06<21:18:39,  1.29it/s]Update steps:   0%|                      | 152/99000 [03:07<21:22:05,  1.28it/s]Update steps:   0%|                      | 153/99000 [03:07<21:20:53,  1.29it/s]Update steps:   0%|                      | 154/99000 [03:08<21:22:24,  1.28it/s]Update steps:   0%|                      | 155/99000 [03:09<21:17:21,  1.29it/s]Update steps:   0%|                      | 156/99000 [03:10<21:12:58,  1.29it/s]Update steps:   0%|                      | 157/99000 [03:11<21:12:27,  1.29it/s]Update steps:   0%|                      | 158/99000 [03:11<21:09:29,  1.30it/s]Update steps:   0%|                      | 159/99000 [03:12<21:10:18,  1.30it/s]Update steps:   0%|                      | 160/99000 [03:13<21:12:15,  1.29it/s]
