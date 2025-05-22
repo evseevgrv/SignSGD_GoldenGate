@@ -53,7 +53,6 @@ def _load_imagenet(batch_size=128):
     archive_path = './data/tiny-imagenet-200.zip'
 
     if not os.path.exists(data_root):
-        print("📦 Скачиваем Tiny ImageNet-200 (~110MB)...")
         download_and_extract_archive(
             url=archive_url,
             download_root='./data',
@@ -66,7 +65,6 @@ def _load_imagenet(batch_size=128):
     val_target_dir = os.path.join(data_root, 'val_sorted')
 
     if not os.path.exists(val_target_dir):
-        print("🔧 Реформатируем validation-подпапки...")
         os.makedirs(val_target_dir, exist_ok=True)
 
         with open(val_annotations_path) as f:

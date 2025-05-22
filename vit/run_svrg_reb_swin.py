@@ -239,65 +239,6 @@ class AdamLike(BaseOptimizer):
                 "epoch": epoch
             }, step=train_step)
 
-class SignSGD(BaseOptimizer):
-    def __init__(
-        self, model, data_loaders, loss_fn, device,
-        lambda_value=None, scheduler=None, scheduler_config=None,
-        head_lr=0.001, head_wd=0.001, num_last_layers=2,
-        grad_clip=1.0
-    ):
-        super().__init__(model, data_loaders, loss_fn, device,
-                         lambda_value, scheduler, scheduler_config)
-        self.grad_clip = grad_clip
-        head_mod = self.model.head.fc
-        head_params = list(head_mod.parameters())
-        last_layers = self.model.layers[-num_last_layers:]
-        last_params = []
-        for layer in last_layers:
-            last_params += [p for p in layer.parameters()]
-        self.adamw_params = head_params + last_params
-        adamw_ids = {id(p) for p in self.adamw_params}
-        self.body_params = [p for p in self.model.parameters()
-                            if p.requires_grad and id(p) not in adamw_ids]
-        self.opt_adamw = torch.optim.AdamW(
-            self.adamw_params,
-            lr=head_lr,
-            weight_decay=head_wd
-        )
-        self.head_lr = head_lr
-
-    def _train_epoch(self, lr_body, epoch):
-        self.model.train()
-        for batch_idx, (inp, tgt) in enumerate(tqdm(self.train_data_loader, desc='Train', ncols=100)):
-            inp, tgt = inp.to(self.device), tgt.to(self.device)
-            loss, acc, topk = self._forward_backward(self.model, inp, tgt)
-
-            if self.grad_clip is not None:
-                clip_grad_norm_(self.adamw_params + self.body_params, self.grad_clip)
-
-            self.opt_adamw.step(); 
-            self.opt_adamw.zero_grad()
-
-            with torch.no_grad():
-                for p in self.body_params:
-                    if p.grad is None:
-                        continue
-                    p.data.mul_(1 - lr_body * self.opt_adamw.defaults['weight_decay'])
-                    p.data.sub_(lr_body * torch.sign(p.grad))
-
-            self.train_logger.append(
-                loss.item(), acc, self.grads_epochs_computed,
-                time.time() - self.start_time, topk
-            )
-            train_step = epoch * self.train_batch_count + batch_idx
-            wandb.log({
-                "train/loss": loss.item(),
-                "train/accuracy": acc,
-                "lr_body": lr_body,
-                "lr_head": self.head_lr,
-                "epoch": epoch
-            }, step=train_step)
-
 class AdamW(BaseOptimizer):
     def __init__(self, model, data_loaders, loss_fn, device, lambda_value=None, 
                  scheduler=None, scheduler_config=None, 
@@ -347,99 +288,146 @@ class AdamW(BaseOptimizer):
                 "lr": lr
             }, step=epoch)
 
-class AID(BaseOptimizer):
-    def __init__(self, model, data_loaders, loss_fn, device, lambda_value=None, 
-                 scheduler=None, scheduler_config=None, gamma=0.9):
-        super().__init__(model, data_loaders, loss_fn, device, lambda_value, scheduler, scheduler_config)
-        
-        self.gamma = gamma
-        self.prev_grad = None
-        self.prev_params = None
-        self.d = 0.0
-        self.lambda_sum = 0.0
-        self.hat_d_sum = 0.0
-        self.t = 0
-        self.gamma_history = []
+class SignSGD(BaseOptimizer):
+    def __init__(self, model, data_loaders, loss_fn, device,
+                 lambda_value=None, scheduler=None, scheduler_config=None,
+                 head_lr=0.001, head_wd=0.001, num_last_layers=2,
+                 grad_clip=1.0, beta1=0.9):
+        super().__init__(model, data_loaders, loss_fn, device,
+                         lambda_value, scheduler, scheduler_config)
+        self.grad_clip = grad_clip
+        self.beta1 = beta1
+        head_mod = self.model.head.fc
+        head_params = list(head_mod.parameters())
+        last_layers = self.model.layers[-num_last_layers:]
+        last_params = []
+        for layer in last_layers:
+            last_params += [p for p in layer.parameters()]
+        self.adamw_params = head_params + last_params
+        adamw_ids = {id(p) for p in self.adamw_params}
+        self.body_params = [p for p in self.model.parameters()
+                            if p.requires_grad and id(p) not in adamw_ids]
+        self.opt_adamw = torch.optim.AdamW(self.adamw_params, lr=head_lr, weight_decay=head_wd)
+        self.head_lr = head_lr
+        self.momentum = [torch.zeros_like(p) for p in self.body_params]
 
-    def _compute_lambda(self):
-        return 1.0 / (self.lambda_sum + 1e-8)**0.5 if self.t > 0 else 1.0
-
-    def _compute_hat_d(self, current_grad):
-        if self.prev_grad is None:
-            return 0.0
-        
-        sign_prev_grad = [torch.sign(g) if g is not None else None for g in self.prev_grad]
-        term = 0.0
-        for g, s, gamma_val in zip(current_grad, sign_prev_grad, self.gamma_history):
-            if g is not None and s is not None:
-                term += torch.dot(g.flatten(), s.flatten()) * gamma_val
-        self.hat_d_sum += term
-        return self.hat_d_sum
-
-    def _train_epoch(self, lr, epoch):
+    def _train_epoch(self, lr_body, epoch):
         self.model.train()
-        for batch_idx, (inputs, targets) in enumerate(tqdm(self.train_data_loader, desc='Training', ncols=100, leave=False)):
-            inputs, targets = inputs.to(self.device), targets.to(self.device)
-            current_params = [p.detach().clone() for p in self.model.parameters()]
-            
-            self.model.zero_grad()
-            loss, acc, acc_at_k = self._forward_backward(self.model, inputs, targets, zero_grad=True, is_test=False)
-            current_grad = []
-            for p in self.model.parameters():
-                if p.requires_grad:
-                    current_grad.append(p.grad.detach().clone())
-                else:
-                    current_grad.append(None)
-
-            if self.prev_params is not None and self.prev_grad is not None:
-                grad_diff = []
-                param_diff = []
-                for g, pg, p, pp in zip(current_grad, self.prev_grad, current_params, self.prev_params):
-                    if g is not None and pg is not None and p.requires_grad and pp.requires_grad:
-                        grad_diff.append(g - pg)
-                        param_diff.append(p - pp)
-                
-                for gd, pd in zip(grad_diff, param_diff):
-                    norm_gd = torch.norm(gd, p=1)
-                    norm_pd = torch.norm(pd, p=float('inf'))
-                    self.lambda_sum += (norm_gd / (norm_pd + 1e-8)).item()
-
-            if self.t > 0:
-                hat_d = self._compute_hat_d(current_grad)
-                self.d = max(self.d, hat_d)
-
-            lambda_t = self._compute_lambda()
-            gamma_t = lambda_t * torch.sqrt(torch.tensor(self.d + 1e-8))
-
+        for batch_idx, (inp, tgt) in enumerate(tqdm(self.train_data_loader, desc='Train', ncols=100)):
+            inp, tgt = inp.to(self.device), tgt.to(self.device)
+            loss, acc, topk = self._forward_backward(self.model, inp, tgt)
+            if self.grad_clip is not None:
+                clip_grad_norm_(self.adamw_params + self.body_params, self.grad_clip)
+            self.opt_adamw.step()
+            self.opt_adamw.zero_grad()
             with torch.no_grad():
-                for param, grad in zip(self.model.parameters(), current_grad):
-                    if param.requires_grad and grad is not None:
-                        param.add_(torch.sign(grad), alpha=-lr*gamma_t.item())
+                for i, p in enumerate(self.body_params):
+                    if p.grad is None: continue
+                    g = p.grad
+                    self.momentum[i] = self.beta1 * self.momentum[i] + (1 - self.beta1) * g
+                    p.data.mul_(1 - lr_body * self.opt_adamw.defaults['weight_decay'])
+                    p.data.sub_(lr_body * torch.sign(self.momentum[i]))
+            self.train_logger.append(loss.item(), acc, self.grads_epochs_computed,
+                                     time.time() - self.start_time, topk)
+            train_step = epoch * self.train_batch_count + batch_idx
+            wandb.log({"train/loss": loss.item(), "train/accuracy": acc,
+                       "lr_body": lr_body, "lr_head": self.head_lr, "epoch": epoch}, step=train_step)
 
-            self.prev_params = current_params
-            self.prev_grad = current_grad
-            self.gamma_history.append(gamma_t.item())
-            self.t += 1
 
-            self.train_logger.append(
-                loss.item(), 
-                acc, 
-                self.grads_epochs_computed, 
-                time.time() - self.start_time, 
-                acc_at_k
-            )
-            wandb.log({
-                "train/loss": loss.item(),
-                "train/accuracy": acc,
-                "train/grad_steps": self.grads_epochs_computed,
-                "epoch": epoch,
-                "lr": lr
-            }, step=epoch)
+class SteepestDescent(BaseOptimizer):
+    def __init__(self, model, data_loaders, loss_fn, device,
+                 lambda_value=None, scheduler=None, scheduler_config=None,
+                 head_lr=0.001, head_wd=0.001, num_last_layers=2,
+                 grad_clip=1.0, beta1=0.9):
+        super().__init__(model, data_loaders, loss_fn, device, lambda_value, scheduler, scheduler_config)
+        self.grad_clip = grad_clip
+        self.beta1 = beta1
+        head_mod = self.model.head.fc
+        head_params = list(head_mod.parameters())
+        last_layers = self.model.layers[-num_last_layers:]
+        last_params = []
+        for layer in last_layers:
+            last_params += [p for p in layer.parameters()]
+        self.adamw_params = head_params + last_params
+        adamw_ids = {id(p) for p in self.adamw_params}
+        self.body_params = [p for p in self.model.parameters()
+                            if p.requires_grad and id(p) not in adamw_ids]
+        self.opt_adamw = torch.optim.AdamW(self.adamw_params, lr=head_lr, weight_decay=head_wd)
+        self.head_lr = head_lr
+        self.momentum = [torch.zeros_like(p) for p in self.body_params]
+
+    def _train_epoch(self, lr_body, epoch):
+        self.model.train()
+        for batch_idx, (inp, tgt) in enumerate(tqdm(self.train_data_loader, desc='Train', ncols=100)):
+            inp, tgt = inp.to(self.device), tgt.to(self.device)
+            loss, acc, topk = self._forward_backward(self.model, inp, tgt)
+            if self.grad_clip is not None:
+                clip_grad_norm_(self.adamw_params + self.body_params, self.grad_clip)
+            self.opt_adamw.step()
+            self.opt_adamw.zero_grad()
+            with torch.no_grad():
+                for i, p in enumerate(self.body_params):
+                    if p.grad is None: continue
+                    g = p.grad
+                    self.momentum[i] = self.beta1 * self.momentum[i] + (1 - self.beta1) * g
+                    p.data.sub_(lr_body * self.momentum[i])
+            self.train_logger.append(loss.item(), acc, self.grads_epochs_computed,
+                                     time.time() - self.start_time, topk)
+            train_step = epoch * self.train_batch_count + batch_idx
+            wandb.log({"train/loss": loss.item(), "train/accuracy": acc,
+                       "lr_body": lr_body, "lr_head": self.head_lr, "epoch": epoch}, step=train_step)
+
+
+class NormalizedSGD(BaseOptimizer):
+    def __init__(self, model, data_loaders, loss_fn, device,
+                 lambda_value=None, scheduler=None, scheduler_config=None,
+                 head_lr=0.001, head_wd=0.001, num_last_layers=2,
+                 grad_clip=1.0, beta1=0.9):
+        super().__init__(model, data_loaders, loss_fn, device, lambda_value, scheduler, scheduler_config)
+        self.grad_clip = grad_clip
+        self.beta1 = beta1
+        head_mod = self.model.head.fc
+        head_params = list(head_mod.parameters())
+        last_layers = self.model.layers[-num_last_layers:]
+        last_params = []
+        for layer in last_layers:
+            last_params += [p for p in layer.parameters()]
+        self.adamw_params = head_params + last_params
+        adamw_ids = {id(p) for p in self.adamw_params}
+        self.body_params = [p for p in self.model.parameters()
+                            if p.requires_grad and id(p) not in adamw_ids]
+        self.opt_adamw = torch.optim.AdamW(self.adamw_params, lr=head_lr, weight_decay=head_wd)
+        self.head_lr = head_lr
+        self.momentum = [torch.zeros_like(p) for p in self.body_params]
+
+    def _train_epoch(self, lr_body, epoch):
+        self.model.train()
+        for batch_idx, (inp, tgt) in enumerate(tqdm(self.train_data_loader, desc='Train', ncols=100)):
+            inp, tgt = inp.to(self.device), tgt.to(self.device)
+            loss, acc, topk = self._forward_backward(self.model, inp, tgt)
+            if self.grad_clip is not None:
+                clip_grad_norm_(self.adamw_params + self.body_params, self.grad_clip)
+            self.opt_adamw.step()
+            self.opt_adamw.zero_grad()
+            with torch.no_grad():
+                for i, p in enumerate(self.body_params):
+                    if p.grad is None: continue
+                    g = p.grad
+                    self.momentum[i] = self.beta1 * self.momentum[i] + (1 - self.beta1) * g
+                    norm = torch.norm(self.momentum[i]) + 1e-10
+                    p.data.sub_(lr_body * self.momentum[i] / norm)
+            self.train_logger.append(loss.item(), acc, self.grads_epochs_computed,
+                                     time.time() - self.start_time, topk)
+            train_step = epoch * self.train_batch_count + batch_idx
+            wandb.log({"train/loss": loss.item(), "train/accuracy": acc,
+                       "lr_body": lr_body, "lr_head": self.head_lr, "epoch": epoch}, step=train_step)
+
 
 class Prodigy(BaseOptimizer):
-    def __init__(self, model, data_loaders, loss_fn, device, lambda_value=None, 
-                 scheduler=None, scheduler_config=None, 
-                 beta1=0.9, beta2=0.999, d0=1e-6, eps=1e-8, weight_decay=0.01):
+    def __init__(self, model, data_loaders, loss_fn, device, lambda_value=None,
+                 scheduler=None, scheduler_config=None,
+                 beta1=0.9, beta2=0.999, d0=1e-6, eps=1e-8, weight_decay=0.01,
+                 head_lr=0.001, head_wd=0.001, num_last_layers=2):
         super().__init__(model, data_loaders, loss_fn, device, lambda_value, scheduler, scheduler_config)
         self.beta1 = beta1
         self.beta2 = beta2
@@ -451,6 +439,17 @@ class Prodigy(BaseOptimizer):
         self.r = [torch.zeros(1, device=self.device) for _ in self.model.parameters()]
         self.s = [torch.zeros_like(p) for p in self.model.parameters()]
         self.x0 = [p.clone().detach() for p in self.model.parameters()]
+        head_mod = self.model.head.fc
+        head_params = list(head_mod.parameters())
+        last_layers = self.model.layers[-num_last_layers:]
+        last_params = []
+        for layer in last_layers:
+            last_params += [p for p in layer.parameters()]
+        self.adamw_params = head_params + last_params
+        adamw_ids = {id(p) for p in self.adamw_params}
+        self.body_ids = [i for i, p in enumerate(self.model.parameters()) if p.requires_grad and id(p) not in adamw_ids]
+        self.opt_adamw = torch.optim.AdamW(self.adamw_params, lr=head_lr, weight_decay=head_wd)
+        self.head_lr = head_lr
 
     def _train_epoch(self, lr, epoch):
         self.model.train()
@@ -458,37 +457,32 @@ class Prodigy(BaseOptimizer):
             inputs, targets = inputs.to(self.device), targets.to(self.device)
             loss, accuracy, acc_at_k = self._forward_backward(
                 self.model, inputs, targets, zero_grad=True, is_test=False)
-            self.train_logger.append(
-                loss.item(), accuracy, self.grads_epochs_computed,
-                time.time() - self.start_time, acc_at_k)
-
+            self.train_logger.append(loss.item(), accuracy, self.grads_epochs_computed,
+                                     time.time() - self.start_time, acc_at_k)
+            if self.grad_clip is not None:
+                clip_grad_norm_(list(self.model.parameters()), self.grad_clip)
+            self.opt_adamw.step()
+            self.opt_adamw.zero_grad()
             with torch.no_grad():
-                for idx, param in enumerate(self.model.parameters()):
-                    if not param.requires_grad:
-                        continue
+                for idx in self.body_ids:
+                    param = list(self.model.parameters())[idx]
                     g = param.grad if param.grad is not None else torch.zeros_like(param)
-                    self.m[idx] = self.beta1 * self.m[idx] + (1 - self.beta1) * self.d[idx] * g
+                    self.m[idx] = self.beta1 * self.m[idx] + (1 - self.beta1) * g
                     self.v[idx] = self.beta2 * self.v[idx] + (1 - self.beta2) * (self.d[idx] ** 2) * g * g
-                    self.s[idx] = self.sqrt_beta2 * self.s[idx] + \
-                                  (1 - self.sqrt_beta2) * lr * (self.d[idx] ** 2) * g
+                    self.s[idx] = self.sqrt_beta2 * self.s[idx] + (1 - self.sqrt_beta2) * lr * (self.d[idx] ** 2) * g
                     delta = (self.x0[idx] - param).detach()
                     inner = torch.sum(g * delta)
-                    self.r[idx] = self.sqrt_beta2 * self.r[idx] + \
-                                  (1 - self.sqrt_beta2) * lr * (self.d[idx] ** 2) * inner
+                    self.r[idx] = self.sqrt_beta2 * self.r[idx] + (1 - self.sqrt_beta2) * lr * (self.d[idx] ** 2) * inner
                     norm_s = torch.norm(self.s[idx].view(-1), p=1)
                     d_hat = self.r[idx] / norm_s
                     self.d[idx] = torch.maximum(self.d[idx], d_hat)
                     denom = torch.sqrt(self.v[idx]) + self.d[idx] * self.eps
                     step = lr * self.d[idx] * self.m[idx] / denom
                     param.sub_(step)
+            wandb.log({"train/loss": loss.item(), "train/accuracy": accuracy,
+                       "train/grad_steps": self.grads_epochs_computed,
+                       "epoch": epoch, "lr": lr})
 
-            wandb.log({
-                "train/loss": loss.item(),
-                "train/accuracy": accuracy,
-                "train/grad_steps": self.grads_epochs_computed,
-                "epoch": epoch,
-                "lr": lr
-            }, step=epoch)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, required=True,
@@ -509,8 +503,17 @@ EPOCHS = 20
 LAMBDA_VALUE = 1e-8
 from utils import get_warmup_cosine_scheduler
 
-if args.method == 'sgd':
-    opt = SGD(
+def get_constant_scheduler(base_lr, **kwargs):
+    return lambda epoch: base_lr
+
+if args.scheduler_type == 'cosine':
+    scheduler_func = get_warmup_cosine_scheduler
+else:
+    scheduler_func = get_constant_scheduler
+
+
+if args.method == 'normalized_sgd':
+    opt = NormalizedSGD(
         model=MODEL(DEVICE), 
         data_loaders=data_loaders, 
         loss_fn=torch.nn.CrossEntropyLoss(), 
@@ -526,7 +529,27 @@ if args.method == 'sgd':
     opt.run(
         EPOCHS, 
         args.lr,
-        scheduler_func=get_warmup_cosine_scheduler
+        scheduler_func=scheduler_func
+    )
+    opt.dump_json()
+elif  args.method == 'steepest_descent':
+    opt = SteepestDescent(
+        model=MODEL(DEVICE), 
+        data_loaders=data_loaders, 
+        loss_fn=torch.nn.CrossEntropyLoss(), 
+        device=DEVICE, 
+        lambda_value=LAMBDA_VALUE,
+        scheduler_config = {
+            'warmup_epochs': 4,
+            'base_lr': 0.05,
+            'warmup_lr': 0.005 ,
+            'min_lr': 0.005,
+        }
+    )
+    opt.run(
+        EPOCHS, 
+        args.lr,
+        scheduler_func=scheduler_func
     )
     opt.dump_json()
 elif args.method == 'signsgd':
@@ -546,7 +569,7 @@ elif args.method == 'signsgd':
     opt.run(
         EPOCHS, 
         args.lr,
-        scheduler_func=get_warmup_cosine_scheduler
+        scheduler_func=scheduler_func
     )
     opt.dump_json()
 elif args.method == 'adamw':
@@ -566,27 +589,7 @@ elif args.method == 'adamw':
     opt.run(
         EPOCHS, 
         args.lr,
-        scheduler_func=get_warmup_cosine_scheduler
-    )
-    opt.dump_json()
-elif args.method == 'aid':
-    opt = AID(
-        model=MODEL(DEVICE), 
-        data_loaders=data_loaders, 
-        loss_fn=torch.nn.CrossEntropyLoss(), 
-        device=DEVICE, 
-        lambda_value=LAMBDA_VALUE,
-        scheduler_config = {
-            'warmup_epochs': 4,
-            'base_lr': 0.001,
-            'warmup_lr': 0.001,
-            'min_lr': 0.001,
-        }
-    )
-    opt.run(
-        EPOCHS, 
-        args.lr,
-        scheduler_func=get_warmup_cosine_scheduler
+        scheduler_func=scheduler_func
     )
     opt.dump_json()
 elif args.method == 'prodigy':
@@ -606,7 +609,7 @@ elif args.method == 'prodigy':
     opt.run(
         EPOCHS, 
         args.lr,
-        scheduler_func=get_warmup_cosine_scheduler
+        scheduler_func=scheduler_func
     )
     opt.dump_json()
 elif args.method == 'adamlike':
@@ -626,6 +629,6 @@ elif args.method == 'adamlike':
     opt.run(
         EPOCHS, 
         args.lr,
-        scheduler_func=get_warmup_cosine_scheduler
+        scheduler_func=scheduler_func
     )
     opt.dump_json()
