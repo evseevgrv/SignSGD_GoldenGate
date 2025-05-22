@@ -2,7 +2,7 @@
 
 This repository contains the code for experiments applying a range of optimization methods 
 
-## Requirements
+## Requirements for LLM experiments
 
 To install requirements:
 
@@ -10,10 +10,14 @@ To install requirements:
 pip install -r requirements.txt
 ```
 
-## Training and Evaluation
+## Training and Evaluation for LLM experiments
 
 To train and evaluate the model in the paper, run this command:
 
 ```
 ./run_script.sh
 ```
+
+## VIT experiments 
+
+Code for experiments with Visual transformers can be found in the folder "vit"
