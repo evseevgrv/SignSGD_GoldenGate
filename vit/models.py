@@ -129,9 +129,6 @@ def test():
     y = net(torch.randn(1, 3, 32, 32))
     print(y.size())
 
-# test()
-
-
 class CifarNet(nn.Module):
     def __init__(self):
         super().__init__()
@@ -158,27 +155,21 @@ def get_swin_tiny_from_timm(device, num_classes=1000):
         pretrained=True, 
     )
     
-    # Заморозить все параметры
     for param in model.parameters():
         param.requires_grad = False
 
-    # Предполагая, что модель имеет 4 этапа в model.layers,
-    # размораживаем последние 2 этапа (индексы 2 и 3)
     total_stages = len(model.layers)
     for i, stage in enumerate(model.layers):
-        if i >= total_stages // 2:  # i >= 2 при 4 этапах
+        if i >= total_stages // 2:  
             for param in stage.parameters():
                 param.requires_grad = True
 
-    # Если требуется, можно разморозить и слой нормализации после блоков
     for param in model.norm.parameters():
         param.requires_grad = True
 
-    # Заменяем классификационную голову для нужного числа классов
-    in_features = model.head.fc.in_features  # ожидается, что это 768
+    in_features = model.head.fc.in_features  
     model.head.fc = nn.Linear(in_features, num_classes)
     
-    # Разморозить параметры классификационной головы
     for param in model.head.fc.parameters():
         param.requires_grad = True
 

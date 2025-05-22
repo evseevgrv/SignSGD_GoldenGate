@@ -61,7 +61,6 @@ def _load_imagenet(batch_size=128):
             filename='tiny-imagenet-200.zip'
         )
 
-    # Tiny ImageNet не имеет стандартной структуры, поэтому нужно немного подправить директории
     val_annotations_path = os.path.join(data_root, 'val', 'val_annotations.txt')
     val_images_dir = os.path.join(data_root, 'val', 'images')
     val_target_dir = os.path.join(data_root, 'val_sorted')
@@ -111,73 +110,6 @@ def _load_imagenet(batch_size=128):
 
     return train_loader, val_loader, train_dataset.classes
 
-# def _load_imagenet(batch_size=128,
-#                    data_root='./data/imagenet-1k',
-#                    max_samples_per_class=500):
-#     import os
-#     import random
-#     import torch
-#     from collections import defaultdict
-#     from torchvision import transforms
-#     from torchvision.datasets import ImageNet
-
-#     os.makedirs(data_root, exist_ok=True)
-
-#     normalize = transforms.Normalize([0.485, 0.456, 0.406],
-#                                      [0.229, 0.224, 0.225])
-#     transform_train = transforms.Compose([
-#         transforms.Resize(256),
-#         transforms.RandomCrop(224),
-#         transforms.RandomHorizontalFlip(),
-#         transforms.ToTensor(),
-#         normalize,
-#     ])
-#     transform_val = transforms.Compose([
-#         transforms.Resize(256),
-#         transforms.CenterCrop(224),
-#         transforms.ToTensor(),
-#         normalize,
-#     ])
-
-#     # Оригинальные датасеты
-#     train_dataset = ImageNet(root=data_root, split='train', transform=transform_train)
-#     val_dataset   = ImageNet(root=data_root, split='val',   transform=transform_val)
-
-#     # Если задано ограничение по числу примеров на класс для train
-#     if max_samples_per_class is not None:
-#         # собираем индексы по классам
-#         label_to_indices = defaultdict(list)
-#         for idx, (_, label) in enumerate(train_dataset.samples):
-#             label_to_indices[label].append(idx)
-
-#         # выбираем случайные подмножества
-#         selected_indices = []
-#         for label, indices in label_to_indices.items():
-#             k = min(max_samples_per_class, len(indices))
-#             selected = random.sample(indices, k)
-#             selected_indices.extend(selected)
-
-#         # создаём Subset
-#         train_dataset = torch.utils.data.Subset(train_dataset, selected_indices)
-
-#     # Даталоадеры
-#     train_loader = torch.utils.data.DataLoader(
-#         train_dataset, batch_size=batch_size, shuffle=True,
-#         num_workers=4, pin_memory=True
-#     )
-#     val_loader = torch.utils.data.DataLoader(
-#         val_dataset, batch_size=batch_size, shuffle=False,
-#         num_workers=4, pin_memory=True
-#     )
-
-#     # В случае Subset оригинальные .classes берутся из .dataset
-#     classes = (train_dataset.dataset.classes
-#                if isinstance(train_dataset, torch.utils.data.Subset)
-#                else train_dataset.classes)
-
-#     return train_loader, val_loader, classes
-
-
 def loader_to_device(loader, device, selected_indices=None):
     if selected_indices is None:
         return list(loader)
@@ -192,7 +124,6 @@ def loader_to_device(loader, device, selected_indices=None):
 
 def get_data_loaders(batch_size, classes=False):
     trainloader, testloader, classes = _load_imagenet(batch_size)
-    # trainloader, testloader, classes = _load_cifar(batch_size)
 
     if classes:
         return trainloader, testloader, classes

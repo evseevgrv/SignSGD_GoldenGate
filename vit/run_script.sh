@@ -1,4 +1,3 @@
-# run_script.sh (обновленная версия)
 #!/bin/bash
 export CUDA_LAUNCH_BLOCKING=2
 
@@ -24,4 +23,3 @@ for method in "${!methods[@]}"; do
 done
 
 echo "All experiments completed! Results in $EXPERIMENTS_DIR"
-python plot.py
