@@ -46,7 +46,7 @@ from utils import training_utils, args_utils
 from utils.dataloader import PreprocessedIterableDataset
 from utils.modeling_llama import LlamaForCausalLM, LlamaDecoderLayer
 
-from proj_optimizer_templates import prepare_proj_params
+from frugal import prepare_proj_params
 
 from nirvana_utils import copy_out_to_snapshot, copy_snapshot_to_out
 from utils import compile_save_load_utils
