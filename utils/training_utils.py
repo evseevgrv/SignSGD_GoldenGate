@@ -12,6 +12,25 @@ import wandb
 
 from sgd_with_adam import SgdWithAdam, SgdWithSign
 from parameter_free_signsgd import AIDsignSGD, AIDWithAdam, AdamLike, ProdigyWithAdam
+from dowg import DoWG, CDoWG
+
+try:
+    from dadaptation import DAdaptAdam, DAdaptSGD, DAdaptLion, DAdaptAdaGrad, DAdaptAdan
+    DADAPTATION_AVAILABLE = True
+except ImportError:
+    DADAPTATION_AVAILABLE = False
+
+try:
+    from dog import DoG, LDoG
+    DOG_AVAILABLE = True
+except ImportError:
+    DOG_AVAILABLE = False
+
+try:
+    from momo import Momo, MomoAdam
+    MOMO_AVAILABLE = True
+except ImportError:
+    MOMO_AVAILABLE = False
 
 def get_scheduler(
     optimizer,
@@ -353,6 +372,117 @@ def get_optimizer(param_groups, args, model=None):
             momentum=args.momentum,
             dampening=args.dampening,
             nesterov=args.nesterov
+        )
+    elif optimizer_name == "dadapt_adam":
+        if not DADAPTATION_AVAILABLE:
+            raise ImportError("dadaptation library is not installed. Please run: pip install dadaptation")
+        optimizer = DAdaptAdam(
+            param_groups,
+            lr=args.lr,
+            betas=(args.beta1, args.beta2),
+            weight_decay=args.weight_decay,
+            eps=args.eps,
+        )
+    elif optimizer_name == "dadapt_sgd":
+        if not DADAPTATION_AVAILABLE:
+            raise ImportError("dadaptation library is not installed. Please run: pip install dadaptation")
+        optimizer = DAdaptSGD(
+            param_groups,
+            lr=args.lr,
+            momentum=args.momentum,
+            weight_decay=args.weight_decay,
+            dampening=args.dampening,
+            nesterov=args.nesterov,
+        )
+    elif optimizer_name == "dadapt_lion":
+        if not DADAPTATION_AVAILABLE:
+            raise ImportError("dadaptation library is not installed. Please run: pip install dadaptation")
+        optimizer = DAdaptLion(
+            param_groups,
+            lr=args.lr,
+            weight_decay=args.weight_decay,
+            betas=(args.beta1, args.beta2),
+        )
+    elif optimizer_name == "dadapt_adagrad":
+        if not DADAPTATION_AVAILABLE:
+            raise ImportError("dadaptation library is not installed. Please run: pip install dadaptation")
+        optimizer = DAdaptAdaGrad(
+            param_groups,
+            lr=args.lr,
+            weight_decay=args.weight_decay,
+            eps=args.eps,
+        )
+    elif optimizer_name == "dadapt_adan":
+        if not DADAPTATION_AVAILABLE:
+            raise ImportError("dadaptation library is not installed. Please run: pip install dadaptation")
+        optimizer = DAdaptAdan(
+            param_groups,
+            lr=args.lr,
+            weight_decay=args.weight_decay,
+            betas=(args.beta1, args.beta2),
+            eps=args.eps,
+        )
+    elif optimizer_name == "dowg":
+        optimizer = DoWG(
+            param_groups,
+            eps=args.eps,
+            weight_decay=args.weight_decay,
+        )
+        # Add dummy 'lr' for scheduler compatibility (DoWG is parameter-free)
+        for group in optimizer.param_groups:
+            group['lr'] = args.lr
+    elif optimizer_name == "cdowg":
+        optimizer = CDoWG(
+            param_groups,
+            eps=args.eps,
+            weight_decay=args.weight_decay,
+        )
+        # Add dummy 'lr' for scheduler compatibility (CDoWG is parameter-free)
+        for group in optimizer.param_groups:
+            group['lr'] = args.lr
+    elif optimizer_name == "dog":
+        if not DOG_AVAILABLE:
+            raise ImportError("dog-optimizer library is not installed. Please run: pip install dog-optimizer")
+        reps_rel = getattr(args, 'reps_rel', 1e-6)
+        optimizer = DoG(
+            param_groups,
+            reps_rel=reps_rel,
+            lr=args.lr,
+            weight_decay=args.weight_decay,
+            eps=args.eps,
+        )
+        # Add 'lr' for scheduler compatibility (DoG uses lr but adapts it automatically)
+        for group in optimizer.param_groups:
+            if 'lr' not in group:
+                group['lr'] = args.lr
+    elif optimizer_name == "ldog":
+        if not DOG_AVAILABLE:
+            raise ImportError("dog-optimizer library is not installed. Please run: pip install dog-optimizer")
+        reps_rel = getattr(args, 'reps_rel', 1e-6)
+        optimizer = LDoG(
+            param_groups,
+            reps_rel=reps_rel,
+            lr=args.lr,
+            weight_decay=args.weight_decay,
+            eps=args.eps,
+        )
+        # Add 'lr' for scheduler compatibility (LDoG uses lr but adapts it automatically)
+        for group in optimizer.param_groups:
+            if 'lr' not in group:
+                group['lr'] = args.lr
+    elif optimizer_name == "momo":
+        if not MOMO_AVAILABLE:
+            raise ImportError("momo-opt library is not installed. Please run: pip install momo-opt")
+        optimizer = Momo(
+            param_groups,
+            lr=args.lr,
+        )
+    elif optimizer_name == "momoadam":
+        if not MOMO_AVAILABLE:
+            raise ImportError("momo-opt library is not installed. Please run: pip install momo-opt")
+        optimizer = MomoAdam(
+            param_groups,
+            lr=args.lr,
         )
     else:
         raise ValueError(f"Optimizer {args.optimizer} not supported")

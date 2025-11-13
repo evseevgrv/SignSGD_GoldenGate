@@ -822,7 +822,11 @@ def main(args):
             #          for p in group["params"]:
             #              optimizer.state[p]["prev_grad"] = custom_grad[p].clone()
 
-            optimizer.step(closure)
+            # Momo and MomoAdam require loss to be passed to step()
+            if args.optimizer.lower() in ["momo", "momoadam"]:
+                optimizer.step(loss=loss)
+            else:
+                optimizer.step(closure)
             
             if global_rank == 0 and args.debug_print:
                 p = next(model.parameters())
@@ -877,17 +881,54 @@ def main(args):
             batches_in_update = args.gradient_accumulation * world_size
             
             if global_rank == 0 and args.wandb:
-                wandb.log({
+                log_dict = {
                     "loss": loss.item(),
                     "lr": lr,
                     "tokens_seen": tokens_seen,
                     "throughput_tokens": tokens_in_update / update_time,
                     "throughput_examples": args.total_batch_size / update_time,
                     "throughput_batches": batches_in_update / update_time,
+                }
+                
+                if args.optimizer.lower() == "adam_like":
+                    d_values = []
+                    grad_diff_norms = []
+                    grad_angles = []
                     
-                    },
-                    step=update_step,
-                )
+                    for group in optimizer.param_groups:
+                        if group.get("is_proj_params", False) or group.get("is_sgd_params", False):
+                            for p in group["params"]:
+                                if p in optimizer.state:
+                                    state = optimizer.state[p]
+                                    if "d" in state:
+                                        d_tensor = state["d"]
+                                        if isinstance(d_tensor, torch.Tensor):
+                                            try:
+                                                d_values.append(d_tensor.item())
+                                            except (RuntimeError, ValueError):
+                                                try:
+                                                    d_values.append(d_tensor.cpu().item())
+                                                except:
+                                                    pass
+                            
+                            if "grad_diff_norm_avg" in group:
+                                grad_diff_norms.append(group["grad_diff_norm_avg"])
+                            if "grad_angle_avg" in group:
+                                grad_angles.append(group["grad_angle_avg"])
+                    
+                    if d_values:
+                        avg_d = sum(d_values) / len(d_values)
+                        log_dict["adam_like_d"] = avg_d
+                    
+                    if grad_diff_norms:
+                        avg_grad_diff_norm = sum(grad_diff_norms) / len(grad_diff_norms)
+                        log_dict["adam_like_grad_diff_norm"] = avg_grad_diff_norm
+                    
+                    if grad_angles:
+                        avg_grad_angle = sum(grad_angles) / len(grad_angles)
+                        log_dict["adam_like_grad_angle"] = avg_grad_angle
+                
+                wandb.log(log_dict, step=update_step)
             update_time = time.time()
             if update_step % 100 == 0:
                 torch.cuda.empty_cache()

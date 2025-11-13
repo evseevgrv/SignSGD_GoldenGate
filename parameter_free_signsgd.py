@@ -621,7 +621,7 @@ class AdamLike(Optimizer):
                 state.setdefault('exp_avg_sq', torch.zeros_like(p))
                 state.setdefault('prev_grad', None)
                 state.setdefault('r', torch.tensor(1.0, device=device))
-                state.setdefault('d', torch.tensor(1.0, device=device))
+                state.setdefault('d', torch.tensor(1e-3, device=device))
                 if group.get('amsgrad', False):
                     state.setdefault('max_exp_avg_sq', torch.zeros_like(p))
 
@@ -670,6 +670,10 @@ class AdamLike(Optimizer):
                         ds.append(state['d'])
                         state_steps.append(state['step'])
 
+                # Инициализация списков для метрик градиентов
+                grad_diff_norms = []
+                grad_angles = []
+                
                 for i, param in enumerate(params_with_grad):
                     grad = grads[i] 
                     step_t = state_steps[i].item()
@@ -684,13 +688,38 @@ class AdamLike(Optimizer):
                         self.state[param]['prev_grad'] = prev_grad
 
                     if step_t > 0:
-                        dot_product = (grad.abs() * prev_grad.abs()).sum().item()
-                        new_r = r.item() * (beta2**0.5) + (1 - beta2**0.5) * d.item() * dot_product
-                        new_d = max(d.item(), new_r)
-                        r.fill_(new_r)
-                        d.fill_(new_d)
+                        # На warmup стадии не обновляем d и r, они должны оставаться на начальных значениях
+                        is_warmup = warmup_steps > 0 and step_t < warmup_steps
+                        
+                        if not is_warmup:
+                            dot_product = (grad.abs() * prev_grad.abs()).sum().item()
+                            new_r = r.item() * (beta2**0.5) + (1 - beta2**0.5) * d.item() * dot_product
+                            new_d = max(d.item(), new_r)
+                            r.fill_(new_r)
+                            d.fill_(new_d)
+                        
+                        # Вычисление нормы разности градиентов (только вне warmup)
+                        if not is_warmup:
+                            grad_diff = grad - prev_grad
+                            grad_diff_norm = torch.linalg.vector_norm(grad_diff).item()
+                            grad_diff_norms.append(grad_diff_norm)
+                            
+                            # Вычисление угла между градиентами
+                            grad_norm = torch.linalg.vector_norm(grad).item()
+                            prev_grad_norm = torch.linalg.vector_norm(prev_grad).item()
+                            if grad_norm > 1e-8 and prev_grad_norm > 1e-8:
+                                # Косинус угла через скалярное произведение
+                                cos_angle = (grad * prev_grad).sum().item() / (grad_norm * prev_grad_norm)
+                                # Ограничиваем cos_angle в диапазоне [-1, 1] для численной стабильности
+                                cos_angle = max(-1.0, min(1.0, cos_angle))
+                                angle = torch.acos(torch.tensor(cos_angle)).item()
+                                grad_angles.append(angle)
 
-                    d_scalar = d.item()
+                    # На warmup стадии используем d_scalar = 1.0, иначе используем значение d
+                    if warmup_steps > 0 and step_t < warmup_steps:
+                        d_scalar = 1.0
+                    else:
+                        d_scalar = d.item()
                     
                     exp_avg.mul_(beta1).add_(grad, alpha=(1 - beta1) * d_scalar)
                     exp_avg_sq.mul_(beta2).addcmul_(grad, grad, value=(1 - beta2) * (d_scalar**2))
@@ -699,8 +728,6 @@ class AdamLike(Optimizer):
                     v_hat = exp_avg_sq 
                     denom = v_hat - m_hat.square()  
                     denom = denom / (m_hat.square() + eps)
-                    if warmup_steps > 0 and step_t < warmup_steps:
-                        d_scalar = 1
                     step_size = (d_scalar**2 / (1 + denom)).sqrt()
                     
                     step_size *= lr_scalar
@@ -715,6 +742,17 @@ class AdamLike(Optimizer):
                     self.state[param]['exp_avg'].copy_(exp_avg)
                     self.state[param]['exp_avg_sq'].copy_(exp_avg_sq)
                     state_steps[i] += 1
+                
+                # Сохранение усредненных метрик градиентов в группе для логирования
+                if grad_diff_norms:
+                    group['grad_diff_norm_avg'] = sum(grad_diff_norms) / len(grad_diff_norms)
+                else:
+                    group['grad_diff_norm_avg'] = 0.0
+                    
+                if grad_angles:
+                    group['grad_angle_avg'] = sum(grad_angles) / len(grad_angles)
+                else:
+                    group['grad_angle_avg'] = 0.0
 
             else:
                 params_with_grad = []
