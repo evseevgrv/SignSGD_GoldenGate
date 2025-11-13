@@ -670,7 +670,6 @@ class AdamLike(Optimizer):
                         ds.append(state['d'])
                         state_steps.append(state['step'])
 
-                # Инициализация списков для метрик градиентов
                 grad_diff_norms = []
                 grad_angles = []
                 
@@ -688,7 +687,6 @@ class AdamLike(Optimizer):
                         self.state[param]['prev_grad'] = prev_grad
 
                     if step_t > 0:
-                        # На warmup стадии не обновляем d и r, они должны оставаться на начальных значениях
                         is_warmup = warmup_steps > 0 and step_t < warmup_steps
                         
                         if not is_warmup:
@@ -698,24 +696,19 @@ class AdamLike(Optimizer):
                             r.fill_(new_r)
                             d.fill_(new_d)
                         
-                        # Вычисление нормы разности градиентов (только вне warmup)
                         if not is_warmup:
                             grad_diff = grad - prev_grad
                             grad_diff_norm = torch.linalg.vector_norm(grad_diff).item()
                             grad_diff_norms.append(grad_diff_norm)
                             
-                            # Вычисление угла между градиентами
                             grad_norm = torch.linalg.vector_norm(grad).item()
                             prev_grad_norm = torch.linalg.vector_norm(prev_grad).item()
                             if grad_norm > 1e-8 and prev_grad_norm > 1e-8:
-                                # Косинус угла через скалярное произведение
                                 cos_angle = (grad * prev_grad).sum().item() / (grad_norm * prev_grad_norm)
-                                # Ограничиваем cos_angle в диапазоне [-1, 1] для численной стабильности
                                 cos_angle = max(-1.0, min(1.0, cos_angle))
                                 angle = torch.acos(torch.tensor(cos_angle)).item()
                                 grad_angles.append(angle)
 
-                    # На warmup стадии используем d_scalar = 1.0, иначе используем значение d
                     if warmup_steps > 0 and step_t < warmup_steps:
                         d_scalar = 1.0
                     else:
@@ -743,7 +736,6 @@ class AdamLike(Optimizer):
                     self.state[param]['exp_avg_sq'].copy_(exp_avg_sq)
                     state_steps[i] += 1
                 
-                # Сохранение усредненных метрик градиентов в группе для логирования
                 if grad_diff_norms:
                     group['grad_diff_norm_avg'] = sum(grad_diff_norms) / len(grad_diff_norms)
                 else:
