@@ -51,7 +51,7 @@ from transformers.utils.versions import require_version
 from peft import LoraModel, LoraConfig, get_peft_model
 import wandb
 
-from frugal import prepare_proj_params
+from proj_utils import prepare_proj_params
 from utils.args_utils import check_args_trainer_finetuning
 from utils.training_utils import get_optimizer, get_density, is_distributed_environment, get_dist_rank
 from utils.training_utils import TrainerWithWandbRestart

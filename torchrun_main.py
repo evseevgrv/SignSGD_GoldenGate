@@ -46,9 +46,8 @@ from utils import training_utils, args_utils
 from utils.dataloader import PreprocessedIterableDataset
 from utils.modeling_llama import LlamaForCausalLM, LlamaDecoderLayer
 
-from frugal import prepare_proj_params
+from proj_utils import prepare_proj_params
 
-from nirvana_utils import copy_out_to_snapshot, copy_snapshot_to_out
 from utils import compile_save_load_utils
 import gc
 
@@ -280,8 +279,6 @@ def save_checkpoint(args, model, optimizer, scheduler, global_rank, world_size, 
         }
         with open(f"{os.path.join(args.general_save_dir, args.save_dir)}/wandb.json", "w") as f:
             json.dump(wandb_info, f, indent=4)
-
-        copy_out_to_snapshot(args.general_save_dir)
     dist.barrier()
 
 @torch.no_grad()
@@ -507,10 +504,6 @@ def main(args):
     if global_rank == 0:
         print(model)
         print("Model dtype: ", next(model.parameters()).dtype)
-    dist.barrier()
-    if local_rank == 0:
-        if not os.path.isdir(args.general_save_dir):
-            copy_snapshot_to_out(args.general_save_dir)  # Yandex Nirvana
     dist.barrier()
     resume_from_checkpoint = os.path.exists(os.path.join(args.general_save_dir, args.save_dir, "model.safetensors")) or os.path.exists(os.path.join(args.general_save_dir, args.save_dir, "pytorch_model.bin")) or os.path.exists(os.path.join(args.general_save_dir, args.save_dir, "checkpoint.pt"))
     # resume_from_checkpoint = False

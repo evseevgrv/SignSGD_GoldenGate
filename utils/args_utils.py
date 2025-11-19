@@ -66,7 +66,7 @@ def check_args_torchrun_main(args):
         args.debug_train_data = True
         args.workers = 1
     elif "INPUT_PATH" not in os.environ:
-        print("non debug mode and not nirvana - setting local_train_data to False")
+        print("non debug mode - setting local_train_data to False")
         args.local_train_data = False
     
     if args.compile and args.fsdp:
