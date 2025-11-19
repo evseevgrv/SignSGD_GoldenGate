@@ -579,7 +579,7 @@ def main(args):
     # initialize wandb
     if global_rank == 0 and args.wandb:
         run = wandb.init(
-            project=os.environ.get("WANDB_PROJECT", "frugal"),
+            project=os.environ.get("WANDB_PROJECT", "optimization"),
             name=args.wandb_name,
             tags=args.wandb_tags,
             id=wandb_id,
